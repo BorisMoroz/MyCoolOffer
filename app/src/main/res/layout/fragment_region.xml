@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.vacancy_search.VacancySearchFragment">
+    tools:context=".ui.region.RegionFragment">
 
     <TextView
         android:id="@+id/textView"
@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="22sp"
-        android:text="Поиск вакансий" />
+        android:text="Выбор региона" />
 
     <Button
         android:id="@+id/button1"
@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView"
-        android:text="Вакансия" />
+        android:text="Назад" />
 
     <Button
         android:id="@+id/button2"
@@ -33,6 +33,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button1"
-        android:text="Настройки фильтрации" />
+        android:text="Выбор места работы" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

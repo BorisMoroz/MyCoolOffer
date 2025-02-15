@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.country_selection.CountrySelectionFragment">
+    tools:context=".ui.workplace.WorkplaceFragment">
 
     <TextView
         android:id="@+id/textView"
@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="22sp"
-        android:text="Выбор страны" />
+        android:text="Выбор места работы" />
 
     <Button
         android:id="@+id/button1"
@@ -33,6 +33,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button1"
-        android:text="Выбор места работы" />
+        android:text="Страна" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button2"
+        android:text="Регион" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button3"
+        android:text="Настройки фильтрации" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

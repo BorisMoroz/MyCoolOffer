@@ -1,14 +1,14 @@
-package ru.practicum.android.diploma.ui.favorites
+package ru.practicum.android.diploma.ui.industry
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
+import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 
-class FavoritesFragment : Fragment() {
-    private var _binding: FragmentFavoritesBinding? = null
+class IndustryFragment : Fragment() {
+    private var _binding: FragmentIndustryBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -16,7 +16,7 @@ class FavoritesFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        _binding = FragmentIndustryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
