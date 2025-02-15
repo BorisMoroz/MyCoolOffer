@@ -31,7 +31,7 @@
     <string name="btn_apply">Применить</string>
     <string name="btn_reset">Сбросить</string>
 
-<!--Команда-->
+<!--    Команда-->
     <string name="app_team">Над приложением\nработали</string>
     <string name="team_member_one">Борис Мороз</string>
     <string name="team_member_two">Алексей Жуковский</string>
