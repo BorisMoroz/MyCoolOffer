@@ -10,5 +10,7 @@
     <color name="yp_gray">#AEAFB4</color>
     <color name="yp_light_gray">#E6E8EB</color>
     <color name="yp_black_transparent_50">#1A1B2280</color>
+
+    <color name="icon_color">@color/yp_black</color>
     
 </resources>
