@@ -4,6 +4,14 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:colorBackground">@color/yp_white</item>
+
+        <item name="colorPrimary">@color/yp_blue</item>
+        <item name="colorOnPrimary">@color/yp_white</item>
+        <item name="colorSecondary">@color/yp_light_gray</item>
+        <item name="colorOnSecondary">@color/yp_gray</item>
+        <item name="colorSurface">@color/yp_white</item>
+        <item name="colorOnSurface">@color/yp_black</item>
+
     </style>
 
     <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
