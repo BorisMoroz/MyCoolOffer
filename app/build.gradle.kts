@@ -52,6 +52,10 @@ dependencies {
     implementation(libs.androidX.core)
     implementation(libs.androidX.appCompat)
 
+    // Navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+
     // UI layer libraries
     implementation(libs.ui.material)
     implementation(libs.ui.constraintLayout)
