@@ -4,6 +4,7 @@ plugins {
     id("ru.practicum.android.diploma.plugins.developproperties")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 android {
@@ -51,6 +52,9 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.androidX.core)
     implementation(libs.androidX.appCompat)
+    implementation("androidx.room:room-runtime:2.5.1")
+    kapt("androidx.room:room-compiler:2.5.1")
+    implementation("androidx.room:room-ktx:2.5.1")
 
     // Navigation
     implementation(libs.navigation.fragment)
