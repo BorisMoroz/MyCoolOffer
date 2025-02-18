@@ -33,7 +33,6 @@ class SearchFragment : Fragment() {
                 }
                 else -> false
             }
-
         }
 
         binding.button1.setOnClickListener {

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
     
-<!--    Для тулбаров экранов-->
+    <!--    Для тулбаров экранов-->
     <string name="job_search">Поиск вакансий</string>
     <string name="set_filters">Настройки фильтрации</string>
     <string name="set_job_place">Выбор места работы</string>
@@ -12,7 +12,7 @@
     <string name="favourites">Избранное</string>
     <string name="develop_team">Команда</string>
 
-<!--    Ошибки-->
+    <!--    Ошибки-->
     <string name="connection_error">Нет интернета</string>
     <string name="search_error">Не удалось получить\nсписок вакансий</string>
     <string name="region_search_error">Такого региона нет</string>
@@ -21,17 +21,17 @@
     <string name="server_error">Ошибка сервера</string>
     <string name="empty_favourite_list">Список пуст</string>
 
-<!--    Навигация-->
+    <!--    Навигация-->
     <string name="nav_main">Главная</string>
     <string name="nav_favourites">Избранное</string>
     <string name="nav_team">Команда</string>
 
-<!--    Кнопки-->
+    <!--    Кнопки-->
     <string name="btn_select">Выбрать</string>
     <string name="btn_apply">Применить</string>
     <string name="btn_reset">Сбросить</string>
 
-<!--    Команда-->
+    <!--    Команда-->
     <string name="app_team">Над приложением\nработали</string>
     <string name="team_member_one">Борис Мороз</string>
     <string name="team_member_two">Алексей Жуковский</string>
@@ -39,5 +39,9 @@
     <string name="team_member_four">Данил Юферев</string>
     <string name="team_member_five">Денис Михеенко</string>
     <string name="team_member_six">Вероника Зуева</string>
+
+    <!--    Для иконок тулбаров-->
+    <string name="share">Поделиться</string>
+    <string name="like">Добавить в избранное</string>
 
 </resources>
