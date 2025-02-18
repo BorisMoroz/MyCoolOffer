@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.ui.search.SearchFragmentDirections
 
 class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null

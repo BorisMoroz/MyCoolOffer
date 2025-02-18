@@ -26,7 +26,7 @@ class RootActivity : AppCompatActivity() {
             when (d.id) {
                 R.id.searchFragment -> binding.bottomNavigationView.isVisible = true
                 R.id.favoritesFragment -> binding.bottomNavigationView.isVisible = true
-                 R.id.teamFragment -> binding.bottomNavigationView.isVisible = true
+                R.id.teamFragment -> binding.bottomNavigationView.isVisible = true
                 else -> binding.bottomNavigationView.isVisible = false
             }
         }
