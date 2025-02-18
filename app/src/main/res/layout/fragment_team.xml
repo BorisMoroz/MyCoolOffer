@@ -1,32 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.team.TeamFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/nav_team"
-        app:layout_constraintStart_toStartOf="parent"
+        style="@style/ToolBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/nav_team" />
 
     <TextView
         android:id="@+id/app_team"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/app_team"
-        android:layout_marginHorizontal="@dimen/margin_16"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:textSize="@dimen/ys_display_bold_32"
-        android:fontFamily="@font/ys_display_bold"
-        android:textColor="?attr/colorOnSurface"
-        android:layout_marginTop="@dimen/margin_16" />
+        style="@style/TextViewTeam"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
+    <TextView
+        android:id="@+id/team_member_one"
+        style="@style/TextViewTeamMember"
+        android:layout_marginTop="@dimen/margin_24"
+        android:text="@string/team_member_one"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_team" />
+
+    <TextView
+        android:id="@+id/team_member_two"
+        style="@style/TextViewTeamMember"
+        android:text="@string/team_member_two"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/team_member_one" />
+
+    <TextView
+        android:id="@+id/team_member_three"
+        style="@style/TextViewTeamMember"
+        android:text="@string/team_member_three"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/team_member_two" />
+
+    <TextView
+        android:id="@+id/team_member_four"
+        style="@style/TextViewTeamMember"
+        android:text="@string/team_member_four"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/team_member_three" />
+
+    <TextView
+        android:id="@+id/team_member_five"
+        style="@style/TextViewTeamMember"
+        android:text="@string/team_member_five"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/team_member_four" />
+
+    <TextView
+        android:id="@+id/team_member_six"
+        style="@style/TextViewTeamMember"
+        android:text="@string/team_member_six"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/team_member_five" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
