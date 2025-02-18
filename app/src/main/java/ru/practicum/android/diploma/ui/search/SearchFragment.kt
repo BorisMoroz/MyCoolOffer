@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
@@ -24,13 +25,21 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_filter -> {
+                    findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())
+                    true
+                }
+                else -> false
+            }
+
+        }
+
         binding.button1.setOnClickListener {
             findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
         }
 
-        binding.button2.setOnClickListener {
-            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())
-        }
     }
 
     override fun onDestroyView() {
