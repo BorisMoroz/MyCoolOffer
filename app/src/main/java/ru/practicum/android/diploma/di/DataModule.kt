@@ -10,6 +10,10 @@ import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.HHBASEURL
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import androidx.room.Room
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
+import ru.practicum.android.diploma.data.database.AppDatabase
 
 private const val MYCOOLOFFER_PREFERENCES = "mycooloffer_preferences"
 
@@ -34,5 +38,11 @@ val dataModule = module {
 
     single {
         androidContext().getSharedPreferences(MYCOOLOFFER_PREFERENCES, Context.MODE_PRIVATE)
+    }
+        
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }
