@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-<!--    Основные размеры текста-->
+    <!--    Основные размеры текста-->
     <dimen name="ys_display_bold_32">32sp</dimen>
     <dimen name="ys_display_medium_22">22sp</dimen>
     <dimen name="ys_display_medium_16">16sp</dimen>
     <dimen name="ys_display_regular_16">16sp</dimen>
     <dimen name="ys_display_regular_12">12sp</dimen>
+
+    <!--    Основные отступы-->
+    <dimen name="margin_16">16dp</dimen>
 
 </resources>
