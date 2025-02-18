@@ -17,7 +17,10 @@ private const val MYCOOLOFFER_PREFERENCES = "mycooloffer_preferences"
 
 val dataModule = module {
     single<HHApi> {
-        Retrofit.Builder().baseUrl(HHBASEURL).addConverterFactory(GsonConverterFactory.create()).build()
+        Retrofit.Builder()
+            .baseUrl(HHBASEURL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
             .create(HHApi::class.java)
     }
 
@@ -36,7 +39,8 @@ val dataModule = module {
     }
 
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db").fallbackToDestructiveMigration()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
             .build()
     }
 }
