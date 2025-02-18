@@ -1,16 +1,19 @@
 package ru.practicum.android.diploma.ui.vacancy
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 
 class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
+    private var isChecked = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,8 +27,38 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.button1.setOnClickListener {
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_share -> {
+                    // Реализовать логику "Поделиться вакансией"
+                    Log.d("log", "Share button clicked")
+                    true
+                }
+                R.id.action_like -> {
+                    changeLikeButtonStatus(isChecked)
+                    // Реализовать добавление вакансии в избранное
+                    Log.d("log", "Like button clicked")
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
+        }
+
+    }
+
+    // Тестовая функция смены иконки избранной вакансии
+    private fun changeLikeButtonStatus(value: Boolean) {
+        val likeButton = binding.toolbar.menu.findItem(R.id.action_like)
+        if (value) {
+            likeButton.setIcon(R.drawable.ic_favourite_off)
+            isChecked = false
+        } else {
+            likeButton.setIcon(R.drawable.ic_favourite_like)
+            isChecked = true
         }
     }
 
