@@ -34,10 +34,10 @@ class SearchFragment : Fragment() {
                 else -> false
             }
         }
-
-        binding.button1.setOnClickListener {
-            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
-        }
+//        пока не нужна
+//        binding.resultSearch.setOnClickListener {
+//            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
+//        }
 
     }
 
