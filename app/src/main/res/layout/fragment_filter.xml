@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:text="Выбор места работы" />
+        android:text="@string/set_vacancy_place" />
 
     <Button
         android:id="@+id/button3"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button2"
-        android:text="Выбор отрасли" />
+        android:text="@string/set_industry" />
 
     <Button
         android:id="@+id/button4"
@@ -40,6 +40,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button3"
-        android:text="Поиск вакансий" />
+        android:text="@string/vacancy_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

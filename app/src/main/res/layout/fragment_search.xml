@@ -12,7 +12,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/job_search"
+        app:title="@string/vacancy_search"
         app:menu="@menu/filters"/>
 
     <Button
@@ -22,6 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:text="Вакансия" />
+        android:text="@string/vacancy_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

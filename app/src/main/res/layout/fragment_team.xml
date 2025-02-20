@@ -62,13 +62,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/team_member_four" />
 
-    <TextView
-        android:id="@+id/team_member_six"
-        style="@style/TextViewTeamMember"
-        android:text="@string/team_member_six"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/team_member_five" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,10 +24,10 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, d, _ ->
             when (d.id) {
-                R.id.searchFragment -> binding.bottomNavigationView.isVisible = true
-                R.id.favoritesFragment -> binding.bottomNavigationView.isVisible = true
-                R.id.teamFragment -> binding.bottomNavigationView.isVisible = true
-                else -> binding.bottomNavigationView.isVisible = false
+                R.id.searchFragment -> isNavigationMenuVisible(true)
+                R.id.favoritesFragment -> isNavigationMenuVisible(true)
+                R.id.teamFragment -> isNavigationMenuVisible(true)
+                else -> isNavigationMenuVisible(false)
             }
         }
 
@@ -37,6 +37,13 @@ class RootActivity : AppCompatActivity() {
 
     private fun networkRequestExample(accessToken: String) {
         // ...
+    }
+
+    private fun isNavigationMenuVisible(visibility: Boolean) {
+        binding.apply {
+            bottomNavigationView.isVisible = visibility
+            bottomNavigationDivider.isVisible = visibility
+        }
     }
 
     override fun onDestroy() {
