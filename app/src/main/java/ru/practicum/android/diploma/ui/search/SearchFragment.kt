@@ -6,12 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.domain.interactor.SearchVacanciesInteractor
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+
+
+    private val viewModel by viewModel<SearchViewModel>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +42,10 @@ class SearchFragment : Fragment() {
         }
 
         binding.button1.setOnClickListener {
-            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
+
+            viewModel.searchVacancies("разработчик")
+
+            //findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
         }
 
     }

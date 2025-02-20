@@ -23,10 +23,26 @@ class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : Vacanc
 
         if (response.resultCode == Response.OK) {
 
+
+
             val vacancies = (response as VacanciesSearchResponse).items.map {
+
+
+
+
+
+
+
+                Vacancy(it.id, it.name, it.area?.name, it.employer?.name, it.employer?.logo_urls?.original,
+                    it.salary?.from, it.salary?.to, it.salary?.currency)
+            }
+
+
+
+            /*val vacancies = (response as VacanciesSearchResponse).items.map {
                 Vacancy(it.id, it.name, it.area.name, it.employer.name, it.employer.logo_urls.original,
                     it.salary.from, it.salary.to)
-            }
+            }*/
 
             emit(Resource.Success(vacancies))
 

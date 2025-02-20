@@ -18,5 +18,5 @@ const val EMAIL = "widebox@yandex.ru"
 interface HHApi {
     @Headers("Authorization: Bearer ${HH_ACCESS_TOKEN}", "HH-User-Agent: ${APP_NAME} (${EMAIL})")
     @GET("/vacancies")
-    suspend fun findVacancies(@Query("text") text: String) : VacanciesSearchResponse
+    suspend fun searchVacancies(@Query("text") text: String) : VacanciesSearchResponse
 }

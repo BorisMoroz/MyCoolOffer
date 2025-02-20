@@ -7,18 +7,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.dto.Response
-import ru.practicum.android.diploma.data.dto.Response.Companion.EXPRESSION_ERROR
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
 
 class RetrofitNetworkClient(
     private val hhApi: HHApi,
-    private val connectivityManager: ConnectivityManager
+    //private val connectivityManager: ConnectivityManager
 ) : NetworkClient {
 
     override suspend fun doRequest(dto: Any): Response {
         var response = Response()
         try {
-            if (!waitForConnection()) {
+            if (false/*!waitForConnection()*/) {
                 response.apply { resultCode = Response.NETWORK_CONNECTION_ERROR }
             } else {
                 //
@@ -27,7 +26,7 @@ class RetrofitNetworkClient(
 
                 if (dto is VacancySearchRequest) {
                     withContext(Dispatchers.IO) {
-                        response = hhApi.findVacancies(dto.text)
+                        response = hhApi.searchVacancies(dto.text)
                         response.apply { resultCode = Response.OK }
                     }
                 } else {
@@ -45,7 +44,12 @@ class RetrofitNetworkClient(
         return response
     }
 
-    private fun isConnected(): Boolean {
+
+
+
+
+
+   /* private fun isConnected(): Boolean {
         var result = false
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
@@ -66,5 +70,5 @@ class RetrofitNetworkClient(
             delay(Response.NETWORK_CONNECTION_DELAY)
         }
         return false
-    }
+    }*/
 }
