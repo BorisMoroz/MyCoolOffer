@@ -1,3 +1,5 @@
 package ru.practicum.android.diploma.data.dto
 
-data class EmployerDto(val name : String?, val logo_urls : LogoDto?)
+import com.google.gson.annotations.SerializedName
+
+data class EmployerDto(val name: String?, @SerializedName("logo_urls") val logoUrls: LogoDto?)

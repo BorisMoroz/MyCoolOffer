@@ -6,10 +6,8 @@ import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.repository.VacanciesRepository
 
-class SearchVacanciesInteractorImpl(private val repository: VacanciesRepository) : SearchVacanciesInteractor{
-
-    override fun searchVacancies(text : String): Flow<Resource<List<Vacancy>>> {
-
+class SearchVacanciesInteractorImpl(private val repository: VacanciesRepository) : SearchVacanciesInteractor {
+    override fun searchVacancies(text: String): Flow<Resource<List<Vacancy>>> {
         return repository.searchVacancies(text)
     }
 }

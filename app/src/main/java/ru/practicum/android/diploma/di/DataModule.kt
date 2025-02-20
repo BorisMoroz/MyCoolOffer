@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.di
 
 import android.content.Context
+import android.net.ConnectivityManager
 import androidx.room.Room
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -24,15 +25,15 @@ val dataModule = module {
             .create(HHApi::class.java)
     }
 
+    single {
+        androidContext().getSystemService(Context.CONNECTIVITY_SERVICE) as (ConnectivityManager)
+    }
+
     single<NetworkClient> {
-        RetrofitNetworkClient(get(), /*get()*/)
+        RetrofitNetworkClient(get(), get())
     }
 
     single { Gson() }
-
-    single {
-        androidContext().getSystemService(Context.CONNECTIVITY_SERVICE)
-    }
 
     single {
         androidContext().getSharedPreferences(MYCOOLOFFER_PREFERENCES, Context.MODE_PRIVATE)

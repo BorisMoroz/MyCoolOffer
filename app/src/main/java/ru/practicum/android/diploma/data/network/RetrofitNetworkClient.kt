@@ -8,48 +8,38 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacancySearchRequest
+import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
+import ru.practicum.android.diploma.util.NETWORK_ERROR
+import ru.practicum.android.diploma.util.NETWORK_OK
+import ru.practicum.android.diploma.util.UNKNOWN_REQUEST_ERROR
 
 class RetrofitNetworkClient(
     private val hhApi: HHApi,
-    //private val connectivityManager: ConnectivityManager
+    private val connectivityManager: ConnectivityManager
 ) : NetworkClient {
-
     override suspend fun doRequest(dto: Any): Response {
         var response = Response()
         try {
-            if (false/*!waitForConnection()*/) {
-                response.apply { resultCode = Response.NETWORK_CONNECTION_ERROR }
-            } else {
-                //
-                // Реализовать содержательные сетевые запросы
-                //
-
-                if (dto is VacancySearchRequest) {
+            if (!waitForConnection()) {
+                return response.apply { resultCode = NETWORK_CONNECTION_ERROR }
+            }
+            when (dto) {
+                is VacancySearchRequest -> {
                     withContext(Dispatchers.IO) {
                         response = hhApi.searchVacancies(dto.text)
-                        response.apply { resultCode = Response.OK }
+                        response.apply { resultCode = NETWORK_OK }
                     }
-                } else {
-                    response.apply { resultCode = Response.UNKNOWN_REQUEST_ERROR }
                 }
+                else -> response.apply { resultCode = UNKNOWN_REQUEST_ERROR }
             }
-
-            //response.apply { resultCode = Response.OK }
-
-
         } catch (ex: NetworkRequestException) {
             Log.i("NetworkError", ex.message!!)
-            response.apply { resultCode = Response.NETWORK_ERROR }
+            response.apply { resultCode = NETWORK_ERROR }
         }
         return response
     }
 
-
-
-
-
-
-   /* private fun isConnected(): Boolean {
+    private fun isConnected(): Boolean {
         var result = false
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
@@ -70,5 +60,5 @@ class RetrofitNetworkClient(
             delay(Response.NETWORK_CONNECTION_DELAY)
         }
         return false
-    }*/
+    }
 }

@@ -9,15 +9,12 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.domain.interactor.SearchVacanciesInteractor
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-
     private val viewModel by viewModel<SearchViewModel>()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,17 +34,14 @@ class SearchFragment : Fragment() {
                     findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToFilterFragment())
                     true
                 }
+
                 else -> false
             }
         }
 
         binding.button1.setOnClickListener {
-
-            viewModel.searchVacancies("разработчик")
-
-            //findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
+            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
         }
-
     }
 
     override fun onDestroyView() {
