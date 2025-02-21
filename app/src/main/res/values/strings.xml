@@ -45,12 +45,4 @@
 
     <string name="input_search">Введите запрос</string>
 
-    <!--    Вакансия-->
-    <string name="vacancy_experience">Требуемый опыт</string>
-    <string name="vacancy_description">Описание вакансии</string>
-    <string name="vacancy_responsibility">Обязанности</string>
-    <string name="vacancy_requirements">Требования</string>
-    <string name="vacancy_conditions">Условия</string>
-    <string name="vacancy_skills">Ключевые навыки</string>
-
 </resources>
