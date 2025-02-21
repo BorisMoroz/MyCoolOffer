@@ -65,7 +65,7 @@
             android:paddingHorizontal="@dimen/padding_16">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/name_text"
                 android:layout_width="@dimen/width_0"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -79,10 +79,10 @@
                 />
 
             <TextView
-                android:id="@+id/salary"
+                android:id="@+id/salary_text"
                 android:layout_width="@dimen/width_0"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintTop_toBottomOf="@id/name_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:fontFamily="@font/ys_display_medium"
@@ -100,7 +100,7 @@
                 android:orientation="horizontal"
                 android:background="@drawable/rounded_corners"
                 android:backgroundTint="?attr/colorTertiary"
-                app:layout_constraintTop_toBottomOf="@id/salary"
+                app:layout_constraintTop_toBottomOf="@id/salary_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -121,7 +121,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/vacancy_card_text_workplace"
+                        android:id="@+id/vacancy_card_employer_text"
                         style="@style/TextViewMediumVacancy"
                         android:textColor="?attr/colorOnTertiary"
                         android:textSize="@dimen/ys_display_medium_22"
@@ -131,7 +131,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/vacancy_card_text_region"
+                        android:id="@+id/vacancy_card_region_text"
                         style="@style/TextViewRegularVacancy"
                         android:textColor="?attr/colorOnTertiary"
                         android:layout_marginTop="0dp"
@@ -160,10 +160,23 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/vacancy_description"
+                android:id="@+id/work_format_text"
                 android:layout_width="@dimen/width_0"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/experience_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/margin_8"
+                android:fontFamily="@font/ys_display_regular"
+                android:textSize="@dimen/ys_display_regular_16"
+                android:textColor="?attr/colorOnSurface"
+                android:text="Полная занятость, Удаленная работа" />
+
+            <TextView
+                android:id="@+id/vacancy_description"
+                android:layout_width="@dimen/width_0"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/work_format_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/margin_32"
