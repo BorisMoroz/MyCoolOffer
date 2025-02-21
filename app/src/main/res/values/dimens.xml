@@ -16,4 +16,6 @@
     <dimen name="height_64">64dp</dimen>
     <dimen name="height_92">92dp</dimen>
 
+    <dimen name="radius_12">12dp</dimen>
+
 </resources>
