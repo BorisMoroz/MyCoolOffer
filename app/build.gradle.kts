@@ -2,6 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("ru.practicum.android.diploma.plugins.developproperties")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
+    id("com.google.devtools.ksp") version libs.versions.ksp.get()
 }
 
 android {
@@ -35,13 +38,27 @@ android {
     }
 
     buildFeatures {
+        viewBinding = true
         buildConfig = true
     }
 }
 
 dependencies {
+    implementation(libs.glide)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.koin.android)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
     implementation(libs.androidX.core)
     implementation(libs.androidX.appCompat)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // Navigation
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
 
     // UI layer libraries
     implementation(libs.ui.material)

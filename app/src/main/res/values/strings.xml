@@ -1,3 +1,46 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
+    
+    <!--    Для тулбаров экранов-->
+    <string name="vacancy_search">Поиск вакансий</string>
+    <string name="set_filters">Настройки фильтрации</string>
+    <string name="set_vacancy_place">Выбор места работы</string>
+    <string name="set_country">Выбор страны</string>
+    <string name="set_region">Выбор региона</string>
+    <string name="set_industry">Выбор отрасли</string>
+    <string name="vacancy_info">Вакансия</string>
+    <string name="favourites">Избранное</string>
+    <string name="develop_team">Команда</string>
+
+    <!--    Ошибки-->
+    <string name="connection_error">Нет интернета</string>
+    <string name="search_error">Не удалось получить\nсписок вакансий</string>
+    <string name="region_search_error">Такого региона нет</string>
+    <string name="region_list_error">Не удалось получить\nсписок</string>
+    <string name="vacancy_error">Вакансия не найдена или\nудалена</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="empty_favourite_list">Список пуст</string>
+
+    <!--    Навигация-->
+    <string name="nav_main">Главная</string>
+    <string name="nav_favourites">Избранное</string>
+    <string name="nav_team">Команда</string>
+
+    <!--    Кнопки-->
+    <string name="btn_select">Выбрать</string>
+    <string name="btn_apply">Применить</string>
+    <string name="btn_reset">Сбросить</string>
+
+    <!--    Команда-->
+    <string name="app_team">Над приложением\nработали</string>
+    <string name="team_member_one">Борис Мороз</string>
+    <string name="team_member_two">Алексей Жуковский</string>
+    <string name="team_member_three">Сергей Шаповалов</string>
+    <string name="team_member_four">Данил Юферев</string>
+    <string name="team_member_five">Денис Михеенко</string>
+
+    <!--    Для иконок тулбаров-->
+    <string name="share">Поделиться</string>
+    <string name="like">Добавить в избранное</string>
+
 </resources>
