@@ -12,7 +12,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/set_job_place"
+        app:title="@string/set_vacancy_place"
         app:navigationIcon="@drawable/ic_back"/>
 
     <Button
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:text="Страна" />
+        android:text="@string/set_country" />
 
     <Button
         android:id="@+id/button3"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button2"
-        android:text="Регион" />
+        android:text="@string/set_region" />
 
     <Button
         android:id="@+id/button4"
@@ -40,6 +40,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button3"
-        android:text="Настройки фильтрации" />
+        android:text="@string/set_filters" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
