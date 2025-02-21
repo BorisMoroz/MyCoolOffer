@@ -43,4 +43,6 @@
     <string name="share">Поделиться</string>
     <string name="like">Добавить в избранное</string>
 
+    <string name="input_search">Введите запрос</string>
+
 </resources>

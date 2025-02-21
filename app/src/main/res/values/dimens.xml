@@ -21,4 +21,6 @@
     <!--    Другие размеры-->
     <dimen name="elevation_0">0dp</dimen>
 
+    <dimen name="radius_12">12dp</dimen>
+
 </resources>
