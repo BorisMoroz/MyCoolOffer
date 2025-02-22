@@ -33,7 +33,8 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        setUpVacancyFragmentObservers()
+        viewModel.checkVacancyInFavouriteList(testVacancyList.getTestVacancyOne())
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -56,6 +57,25 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+    }
+
+    private fun setUpVacancyFragmentObservers() {
+
+        viewModel.getIsVacancyFavourite().observe(viewLifecycleOwner) { isFavourite ->
+            handleIsVacancyFavourite(isFavourite)
+        }
+
+    }
+
+    private fun handleIsVacancyFavourite(isFavourite: Boolean) {
+        val likeButton = binding.toolbar.menu.findItem(R.id.action_like)
+        if (isFavourite) {
+            likeButton.setIcon(R.drawable.ic_favourite_like)
+            isChecked = true
+        } else {
+            likeButton.setIcon(R.drawable.ic_favourite_off)
+            isChecked = false
+        }
     }
 
     // Тестовая функция смены иконки избранной вакансии

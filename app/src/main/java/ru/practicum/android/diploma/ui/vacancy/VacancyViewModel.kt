@@ -19,6 +19,9 @@ class VacancyViewModel(
 
     fun getVacancyDetailsState(): LiveData<GetVacancyDetailsState?> = getVacancyDetailsState
 
+    private val isVacancyFavourite = MutableLiveData<Boolean>()
+    fun getIsVacancyFavourite(): LiveData<Boolean> = isVacancyFavourite
+
     fun getVacancyDetails(vacancyId: String) {
         getVacancyDetailsState.postValue(GetVacancyDetailsState.Loading)
 
@@ -51,6 +54,13 @@ class VacancyViewModel(
         viewModelScope.launch {
             favouriteVacanciesInteractor
                 .removeFromFavourites(vacancy)
+        }
+    }
+
+    fun checkVacancyInFavouriteList(vacancy: Vacancy) {
+        viewModelScope.launch {
+            val checkedId = favouriteVacanciesInteractor.checkVacancyIsFavourite(vacancy.vacancyId)
+            isVacancyFavourite.value = checkedId == vacancy.vacancyId
         }
     }
 }

@@ -32,7 +32,6 @@ class FavouritesViewModel(
                         vacancyList.value = favouriteVacancies.reversed()
                     }
                 }
-
         }
     }
 
