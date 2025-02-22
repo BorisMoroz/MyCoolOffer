@@ -12,7 +12,10 @@ val viewModelModule = module {
     }
 
     viewModel {
-        VacancyViewModel(get())
+        VacancyViewModel(
+            vacanciesInteractor = get(),
+            favouriteVacanciesInteractor = get()
+        )
     }
 
     viewModel<FavouritesViewModel> {

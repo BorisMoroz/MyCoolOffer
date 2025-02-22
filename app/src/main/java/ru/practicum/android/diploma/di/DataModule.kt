@@ -9,10 +9,12 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.data.database.AppDatabase
+import ru.practicum.android.diploma.data.database.dao.VacancyDao
 import ru.practicum.android.diploma.data.network.HHApi
 import ru.practicum.android.diploma.data.network.HHBASEURL
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
+import ru.practicum.android.diploma.util.Converter
 
 private const val MYCOOLOFFER_PREFERENCES = "mycooloffer_preferences"
 
@@ -41,7 +43,10 @@ val dataModule = module {
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
-            .fallbackToDestructiveMigration()
             .build()
     }
+
+    single<VacancyDao> { get<AppDatabase>().vacancyDao() }
+
+    factory<Converter> { Converter }
 }

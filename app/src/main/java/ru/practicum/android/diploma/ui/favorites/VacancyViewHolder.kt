@@ -18,7 +18,8 @@ class VacancyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     fun bind(item: Vacancy) {
         val itemSalary = item.salaryFrom.toString() + " " + item.salaryTo.toString()
-        vacancy.text = item.vacancyName
+        val itemName = item.vacancyName + ", " + item.area
+        vacancy.text = itemName
         company.text = item.employer
         salary.text = itemSalary
 

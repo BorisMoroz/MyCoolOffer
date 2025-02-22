@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.domain.models.Vacancy
 
 class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
@@ -17,6 +18,17 @@ class VacancyFragment : Fragment() {
     private var isChecked = false
 
     private val viewModel by viewModel<VacancyViewModel>()
+
+    private val testVacancy = Vacancy(
+        vacancyId = "117524853",
+        vacancyName = "Семейный водитель",
+        area = "Алматы",
+        employer = "Doctor-Stom",
+        logoUrl = "https://img.hhcdn.ru/employer-logo-original/786151.jpeg",
+        salaryFrom = 200000,
+        salaryTo = 300000,
+        currency = "RUR"
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +41,8 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -59,9 +73,11 @@ class VacancyFragment : Fragment() {
         if (value) {
             likeButton.setIcon(R.drawable.ic_favourite_off)
             isChecked = false
+            viewModel.removeVacancyFromFavourites(testVacancy)
         } else {
             likeButton.setIcon(R.drawable.ic_favourite_like)
             isChecked = true
+            viewModel.addVacancyToFavourites(testVacancy)
         }
     }
 

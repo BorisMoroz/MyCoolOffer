@@ -5,10 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacancyViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+class VacancyViewModel(
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
+
+    ) : ViewModel() {
     private var getVacancyDetailsState = MutableLiveData<GetVacancyDetailsState?>()
 
     fun getVacancyDetailsState(): LiveData<GetVacancyDetailsState?> = getVacancyDetailsState
@@ -31,6 +37,20 @@ class VacancyViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel
                         }
                     }
                 }
+        }
+    }
+
+    fun addVacancyToFavourites(vacancy: Vacancy) {
+        viewModelScope.launch {
+            favouriteVacanciesInteractor
+                .insertVacancy(vacancy)
+        }
+    }
+
+    fun removeVacancyFromFavourites(vacancy: Vacancy) {
+        viewModelScope.launch {
+            favouriteVacanciesInteractor
+                .removeFromFavourites(vacancy)
         }
     }
 }

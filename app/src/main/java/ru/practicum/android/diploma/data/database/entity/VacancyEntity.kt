@@ -6,11 +6,12 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "vacancies_table")
 data class VacancyEntity(
     @PrimaryKey
-    val id: String,
-    val title: String,
-    val companyName: String,
-    val location: String,
-    val salary: String?,
-    val description: String,
-    val publishedAt: String
+    val vacancyId: String,
+    val vacancyName: String,
+    val area: String?,
+    val employer: String?,
+    val logoUrl: String?,
+    val salaryFrom: Int?,
+    val salaryTo: Int?,
+    val currency: String?
 )
