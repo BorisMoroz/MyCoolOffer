@@ -99,7 +99,6 @@
                 android:padding="@dimen/padding_16"
                 android:orientation="horizontal"
                 android:background="@drawable/rounded_corners"
-                android:backgroundTint="?attr/colorTertiary"
                 app:layout_constraintTop_toBottomOf="@id/salary_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -123,7 +122,7 @@
                     <TextView
                         android:id="@+id/vacancy_card_employer_text"
                         style="@style/TextViewMediumVacancy"
-                        android:textColor="?attr/colorOnTertiary"
+                        android:textColor="@color/yp_black"
                         android:textSize="@dimen/ys_display_medium_22"
                         android:maxLines="1"
                         android:ellipsize="end"
@@ -133,7 +132,7 @@
                     <TextView
                         android:id="@+id/vacancy_card_region_text"
                         style="@style/TextViewRegularVacancy"
-                        android:textColor="?attr/colorOnTertiary"
+                        android:textColor="@color/yp_black"
                         android:layout_marginTop="0dp"
                         android:maxLines="1"
                         android:ellipsize="end"
