@@ -11,24 +11,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.util.TestVacancyList
 
 class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
     private var isChecked = false
+    private val testVacancyList = TestVacancyList()
 
     private val viewModel by viewModel<VacancyViewModel>()
-
-    private val testVacancy = Vacancy(
-        vacancyId = "117524853",
-        vacancyName = "Семейный водитель",
-        area = "Алматы",
-        employer = "Doctor-Stom",
-        logoUrl = "https://img.hhcdn.ru/employer-logo-original/786151.jpeg",
-        salaryFrom = 200000,
-        salaryTo = 300000,
-        currency = "RUR"
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,11 +64,11 @@ class VacancyFragment : Fragment() {
         if (value) {
             likeButton.setIcon(R.drawable.ic_favourite_off)
             isChecked = false
-            viewModel.removeVacancyFromFavourites(testVacancy)
+            viewModel.removeVacancyFromFavourites(testVacancyList.getTestVacancyOne())
         } else {
             likeButton.setIcon(R.drawable.ic_favourite_like)
             isChecked = true
-            viewModel.addVacancyToFavourites(testVacancy)
+            viewModel.addVacancyToFavourites(testVacancyList.getTestVacancyOne())
         }
     }
 

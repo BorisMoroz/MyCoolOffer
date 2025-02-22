@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.State
 
 class FavoritesFragment : Fragment() {
@@ -38,6 +39,7 @@ class FavoritesFragment : Fragment() {
 
         setUpFavouritesFragmentObservers()
         setRecyclerView()
+        viewModel.checkVacancyList()
 
         binding.button1.setOnClickListener {
             findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment())
@@ -46,8 +48,13 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun setUpFavouritesFragmentObservers() {
+
         viewModel.getVacancyListState().observe(viewLifecycleOwner) { state ->
             handleVacancyListState(state)
+        }
+
+        viewModel.getVacancyList().observe(viewLifecycleOwner) { vacancyList ->
+            handleVacancyList(vacancyList)
         }
     }
 
@@ -57,6 +64,11 @@ class FavoritesFragment : Fragment() {
             favouritesNotEmptyList -> showVacancyList()
             else -> showErrorPlaceholder()
         }
+    }
+
+    private fun handleVacancyList(vacancyList: List<Vacancy>) {
+        adapter.data = vacancyList
+        adapter.notifyDataSetChanged()
     }
 
     private fun setRecyclerView() {

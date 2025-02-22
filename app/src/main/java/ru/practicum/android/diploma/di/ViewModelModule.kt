@@ -19,7 +19,9 @@ val viewModelModule = module {
     }
 
     viewModel<FavouritesViewModel> {
-        FavouritesViewModel()
+        FavouritesViewModel(
+            favouriteVacanciesInteractor = get()
+        )
     }
 
 }
