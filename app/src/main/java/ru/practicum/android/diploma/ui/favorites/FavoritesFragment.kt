@@ -24,6 +24,10 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.button1.setOnClickListener {
+            findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment())
+        }
+
     }
 
     override fun onDestroyView() {
