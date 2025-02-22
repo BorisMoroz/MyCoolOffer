@@ -15,5 +15,12 @@
     <!--    Размеры View элементов-->
     <dimen name="height_64">64dp</dimen>
     <dimen name="height_92">92dp</dimen>
+    <dimen name="width_0">0dp</dimen>
+    <dimen name="height_1">1dp</dimen>
+
+    <!--    Другие размеры-->
+    <dimen name="elevation_0">0dp</dimen>
+
+    <dimen name="radius_12">12dp</dimen>
 
 </resources>

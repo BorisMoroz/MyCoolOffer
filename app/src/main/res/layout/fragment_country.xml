@@ -22,6 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:text="Выбор места работы" />
+        android:text="@string/set_vacancy_place" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
