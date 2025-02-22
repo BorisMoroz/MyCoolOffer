@@ -7,11 +7,11 @@ import ru.practicum.android.diploma.util.State
 
 class FavouritesViewModel: ViewModel() {
 
-    private val vacancyListStatus = MutableLiveData<State.FavouriteVacancyList>()
-    fun getVacancyListStatus(): LiveData<State.FavouriteVacancyList> = vacancyListStatus
+    private val vacancyListState = MutableLiveData<State.FavouriteVacancyList>()
+    fun getVacancyListState(): LiveData<State.FavouriteVacancyList> = vacancyListState
 
     init {
-        vacancyListStatus.value = State.FavouriteVacancyList.EMPTY
+        vacancyListState.value = State.FavouriteVacancyList.SUCCESS
     }
 
 }
