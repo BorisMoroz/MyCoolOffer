@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
 import java.text.NumberFormat
@@ -27,7 +26,6 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         company.text = model.employer
         salary.text = formatSalary(model.salaryFrom, model.salaryTo, model.currency)
     }
-
 
     private fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currency: String?): String {
         val currencySymbols = mapOf(

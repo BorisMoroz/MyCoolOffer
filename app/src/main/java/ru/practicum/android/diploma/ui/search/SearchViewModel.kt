@@ -9,7 +9,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.ui.vacancy.GetVacancyDetailsState
 
 class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
     private var searchJob: Job? = null
@@ -40,16 +39,15 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
     }
 
     fun searchDebounce(query: String, page: Int, perPage: Int) {
-        if (query.isEmpty()){
+        if (query.isEmpty()) {
             searchJob?.cancel()
-        } else{
+        } else {
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 delay(SEARCH_DEBOUNCE_DELAY)
-                searchVacancies(query, page,perPage)
+                searchVacancies(query, page, perPage)
             }
         }
-
 
     }
 
