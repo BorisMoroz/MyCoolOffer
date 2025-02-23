@@ -6,6 +6,7 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
@@ -29,6 +30,9 @@ class RetrofitNetworkClient(
         } catch (ex: NetworkRequestException) {
             Log.i("NetworkError", ex.message!!)
             response.apply { resultCode = NETWORK_ERROR }
+        } catch (ex: HttpException) {
+            Log.i("NetworkError", ex.message!!)
+            response.apply { resultCode = ex.code() }
         }
         return response
     }

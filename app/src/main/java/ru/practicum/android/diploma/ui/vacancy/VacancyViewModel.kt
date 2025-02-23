@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.util.NOT_FOUND_ERROR
 
 class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
     private var vacancyDetailsState = MutableLiveData<VacancyDetailsState?>()
@@ -23,11 +22,8 @@ class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : V
                 .collect { result ->
                     when (result) {
                         is Resource.Error -> {
-                            if (result.errorCode == NOT_FOUND_ERROR) {
-                                vacancyDetailsState.value = VacancyDetailsState.NotFoundError
-                            } else {
-                                vacancyDetailsState.value = VacancyDetailsState.ServerError
-                            }
+                            vacancyDetailsState.value = VacancyDetailsState.Error(result.errorCode)
+
                         }
                         is Resource.Success -> {
                             vacancyDetailsState.value = VacancyDetailsState.Content(result.data)

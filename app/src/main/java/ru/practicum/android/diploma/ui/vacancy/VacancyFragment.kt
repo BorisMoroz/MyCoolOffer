@@ -16,6 +16,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetails
+import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
+import ru.practicum.android.diploma.util.NOT_FOUND_ERROR
 
 class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
@@ -57,14 +59,13 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getVacancyDetails("117317594") // Передача данных с экрана "поиск" пока не сделана
+        viewModel.getVacancyDetails("112317594") // Передача данных с экрана "поиск" пока не сделана
 
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
                 is VacancyDetailsState.Loading -> renderLoading()
                 is VacancyDetailsState.Content -> renderContent(vacancyDetailsState.data)
-                is VacancyDetailsState.NotFoundError -> renderNotFoundError()
-                is VacancyDetailsState.ServerError -> renderServerError()
+                is VacancyDetailsState.Error -> renderError(vacancyDetailsState.errorCode)
                 else -> {}
             }
         }
@@ -73,30 +74,40 @@ class VacancyFragment : Fragment() {
     private fun renderLoading() {
         binding.progress.isVisible = true
         binding.vacancyContent.isVisible = false
-        binding.placeholder404Error.isVisible = false
-        binding.placeholderServerError.isVisible = false
+        binding.placeholderError.isVisible = false
     }
 
     private fun renderContent(vacancyDetails: VacancyDetails) {
         binding.progress.isVisible = false
         binding.vacancyContent.isVisible = true
-        binding.placeholder404Error.isVisible = false
-        binding.placeholderServerError.isVisible = false
+        binding.placeholderError.isVisible = false
         bindVacancyDetails(vacancyDetails)
     }
 
-    private fun renderNotFoundError() {
+    private fun renderError(errorCode: Int) {
         binding.progress.isVisible = false
         binding.vacancyContent.isVisible = false
-        binding.placeholder404Error.isVisible = true
-        binding.placeholderServerError.isVisible = false
-    }
-
-    private fun renderServerError() {
-        binding.progress.isVisible = false
-        binding.vacancyContent.isVisible = false
-        binding.placeholder404Error.isVisible = false
-        binding.placeholderServerError.isVisible = true
+        when (errorCode) {
+            NETWORK_CONNECTION_ERROR -> {
+                Glide.with(this)
+                    .load(R.drawable.img_placeholder_connection_error)
+                    .into(binding.placeholderErrorImage)
+                binding.placeholderErrorText.setText(R.string.connection_error)
+            }
+            NOT_FOUND_ERROR -> {
+                Glide.with(this)
+                    .load(R.drawable.img_placeholder_job_error)
+                    .into(binding.placeholderErrorImage)
+                binding.placeholderErrorText.setText(R.string.vacancy_error)
+            }
+            else -> {
+                Glide.with(this)
+                    .load(R.drawable.img_placeholder_job_server_error)
+                    .into(binding.placeholderErrorImage)
+                binding.placeholderErrorText.setText(R.string.server_error)
+            }
+        }
+        binding.placeholderError.isVisible = true
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {

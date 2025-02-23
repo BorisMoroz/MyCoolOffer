@@ -26,32 +26,37 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
-    <TextView
-        android:id="@+id/placeholder_404_error"
-        style="@style/PlaceHolderVacancy"
+    <LinearLayout
+        android:id="@+id/placeholder_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:drawableTopCompat="@drawable/img_placeholder_job_error"
-        tools:text="@string/vacancy_error"
-        android:visibility="gone" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
 
-    <TextView
-        android:id="@+id/placeholder_server_error"
-        style="@style/PlaceHolderVacancy"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:drawableTopCompat="@drawable/img_placeholder_job_server_error"
-        tools:text="@string/server_error"
-        android:visibility="gone" />
+        <ImageView
+            android:id="@+id/placeholder_error_image"
+            android:layout_width="328dp"
+            android:layout_height="223dp"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/placeholder_error_text"
+            style="@style/TextViewMediumVacancy"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_gravity="center"
+            android:textSize="@dimen/ys_display_medium_22"
+            android:textAlignment="center" />
+    </LinearLayout>
 
     <ScrollView
+        android:visibility="gone"
         android:id="@+id/vacancy_content"
         android:layout_width="@dimen/width_0"
         android:layout_height="@dimen/height_0"
