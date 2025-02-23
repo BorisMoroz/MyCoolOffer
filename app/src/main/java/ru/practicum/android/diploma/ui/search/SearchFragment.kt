@@ -11,13 +11,15 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancies
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), OnVacancyClickListener {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -98,6 +100,11 @@ class SearchFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.stopSearch()
+    }
+
     private fun render(state: SearchVacanciesState) {
         when (state) {
             is SearchVacanciesState.Default -> {
@@ -157,7 +164,7 @@ class SearchFragment : Fragment() {
     private fun showFoundVacancies(vacancies: Vacancies) {
         binding.progress.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
-        binding.listVacancies.adapter = VacancyAdapter(vacancies)
+        binding.listVacancies.adapter = VacancyAdapter(vacancies, this)
         binding.listVacancies.visibility = View.VISIBLE
         binding.containerPlaceholder.visibility = View.GONE
         binding.resultSearch.text = vacancies.items.size.toString()
@@ -188,6 +195,14 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onVacancyClick(vacancy: Vacancy) {
+        // Нужно реализовать передачу данных в VacancyFragment
+        findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
+    }
+    companion object{
+        const val SELECTED_VACANCY = "selectedVacancy"
     }
 }
 
