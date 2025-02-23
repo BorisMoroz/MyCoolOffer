@@ -10,8 +10,8 @@ class TestVacancyList {
         area = "Алматы",
         employer = "Doctor-Stom",
         logoUrl = "https://img.hhcdn.ru/employer-logo-original/786151.jpeg",
-        salaryFrom = 200000,
-        salaryTo = 300000,
+        salaryFrom = 200_000,
+        salaryTo = 300_000,
         currency = "RUR"
     )
 
@@ -33,7 +33,7 @@ class TestVacancyList {
         employer = "Kono",
         logoUrl = null,
         salaryFrom = null,
-        salaryTo = 80000,
+        salaryTo = 80_000,
         currency = "RUR"
     )
 
