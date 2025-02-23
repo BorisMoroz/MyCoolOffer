@@ -57,49 +57,60 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getVacancyDetails("117317594") //Передача данных с экрана "поиск" пока не сделана
+        viewModel.getVacancyDetails("117317594") // Передача данных с экрана "поиск" пока не сделана
 
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
-                is VacancyDetailsState.Loading -> {
-                    binding.progress.isVisible = true
-                    binding.vacancyContent.isVisible = false
-                    binding.placeholder404Error.isVisible = false
-                    binding.placeholderServerError.isVisible = false
-                }
-                is VacancyDetailsState.Content -> {
-                    binding.progress.isVisible = false
-                    binding.vacancyContent.isVisible = true
-                    binding.placeholder404Error.isVisible = false
-                    binding.placeholderServerError.isVisible = false
-                    bindVacancyDetails(vacancyDetailsState.data)
-                }
-                is VacancyDetailsState.NotFoundError -> {
-                    binding.progress.isVisible = false
-                    binding.vacancyContent.isVisible = false
-                    binding.placeholder404Error.isVisible = true
-                    binding.placeholderServerError.isVisible = false
-                }
-                is VacancyDetailsState.ServerError -> {
-                    binding.progress.isVisible = false
-                    binding.vacancyContent.isVisible = false
-                    binding.placeholder404Error.isVisible = false
-                    binding.placeholderServerError.isVisible = true
-                }
+                is VacancyDetailsState.Loading -> renderLoading()
+                is VacancyDetailsState.Content -> renderContent(vacancyDetailsState.data)
+                is VacancyDetailsState.NotFoundError -> renderNotFoundError()
+                is VacancyDetailsState.ServerError -> renderServerError()
                 else -> {}
             }
         }
+    }
+
+    private fun renderLoading() {
+        binding.progress.isVisible = true
+        binding.vacancyContent.isVisible = false
+        binding.placeholder404Error.isVisible = false
+        binding.placeholderServerError.isVisible = false
+    }
+
+    private fun renderContent(vacancyDetails: VacancyDetails) {
+        binding.progress.isVisible = false
+        binding.vacancyContent.isVisible = true
+        binding.placeholder404Error.isVisible = false
+        binding.placeholderServerError.isVisible = false
+        bindVacancyDetails(vacancyDetails)
+    }
+
+    private fun renderNotFoundError() {
+        binding.progress.isVisible = false
+        binding.vacancyContent.isVisible = false
+        binding.placeholder404Error.isVisible = true
+        binding.placeholderServerError.isVisible = false
+    }
+
+    private fun renderServerError() {
+        binding.progress.isVisible = false
+        binding.vacancyContent.isVisible = false
+        binding.placeholder404Error.isVisible = false
+        binding.placeholderServerError.isVisible = true
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
         /*url = vacancyDetails.url
         * такого поля пока что нет*/
         binding.nameText.text = vacancyDetails.vacancyName
-        binding.salaryText.text = viewModel.getSalaryText(vacancyDetails.salaryFrom, vacancyDetails.salaryTo, vacancyDetails.currency)
+        binding.salaryText.text = viewModel.getSalaryText(
+            vacancyDetails.salaryFrom,
+            vacancyDetails.salaryTo,
+            vacancyDetails.currency)
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
             .centerCrop()
-            .transform(RoundedCorners((12f * resources.displayMetrics.density).toInt()))
+            .transform(RoundedCorners((R.dimen.radius_12 * resources.displayMetrics.density).toInt()))
             .placeholder(R.drawable.vacancy_placeholder)
             .into(binding.vacancyCardImage)
         binding.vacancyCardEmployerText.text = vacancyDetails.employer
@@ -111,7 +122,9 @@ class VacancyFragment : Fragment() {
         binding.vacancyCardRegionText.isSelected = true
         binding.experienceText.text = vacancyDetails.experience
         binding.workFormatText.text = vacancyDetails.workFormat?.joinToString(", ")
-        binding.vacancyDescriptionText.text = vacancyDetails.description?.let { HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY) }
+        binding.vacancyDescriptionText.text = vacancyDetails.description?.let {
+            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+        }
         if (!vacancyDetails.keySkills.isNullOrEmpty()) {
             binding.skillsText.text = viewModel.getSkillsText(vacancyDetails.keySkills)
         } else {

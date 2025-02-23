@@ -6,5 +6,5 @@ sealed interface VacancyDetailsState {
     data object Loading : VacancyDetailsState
     data class Content(val data: VacancyDetails) : VacancyDetailsState
     data object ServerError : VacancyDetailsState
-    data  object NotFoundError : VacancyDetailsState
+    data object NotFoundError : VacancyDetailsState
 }

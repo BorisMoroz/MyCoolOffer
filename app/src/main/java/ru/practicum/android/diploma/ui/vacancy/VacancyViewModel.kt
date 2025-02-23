@@ -25,7 +25,7 @@ class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : V
                         is Resource.Error -> {
                             if (result.errorCode == NOT_FOUND_ERROR) {
                                 vacancyDetailsState.value = VacancyDetailsState.NotFoundError
-                            } else  {
+                            } else {
                                 vacancyDetailsState.value = VacancyDetailsState.ServerError
                             }
                         }
@@ -46,7 +46,7 @@ class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : V
             salaryText.append("$TO_TEXT$salaryTo ")
         }
         if (currency != null) {
-            when(currency) {
+            when (currency) {
                 "RUR" -> salaryText.append("₽")
                 "USD" -> salaryText.append("$")
                 "EUR" -> salaryText.append("€")
@@ -59,7 +59,7 @@ class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : V
                 "UAH" -> salaryText.append("₴")
             }
         }
-        return if (salaryText.isEmpty()) DEFAULT_SALARY_TEXT else (salaryText.toString())
+        return if (salaryText.isEmpty()) DEFAULT_SALARY_TEXT else salaryText.toString()
     }
 
     fun getSkillsText(skills: List<String?>): String {
