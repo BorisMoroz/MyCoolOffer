@@ -56,7 +56,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             if (isDoneOrNext || isEnterPressed) {
                 viewModel.stopSearch()
                 // Нужно настроить пагинацию
-                viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), 1, 20)
+                viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), PAGE, ITEMS_PER_PAGE)
             }
             false
         }
@@ -79,7 +79,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
             override fun afterTextChanged(s: Editable?) {
                 // Нужно настроить пагинацию
-                viewModel.searchDebounce(binding.inputSearchVacancy.text.toString(), 1, 20)
+                viewModel.searchDebounce(binding.inputSearchVacancy.text.toString(), PAGE, ITEMS_PER_PAGE)
             }
         })
 
@@ -199,5 +199,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     companion object {
         const val SELECTED_VACANCY = "selectedVacancy"
+        // Указанные внизу две константы следует убрать после настройки пагинации
+        private const val PAGE = 1
+        private const val ITEMS_PER_PAGE = 20
     }
 }
