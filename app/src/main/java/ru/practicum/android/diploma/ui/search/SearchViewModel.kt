@@ -7,9 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.ui.vacancy.GetVacancyDetailsState
 
 class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
-    private var searchVacanciesState = MutableLiveData<SearchVacanciesState?>()
+    private var searchVacanciesState = MutableLiveData<SearchVacanciesState?>(SearchVacanciesState.Default)
 
     fun getSearchVacanciesState(): LiveData<SearchVacanciesState?> = searchVacanciesState
 

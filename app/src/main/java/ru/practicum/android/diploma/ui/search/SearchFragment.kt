@@ -1,14 +1,17 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 
 class SearchFragment : Fragment() {
@@ -35,6 +38,17 @@ class SearchFragment : Fragment() {
             }
         }
 
+        binding.inputSearchVacancy.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                actionId == EditorInfo.IME_ACTION_NEXT ||
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+            ) {
+                // Нужно настроить пагинацию
+                viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), 1, 20)
+            }
+            false
+        }
+
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.action_filter -> {
@@ -54,6 +68,10 @@ class SearchFragment : Fragment() {
 
     private fun render(state: SearchVacanciesState) {
         when (state) {
+            is SearchVacanciesState.Default -> {
+                showDefaultPicture()
+            }
+
             is SearchVacanciesState.Loading -> {
                 showProgressBar()
             }
@@ -67,7 +85,11 @@ class SearchFragment : Fragment() {
             }
 
             is SearchVacanciesState.Content -> {
-                // Нужно реализовать отображение успешного результата поиска
+                if (state.data.items.isNullOrEmpty()) {
+                    showEmptyResult()
+                } else {
+                    showFoundVacancies(state.data)
+                }
             }
         }
     }
@@ -77,6 +99,7 @@ class SearchFragment : Fragment() {
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
         binding.containerPlaceholder.visibility = View.GONE
+        binding.resultSearch.visibility = View.GONE
     }
 
     private fun showInternetConnectionError() {
@@ -86,6 +109,7 @@ class SearchFragment : Fragment() {
         binding.placeholder.setImageResource(R.drawable.img_placeholder_connection_error)
         binding.textPlaceholder.text = getString(R.string.connection_error)
         binding.containerPlaceholder.visibility = View.VISIBLE
+        binding.resultSearch.visibility = View.GONE
     }
 
     private fun showServerError() {
@@ -95,6 +119,38 @@ class SearchFragment : Fragment() {
         binding.placeholder.setImageResource(R.drawable.img_placeholder_search_server_error)
         binding.textPlaceholder.text = getString(R.string.server_error)
         binding.containerPlaceholder.visibility = View.VISIBLE
+        binding.resultSearch.visibility = View.GONE
+    }
+
+    private fun showFoundVacancies(vacancies: Vacancies) {
+        binding.progress.visibility = View.GONE
+        binding.resultSearch.visibility = View.GONE
+        binding.listVacancies.adapter = VacancyAdapter(vacancies)
+        binding.listVacancies.visibility = View.VISIBLE
+        binding.containerPlaceholder.visibility = View.GONE
+        binding.resultSearch.text = vacancies.items.size.toString()
+        binding.resultSearch.visibility = View.VISIBLE
+    }
+
+    private fun showEmptyResult() {
+        binding.progress.visibility = View.GONE
+        binding.resultSearch.visibility = View.GONE
+        binding.listVacancies.visibility = View.GONE
+        binding.placeholder.setImageResource(R.drawable.img_placeholder_search_error)
+        binding.textPlaceholder.text = getString(R.string.search_error)
+        binding.containerPlaceholder.visibility = View.VISIBLE
+        binding.resultSearch.text = getString(R.string.noSuchVacancies)
+        binding.resultSearch.visibility = View.VISIBLE
+    }
+
+    private fun showDefaultPicture() {
+        binding.progress.visibility = View.GONE
+        binding.resultSearch.visibility = View.GONE
+        binding.listVacancies.visibility = View.GONE
+        binding.placeholder.setImageResource(R.drawable.img_placeholder_main)
+        binding.textPlaceholder.text = ""
+        binding.containerPlaceholder.visibility = View.VISIBLE
+        binding.resultSearch.visibility = View.GONE
     }
 
     override fun onDestroyView() {
