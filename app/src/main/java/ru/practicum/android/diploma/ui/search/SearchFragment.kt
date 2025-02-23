@@ -53,6 +53,7 @@ class SearchFragment : Fragment() {
                 actionId == EditorInfo.IME_ACTION_NEXT ||
                 (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
             ) {
+                viewModel.stopSearch()
                 // Нужно настроить пагинацию
                 viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), 1, 20)
             }
@@ -75,7 +76,8 @@ class SearchFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                //viewModel.searchDebounce()
+                // Нужно настроить пагинацию
+                viewModel.searchDebounce(binding.inputSearchVacancy.text.toString(), 1, 20)
             }
         })
 
