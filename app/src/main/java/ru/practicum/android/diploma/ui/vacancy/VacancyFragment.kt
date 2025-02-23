@@ -60,11 +60,9 @@ class VacancyFragment : Fragment() {
     }
 
     private fun setUpVacancyFragmentObservers() {
-
         viewModel.getIsVacancyFavourite().observe(viewLifecycleOwner) { isFavourite ->
             handleIsVacancyFavourite(isFavourite)
         }
-
     }
 
     private fun handleIsVacancyFavourite(isFavourite: Boolean) {

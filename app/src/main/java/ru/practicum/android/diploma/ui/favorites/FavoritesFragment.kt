@@ -47,11 +47,9 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun setUpFavouritesFragmentObservers() {
-
         viewModel.getVacancyListState().observe(viewLifecycleOwner) { state ->
             handleVacancyListState(state)
         }
-
         viewModel.getVacancyList().observe(viewLifecycleOwner) { vacancyList ->
             handleVacancyList(vacancyList)
         }
