@@ -5,11 +5,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacancyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val vacancy: TextView = itemView.findViewById(R.id.vacancy)
     private val company: TextView = itemView.findViewById(R.id.company)
@@ -17,7 +16,15 @@ class VacancyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val cover: ImageView = itemView.findViewById(R.id.cover)
 
     fun bind(item: Vacancy) {
-        val itemSalary = item.salaryFrom.toString() + " " + item.salaryTo.toString()
+        val itemSalary = if (item.salaryFrom == null && item.salaryTo == null) {
+            "Зарплата не указана"
+        } else if (item.salaryFrom == null && item.salaryTo != null) {
+            item.salaryTo.toString()
+        } else if (item.salaryFrom != null && item.salaryTo == null) {
+            item.salaryFrom.toString()
+        } else {
+            item.salaryFrom.toString() + " " + item.salaryTo.toString()
+        }
         val itemName = item.vacancyName + ", " + item.area
         vacancy.text = itemName
         company.text = item.employer
@@ -30,5 +37,4 @@ class VacancyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .placeholder(R.drawable.img_job_placeholder)
             .into(cover)
     }
-
 }

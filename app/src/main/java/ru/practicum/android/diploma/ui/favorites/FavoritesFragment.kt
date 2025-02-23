@@ -84,6 +84,7 @@ class FavoritesFragment : Fragment() {
             favouritesPlaceholder.isVisible = true
             favouritesPlaceholderText.isVisible = true
             listVacancies.isGone = true
+            button1.isVisible = true
         }
     }
 
@@ -92,6 +93,7 @@ class FavoritesFragment : Fragment() {
             favouritesPlaceholder.isGone = true
             favouritesPlaceholderText.isGone = true
             listVacancies.isVisible = true
+            button1.isGone = true
         }
     }
 
@@ -102,6 +104,7 @@ class FavoritesFragment : Fragment() {
             favouritesPlaceholder.isVisible = true
             favouritesPlaceholderText.isVisible = true
             listVacancies.isGone = true
+            button1.isVisible = true
         }
     }
 

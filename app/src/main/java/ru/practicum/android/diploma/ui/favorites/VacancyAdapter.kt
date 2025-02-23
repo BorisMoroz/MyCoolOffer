@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacancyAdapter: RecyclerView.Adapter<VacancyViewHolder>() {
+class VacancyAdapter : RecyclerView.Adapter<VacancyViewHolder>() {
 
     var data: List<Vacancy> = listOf()
 
@@ -22,5 +22,4 @@ class VacancyAdapter: RecyclerView.Adapter<VacancyViewHolder>() {
     override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
         holder.bind(data[position])
     }
-
 }
