@@ -8,7 +8,7 @@
     android:layout_marginBottom="@dimen/margin_16">
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/cover"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:padding="8dp"
@@ -30,7 +30,7 @@
         android:textColor="?attr/colorOnSurface"
         android:textSize="@dimen/ys_display_medium_22"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintStart_toEndOf="@+id/cover"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Разработчик на С++ в команду внутренних сервисов, Москва" />
 
@@ -46,7 +46,7 @@
         android:textColor="?attr/colorOnSurface"
         android:textSize="@dimen/ys_display_regular_16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintStart_toEndOf="@+id/cover"
         app:layout_constraintTop_toBottomOf="@+id/vacancy"
         tools:text="Авто.ру" />
 
@@ -62,7 +62,7 @@
         android:textColor="?attr/colorOnSurface"
         android:textSize="@dimen/ys_display_regular_16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image"
+        app:layout_constraintStart_toEndOf="@+id/cover"
         app:layout_constraintTop_toBottomOf="@+id/company"
         tools:text="от 1 000 до 1 500 €" />
 
