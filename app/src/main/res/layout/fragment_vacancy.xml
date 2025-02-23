@@ -30,7 +30,7 @@
         android:visibility="gone"/>
 
     <TextView
-        android:id="@+id/placeholder_error"
+        android:id="@+id/placeholder_404_error"
         style="@style/PlaceHolderVacancy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,7 +41,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/placeholder_server"
+        android:id="@+id/placeholder_server_error"
         style="@style/PlaceHolderVacancy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,6 +52,7 @@
         android:visibility="gone" />
 
     <ScrollView
+        android:id="@+id/vacancy_content"
         android:layout_width="@dimen/width_0"
         android:layout_height="@dimen/height_0"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,9 +75,7 @@
                 android:layout_marginTop="@dimen/margin_24"
                 android:fontFamily="@font/ys_display_bold"
                 android:textSize="@dimen/ys_display_bold_32"
-                android:textColor="?attr/colorOnSurface"
-                android:text="Android-разработчик"
-                />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/salary_text"
@@ -87,9 +86,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:fontFamily="@font/ys_display_medium"
                 android:textSize="@dimen/ys_display_medium_22"
-                android:textColor="?attr/colorOnSurface"
-                android:text="от 100 000 ₽"
-                />
+                android:textColor="?attr/colorOnSurface" />
 
             <LinearLayout
                 android:id="@+id/vacancy_card_layout"
@@ -106,11 +103,7 @@
                 <ImageView
                     android:id="@+id/vacancy_card_image"
                     android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@drawable/rounded_corners"
-                    android:backgroundTint="?attr/colorSurface"
-                    android:padding="@dimen/padding_8"
-                    android:src="@drawable/img_job_placeholder" />
+                    android:layout_height="48dp" />
 
                 <LinearLayout
                     android:id="@+id/vacancy_card_text_layout"
@@ -124,20 +117,24 @@
                         style="@style/TextViewMediumVacancy"
                         android:textColor="@color/yp_black"
                         android:textSize="@dimen/ys_display_medium_22"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="Eда"
-                        />
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"/>
 
                     <TextView
                         android:id="@+id/vacancy_card_region_text"
                         style="@style/TextViewRegularVacancy"
                         android:textColor="@color/yp_black"
                         android:layout_marginTop="0dp"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:text="Москва"
-                        />
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -154,8 +151,7 @@
                     android:text="@string/vacancy_experience" />
                 <TextView
                     android:id="@+id/experience_text"
-                    style="@style/TextViewRegularVacancy"
-                    android:text="От 1 года до 3 лет" />
+                    style="@style/TextViewRegularVacancy" />
             </LinearLayout>
 
             <TextView
@@ -168,11 +164,10 @@
                 android:layout_marginTop="@dimen/margin_8"
                 android:fontFamily="@font/ys_display_regular"
                 android:textSize="@dimen/ys_display_regular_16"
-                android:textColor="?attr/colorOnSurface"
-                android:text="Полная занятость, Удаленная работа" />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
-                android:id="@+id/vacancy_description"
+                android:id="@+id/vacancy_description_header"
                 android:layout_width="@dimen/width_0"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/work_format_text"
@@ -184,81 +179,29 @@
                 android:textColor="?attr/colorOnSurface"
                 android:text="@string/vacancy_description" />
 
-            <LinearLayout
-                android:id="@+id/responsibility_layout"
-                style="@style/LinearLayoutVacancy"
-                app:layout_constraintTop_toBottomOf="@id/vacancy_description"
+            <TextView
+                android:id="@+id/vacancy_description_text"
+                style="@style/TextViewRegularVacancy"
+                app:layout_constraintTop_toBottomOf="@+id/vacancy_description_header"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <TextView
-                    style="@style/TextViewMediumVacancy"
-                    android:text="@string/vacancy_responsibility" />
-
-                <TextView
-                    android:id="@+id/responsibility_text"
-                    style="@style/TextViewRegularVacancy"
-                    android:text="   •   Разрабатывать новую функциональность приложения
-                \n   •   Помогать с интеграцией нашего SDK в другие приложения
-                \n   •   Проектировать большие новые модулиПисать UI- и unit-тесты
-                \n   •   Следить за работоспособностью сервиса и устранять технический долг" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/requirements_layout"
-                style="@style/LinearLayoutVacancy"
-                app:layout_constraintTop_toBottomOf="@id/responsibility_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <TextView
-                    style="@style/TextViewMediumVacancy"
-                    android:text="@string/vacancy_requirements" />
-
-                <TextView
-                    android:id="@+id/requirements_text"
-                    style="@style/TextViewRegularVacancy"
-                    android:text="   •   100% Kotlin
-                \n   •   WebRTC
-                \n   •   CI по модели Trunk Based Development" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/conditions_layout"
-                style="@style/LinearLayoutVacancy"
-                app:layout_constraintTop_toBottomOf="@id/requirements_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <TextView
-                    style="@style/TextViewMediumVacancy"
-                    android:text="@string/vacancy_conditions" />
-
-                <TextView
-                    android:id="@+id/conditions_text"
-                    style="@style/TextViewRegularVacancy"
-                    android:text="   •   сильная команда, с которой можно расти
-                \n   •   возможность влиять на процесс и результат
-                \n   •   расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое" />
-            </LinearLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/margin_16" />
 
             <LinearLayout
                 android:id="@+id/skills_layout"
                 style="@style/LinearLayoutVacancy"
-                app:layout_constraintTop_toBottomOf="@id/conditions_layout"
+                app:layout_constraintTop_toBottomOf="@id/vacancy_description_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     style="@style/TextViewMediumVacancy"
+                    android:textSize="@dimen/ys_display_medium_22"
                     android:text="@string/vacancy_skills" />
 
                 <TextView
                     android:id="@+id/skills_text"
-                    style="@style/TextViewRegularVacancy"
-                    android:text="   •   Знание классических алгоритмов и структуры данных
-                \n   •   Программирование для Android больше одного года
-                \n   •   Знание WebRTC" />
+                    style="@style/TextViewRegularVacancy" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
