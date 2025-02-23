@@ -1,11 +1,14 @@
 package ru.practicum.android.diploma.ui.search
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -32,6 +35,13 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.icon.setImageResource(R.drawable.ic_search)
+        binding.icon.isVisible = true
+
+        binding.icon.setOnClickListener {
+            binding.inputSearchVacancy.text.clear()
+        }
+
         viewModel.getSearchVacanciesState().observe(viewLifecycleOwner) { _state ->
             if (_state != null) {
                 render(_state)
@@ -48,6 +58,26 @@ class SearchFragment : Fragment() {
             }
             false
         }
+
+        binding.inputSearchVacancy.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s?.isNotBlank() == true) {
+                    binding.icon.setImageResource(R.drawable.ic_close)
+                    binding.icon.isVisible = true
+                } else {
+                    binding.icon.setImageResource(R.drawable.ic_search)
+                    binding.icon.isVisible = true
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                //viewModel.searchDebounce()
+            }
+        })
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
