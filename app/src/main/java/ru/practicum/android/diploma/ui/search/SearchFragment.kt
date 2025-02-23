@@ -93,11 +93,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                 else -> false
             }
         }
-//        пока не нужна
-//        binding.resultSearch.setOnClickListener {
-//            findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
-//        }
-
     }
 
     override fun onResume() {
@@ -201,7 +196,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         // Нужно реализовать передачу данных в VacancyFragment
         findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
     }
-    companion object{
+
+    companion object {
         const val SELECTED_VACANCY = "selectedVacancy"
     }
 }
