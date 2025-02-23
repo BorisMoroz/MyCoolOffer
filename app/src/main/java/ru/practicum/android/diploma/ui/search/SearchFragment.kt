@@ -50,10 +50,10 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         }
 
         binding.inputSearchVacancy.setOnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                actionId == EditorInfo.IME_ACTION_NEXT ||
-                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
-            ) {
+            val isDoneOrNext = actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT
+            val isEnterPressed = event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
+
+            if (isDoneOrNext || isEnterPressed) {
                 viewModel.stopSearch()
                 // Нужно настроить пагинацию
                 viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), 1, 20)
