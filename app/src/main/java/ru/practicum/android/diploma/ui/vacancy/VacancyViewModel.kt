@@ -14,10 +14,8 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 class VacancyViewModel(
     private val vacanciesInteractor: VacanciesInteractor,
     private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
-
-    ) : ViewModel() {
+) : ViewModel() {
     private var getVacancyDetailsState = MutableLiveData<GetVacancyDetailsState?>()
-
     fun getVacancyDetailsState(): LiveData<GetVacancyDetailsState?> = getVacancyDetailsState
 
     private val isVacancyFavourite = MutableLiveData<Boolean>()
@@ -35,6 +33,7 @@ class VacancyViewModel(
                             val errorCode = GetVacancyDetailsState.Error(result.errorCode)
                             getVacancyDetailsState.postValue(errorCode)
                         }
+
                         is Resource.Success -> {
                             val content = GetVacancyDetailsState.Content(result.data)
                             getVacancyDetailsState.postValue(content)

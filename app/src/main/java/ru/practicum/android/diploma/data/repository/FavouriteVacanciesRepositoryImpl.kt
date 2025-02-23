@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.util.Converter
 class FavouriteVacanciesRepositoryImpl(
     private val vacancyDao: VacancyDao,
     private val converter: Converter
-): FavouriteVacanciesRepository {
+) : FavouriteVacanciesRepository {
 
     override suspend fun insertVacancy(vacancy: Vacancy) {
         vacancyDao.insertVacancy(converter.convertVacancyToVacancyEntity(vacancy))

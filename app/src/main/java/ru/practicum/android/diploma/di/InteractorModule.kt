@@ -10,11 +10,9 @@ val interactorModule = module {
     single<VacanciesInteractor> {
         VacanciesInteractorImpl(get())
     }
-    
-    factory<FavouriteVacanciesInteractor> { 
+    factory<FavouriteVacanciesInteractor> {
         FavouriteVacanciesInteractorImpl(
             repository = get()
         )
     }
-    
 }

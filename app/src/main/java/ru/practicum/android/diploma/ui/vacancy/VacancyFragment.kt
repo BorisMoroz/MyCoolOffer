@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.TestVacancyList
 
 class VacancyFragment : Fragment() {
@@ -32,7 +31,6 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setUpVacancyFragmentObservers()
         viewModel.checkVacancyInFavouriteList(testVacancyList.getTestVacancyOne())
 
@@ -43,12 +41,14 @@ class VacancyFragment : Fragment() {
                     Log.d("log", "Share button clicked")
                     true
                 }
+
                 R.id.action_like -> {
                     changeLikeButtonStatus(isChecked)
                     // Реализовать добавление вакансии в избранное
                     Log.d("log", "Like button clicked")
                     true
                 }
+
                 else -> false
             }
         }

@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.util.TestVacancyList
 
 class FavouritesViewModel(
     private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
-): ViewModel() {
+) : ViewModel() {
 
     private val vacancyListState = MutableLiveData<State.FavouriteVacancyList>()
     fun getVacancyListState(): LiveData<State.FavouriteVacancyList> = vacancyListState
@@ -25,7 +25,7 @@ class FavouritesViewModel(
         viewModelScope.launch {
             favouriteVacanciesInteractor
                 .getAllVacancies()
-                .collect{ favouriteVacancies ->
+                .collect { favouriteVacancies ->
                     if (favouriteVacancies.isEmpty()) {
                         vacancyListState.value = State.FavouriteVacancyList.EMPTY_LIST
                         vacancyList.value = favouriteVacancies.reversed()
