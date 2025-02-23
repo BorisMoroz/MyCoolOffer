@@ -199,6 +199,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     companion object {
         const val SELECTED_VACANCY = "selectedVacancy"
+
         // Указанные внизу две константы следует убрать после настройки пагинации
         private const val PAGE = 1
         private const val ITEMS_PER_PAGE = 20
