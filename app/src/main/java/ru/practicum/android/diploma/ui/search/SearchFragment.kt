@@ -192,11 +192,20 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         _binding = null
     }
 
-    private fun getVacancyCountFormatted(counts: Int): String {
+    private fun getVacancyCountFormatted(count: Int): String {
+        val lastDigit = count % 10
+        val lastTwoDigits = count % 100
+
+        val singularDigit = 1
+        val singularException = 11
+
+        val fewDigitsRange = 2..4
+        val fewExceptionRange = 12..14
+
         return when {
-            counts % 10 == 1 && counts % 100 != 11 -> "Найдено $counts вакансия"
-            counts % 10 in 2..4 && counts % 100 !in 12..14 -> "Найдено $counts вакансии"
-            else -> "Найдено $counts вакансий"
+            lastDigit == singularDigit && lastTwoDigits != singularException -> "Найдена $count вакансия"
+            lastDigit in fewDigitsRange && lastTwoDigits !in fewExceptionRange -> "Найдено $count вакансии"
+            else -> "Найдено $count вакансий"
         }
     }
 
