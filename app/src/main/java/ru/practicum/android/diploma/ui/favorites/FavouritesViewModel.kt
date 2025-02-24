@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.State
-import ru.practicum.android.diploma.util.TestVacancyList
 
 class FavouritesViewModel(
     private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
@@ -34,14 +33,6 @@ class FavouritesViewModel(
                         vacancyList.value = favouriteVacancies.reversed()
                     }
                 }
-        }
-    }
-
-    init {
-        viewModelScope.launch {
-            favouriteVacanciesInteractor.insertVacancy(TestVacancyList().getTestVacancyOne())
-            favouriteVacanciesInteractor.insertVacancy(TestVacancyList().getTestVacancyTwo())
-            favouriteVacanciesInteractor.insertVacancy(TestVacancyList().getTestVacancyThree())
         }
     }
 

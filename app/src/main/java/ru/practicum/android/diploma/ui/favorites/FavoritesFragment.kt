@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.ui.favorites
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ class FavoritesFragment : Fragment() {
     private val favouritesNotEmptyList = State.FavouriteVacancyList.SUCCESS
     private val favouritesEmptyList = State.FavouriteVacancyList.EMPTY_LIST
     private val favouritesListError = State.FavouriteVacancyList.ERROR
-    private var _adapter: VacancyAdapter? = null
+    private var _adapter: FavouritesVacancyAdapter? = null
     private val adapter get() = _adapter!!
 
     override fun onCreateView(
@@ -40,8 +41,13 @@ class FavoritesFragment : Fragment() {
         setRecyclerView()
         viewModel.checkVacancyList()
 
-        binding.button1.setOnClickListener {
-            findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment())
+//        binding.button1.setOnClickListener {
+//            findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment())
+//        }
+
+        adapter.onFavouriteVacancyClick = {
+            val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(it)
+            findNavController().navigate(action)
         }
 
     }
@@ -69,7 +75,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        _adapter = VacancyAdapter()
+        _adapter = FavouritesVacancyAdapter()
         binding.listVacancies.layoutManager = LinearLayoutManager(requireContext())
         binding.listVacancies.adapter = _adapter
     }

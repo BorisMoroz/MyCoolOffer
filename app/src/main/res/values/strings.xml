@@ -46,6 +46,7 @@
     <string name="vacancy_requirements">Требования</string>
     <string name="vacancy_conditions">Условия</string>
     <string name="vacancy_skills">Ключевые навыки</string>
+    <style name="no_salary">Зарплата не указана</style>
 
     <!--    Для иконок тулбаров-->
     <string name="share">Поделиться</string>

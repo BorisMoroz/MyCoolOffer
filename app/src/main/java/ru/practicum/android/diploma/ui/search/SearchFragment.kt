@@ -204,7 +204,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     override fun onVacancyClick(vacancy: Vacancy) {
         // Нужно реализовать передачу данных в VacancyFragment
-        findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
+        findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy))
     }
 
     companion object {

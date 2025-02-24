@@ -10,13 +10,11 @@ import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.util.TestVacancyList
 
 class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
     private var isChecked = false
-    private val testVacancyList = TestVacancyList()
 
     private val viewModel by viewModel<VacancyViewModel>()
 
@@ -32,7 +30,8 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpVacancyFragmentObservers()
-        viewModel.checkVacancyInFavouriteList(testVacancyList.getTestVacancyOne())
+
+//        viewModel.checkVacancyInFavouriteList(testVacancyList.getTestVacancyOne())
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -82,11 +81,11 @@ class VacancyFragment : Fragment() {
         if (value) {
             likeButton.setIcon(R.drawable.ic_favourite_off)
             isChecked = false
-            viewModel.removeVacancyFromFavourites(testVacancyList.getTestVacancyOne())
+//            viewModel.removeVacancyFromFavourites(testVacancyList.getTestVacancyOne())
         } else {
             likeButton.setIcon(R.drawable.ic_favourite_like)
             isChecked = true
-            viewModel.addVacancyToFavourites(testVacancyList.getTestVacancyOne())
+//            viewModel.addVacancyToFavourites(testVacancyList.getTestVacancyOne())
         }
     }
 

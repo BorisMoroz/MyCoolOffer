@@ -5,9 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.ui.search.VacancyViewHolder
 
-class VacancyAdapter : RecyclerView.Adapter<VacancyViewHolder>() {
+class FavouritesVacancyAdapter : RecyclerView.Adapter<VacancyViewHolder>() {
 
+    var onFavouriteVacancyClick: ((Vacancy) -> Unit)? = null
     var data: List<Vacancy> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
@@ -21,5 +23,8 @@ class VacancyAdapter : RecyclerView.Adapter<VacancyViewHolder>() {
 
     override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
         holder.bind(data[position])
+        holder.itemView.setOnClickListener {
+            onFavouriteVacancyClick?.invoke(data[position])
+        }
     }
 }
