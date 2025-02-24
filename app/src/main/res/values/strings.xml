@@ -52,5 +52,7 @@
     <string name="like">Добавить в избранное</string>
 
     <string name="input_search">Введите запрос</string>
+    <string name="noSalary">Зарплата не указана</string>
+    <string name="noSuchVacancies">Таких вакансий нет</string>
 
 </resources>
