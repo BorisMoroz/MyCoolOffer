@@ -42,8 +42,8 @@ class VacancyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpVacancyFragmentObservers()
 
-        val vacancy = vacancyArgs.vacancy
-        viewModel.checkVacancyInFavouriteList(vacancy)
+        val vacancyId = vacancyArgs.vacancyId
+//        viewModel.checkVacancyInFavouriteList(vacancy)
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -52,7 +52,7 @@ class VacancyFragment : Fragment() {
                     true
                 }
                 R.id.action_like -> {
-                    changeLikeButtonStatus(isChecked, vacancy)
+//                    changeLikeButtonStatus(isChecked, vacancy)
                     true
                 }
                 else -> false
@@ -63,7 +63,7 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getVacancyDetails(vacancy.vacancyId)
+        viewModel.getVacancyDetails(vacancyId)
 
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
