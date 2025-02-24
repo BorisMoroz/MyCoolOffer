@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +44,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
         binding.icon.setOnClickListener {
             binding.inputSearchVacancy.text.clear()
+            hideKeyboard()
+            viewModel.stopSearch()
         }
 
         viewModel.getSearchVacanciesState().observe(viewLifecycleOwner) { _state ->
@@ -58,6 +62,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                 viewModel.stopSearch()
                 // Нужно настроить пагинацию
                 viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), PAGE, ITEMS_PER_PAGE)
+                hideKeyboard()
             }
             false
         }
@@ -135,6 +140,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.listVacancies.visibility = View.GONE
         binding.containerPlaceholder.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
+        hideKeyboard()
     }
 
     private fun showInternetConnectionError() {
@@ -145,6 +151,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.textPlaceholder.text = getString(R.string.connection_error)
         binding.containerPlaceholder.visibility = View.VISIBLE
         binding.resultSearch.visibility = View.GONE
+        hideKeyboard()
     }
 
     private fun showServerError() {
@@ -155,6 +162,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.textPlaceholder.text = getString(R.string.server_error)
         binding.containerPlaceholder.visibility = View.VISIBLE
         binding.resultSearch.visibility = View.GONE
+        hideKeyboard()
     }
 
     private fun showFoundVacancies(vacancies: Vacancies) {
@@ -165,6 +173,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.containerPlaceholder.visibility = View.GONE
         binding.resultSearch.text = getVacancyCountFormatted(vacancies.items.size)
         binding.resultSearch.visibility = View.VISIBLE
+        hideKeyboard()
     }
 
     private fun showEmptyResult() {
@@ -176,6 +185,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.containerPlaceholder.visibility = View.VISIBLE
         binding.resultSearch.text = getString(R.string.noSuchVacancies)
         binding.resultSearch.visibility = View.VISIBLE
+        hideKeyboard()
     }
 
     private fun showDefaultPicture() {
@@ -186,11 +196,18 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.textPlaceholder.text = ""
         binding.containerPlaceholder.visibility = View.VISIBLE
         binding.resultSearch.visibility = View.GONE
+        hideKeyboard()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun hideKeyboard() {
+        val imm =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     private fun getVacancyCountFormatted(count: Int): String {
