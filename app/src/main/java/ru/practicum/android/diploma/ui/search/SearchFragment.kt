@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -159,7 +160,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private fun showFoundVacancies(vacancies: Vacancies) {
         binding.progress.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
-        binding.listVacancies.adapter = VacancyAdapter(vacancies, this)
+        binding.listVacancies.adapter = VacancyAdapter(vacancies, this, viewLifecycleOwner.lifecycleScope)
         binding.listVacancies.visibility = View.VISIBLE
         binding.containerPlaceholder.visibility = View.GONE
         binding.resultSearch.text = getVacancyCountFormatted(vacancies.items.size)
