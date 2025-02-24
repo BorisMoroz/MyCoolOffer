@@ -10,11 +10,13 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 import ru.practicum.android.diploma.util.NOT_FOUND_ERROR
@@ -24,7 +26,7 @@ class VacancyFragment : Fragment() {
     private val binding get() = _binding!!
     private var isChecked = false
     private var url: String? = null
-
+    private val vacancyArgs by navArgs<VacancyFragmentArgs>()
     private val viewModel by viewModel<VacancyViewModel>()
 
     override fun onCreateView(
@@ -38,9 +40,10 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        setUpVacancyFragmentObservers()
+        setUpVacancyFragmentObservers()
 
-//        viewModel.checkVacancyInFavouriteList(testVacancyList.getTestVacancyOne())
+        val vacancy = vacancyArgs.vacancy
+        viewModel.checkVacancyInFavouriteList(vacancy)
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -50,7 +53,7 @@ class VacancyFragment : Fragment() {
                 }
 
                 R.id.action_like -> {
-                    changeLikeButtonStatus(isChecked)
+                    changeLikeButtonStatus(isChecked, vacancy)
                     // Реализовать добавление вакансии в избранное
                     Log.d("log", "Like button clicked")
                     true
@@ -64,7 +67,7 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getVacancyDetails("112317594") // Передача данных с экрана "поиск" пока не сделана
+        viewModel.getVacancyDetails(vacancy.vacancyId) // Передача данных с экрана "поиск" пока не сделана
 
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
@@ -160,11 +163,11 @@ class VacancyFragment : Fragment() {
 
     }
 
-//    private fun setUpVacancyFragmentObservers() {
-//        viewModel.getIsVacancyFavourite().observe(viewLifecycleOwner) { isFavourite ->
-//            handleIsVacancyFavourite(isFavourite)
-//        }
-//    }
+    private fun setUpVacancyFragmentObservers() {
+        viewModel.getIsVacancyFavouriteState().observe(viewLifecycleOwner) { isFavourite ->
+            handleIsVacancyFavourite(isFavourite)
+        }
+    }
 
     private fun handleIsVacancyFavourite(isFavourite: Boolean) {
         val likeButton = binding.toolbar.menu.findItem(R.id.action_like)
@@ -178,16 +181,16 @@ class VacancyFragment : Fragment() {
     }
 
     // Тестовая функция смены иконки избранной вакансии
-    private fun changeLikeButtonStatus(value: Boolean) {
+    private fun changeLikeButtonStatus(value: Boolean, vacancy: Vacancy) {
         val likeButton = binding.toolbar.menu.findItem(R.id.action_like)
         if (value) {
             likeButton.setIcon(R.drawable.ic_favourite_off)
             isChecked = false
-//            viewModel.removeVacancyFromFavourites(testVacancyList.getTestVacancyOne())
+            viewModel.removeVacancyFromFavourites(vacancy)
         } else {
             likeButton.setIcon(R.drawable.ic_favourite_like)
             isChecked = true
-//            viewModel.addVacancyToFavourites(testVacancyList.getTestVacancyOne())
+            viewModel.addVacancyToFavourites(vacancy)
         }
     }
 

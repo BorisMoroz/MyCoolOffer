@@ -5,13 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+class VacancyViewModel(
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
+) : ViewModel() {
     private var vacancyDetailsState = MutableLiveData<VacancyDetailsState?>()
-
     fun getVacancyDetailsState(): LiveData<VacancyDetailsState?> = vacancyDetailsState
+
+    private val isVacancyFavouriteState = MutableLiveData<Boolean>()
+    fun getIsVacancyFavouriteState(): LiveData<Boolean> = isVacancyFavouriteState
 
     fun getVacancyDetails(vacancyId: String) {
         vacancyDetailsState.postValue(VacancyDetailsState.Loading)
@@ -25,6 +32,7 @@ class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : V
                             vacancyDetailsState.value = VacancyDetailsState.Error(result.errorCode)
 
                         }
+
                         is Resource.Success -> {
                             vacancyDetailsState.value = VacancyDetailsState.Content(result.data)
                         }
@@ -66,6 +74,25 @@ class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : V
             }
         }
         return skillsText.toString()
+    }
+
+    fun addVacancyToFavourites(vacancy: Vacancy) {
+        viewModelScope.launch {
+            favouriteVacanciesInteractor.insertVacancy(vacancy)
+        }
+    }
+
+    fun removeVacancyFromFavourites(vacancy: Vacancy) {
+        viewModelScope.launch {
+            favouriteVacanciesInteractor.removeFromFavourites(vacancy)
+        }
+    }
+
+    fun checkVacancyInFavouriteList(vacancy: Vacancy) {
+        viewModelScope.launch {
+            val verifiable = favouriteVacanciesInteractor.checkVacancyIsFavourite(vacancy.vacancyId)
+            isVacancyFavouriteState.value = vacancy.vacancyId == verifiable
+        }
     }
 
     companion object {
