@@ -13,7 +13,7 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val vacancy: TextView = itemView.findViewById(R.id.vacancy)
     private val company: TextView = itemView.findViewById(R.id.company)
     private val salary: TextView = itemView.findViewById(R.id.salary)
-    private val cover: ImageView = itemView.findViewById(R.id.cover)
+    private val image: ImageView = itemView.findViewById(R.id.image)
 
     fun bind(item: Vacancy) {
         val itemSalary = if (item.salaryFrom == null && item.salaryTo == null) {
@@ -33,8 +33,7 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(itemView)
             .load(item.logoUrl)
             .centerCrop()
-//            .transform(RoundedCorners(Converter.dpToPx(TRACK_IMAGE_RADIUS)))
             .placeholder(R.drawable.img_job_placeholder)
-            .into(cover)
+            .into(image)
     }
 }
