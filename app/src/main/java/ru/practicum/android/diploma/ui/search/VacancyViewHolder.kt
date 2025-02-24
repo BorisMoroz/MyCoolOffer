@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -9,8 +8,6 @@ import com.bumptech.glide.Glide
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Converter
-import java.text.NumberFormat
-import java.util.Locale
 
 class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val image: ImageView = itemView.findViewById(R.id.image)
