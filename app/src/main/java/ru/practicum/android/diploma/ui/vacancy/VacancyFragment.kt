@@ -112,7 +112,7 @@ class VacancyFragment : Fragment() {
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
         url = "https://hh.ru/vacancy/" + "112317594"
-        //Пока что хардкод, тк нет передачи данных со страницы поиска
+        // Пока что хардкод, тк нет передачи данных со страницы поиска
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
             vacancyDetails.salaryFrom,
