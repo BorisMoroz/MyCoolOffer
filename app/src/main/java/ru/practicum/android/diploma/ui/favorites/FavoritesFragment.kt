@@ -13,6 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.State
 
 class FavoritesFragment : Fragment() {
@@ -40,7 +41,7 @@ class FavoritesFragment : Fragment() {
         viewModel.checkVacancyList()
 
         adapter.onFavouriteVacancyClick = {
-            val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(it)
+            val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(null, it)
             findNavController().navigate(action)
         }
     }
@@ -62,7 +63,7 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun handleVacancyList(vacancyList: List<Vacancy>) {
+    private fun handleVacancyList(vacancyList: List<VacancyDetails>) {
         adapter.data = vacancyList
         adapter.notifyDataSetChanged()
     }

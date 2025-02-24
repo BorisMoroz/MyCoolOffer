@@ -5,23 +5,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.ui.search.VacancyViewHolder
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 
-class FavouritesVacancyAdapter : RecyclerView.Adapter<VacancyViewHolder>() {
+class FavouritesVacancyAdapter : RecyclerView.Adapter<FavouritesViewHolder>() {
 
-    var onFavouriteVacancyClick: ((Vacancy) -> Unit)? = null
-    var data: List<Vacancy> = listOf()
+    var onFavouriteVacancyClick: ((VacancyDetails) -> Unit)? = null
+    var data: List<VacancyDetails> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavouritesViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.vacancy_item, parent, false)
-        return VacancyViewHolder(view)
+        return FavouritesViewHolder(view)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    override fun onBindViewHolder(holder: VacancyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FavouritesViewHolder, position: Int) {
         holder.bind(data[position])
         holder.itemView.setOnClickListener {
             onFavouriteVacancyClick?.invoke(data[position])

@@ -1,11 +1,15 @@
 package ru.practicum.android.diploma.util
 
+import com.google.gson.Gson
 import ru.practicum.android.diploma.data.database.entity.VacancyEntity
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 import java.text.NumberFormat
 import java.util.Locale
 
 object Converter {
+
+    private val gson = Gson()
 
     private const val NO_SALARY = "Зарплата не указана"
 
@@ -35,21 +39,27 @@ object Converter {
         return "$vacancyName, $vacancyArea"
     }
 
-    fun convertVacancyToVacancyEntity(vacancy: Vacancy): VacancyEntity {
+    fun convertVacancyToVacancyEntity(vacancyDetails: VacancyDetails): VacancyEntity {
         return VacancyEntity(
-            vacancyId = vacancy.vacancyId,
-            vacancyName = vacancy.vacancyName,
-            area = vacancy.area,
-            employer = vacancy.employer,
-            logoUrl = vacancy.logoUrl,
-            salaryFrom = vacancy.salaryFrom,
-            salaryTo = vacancy.salaryTo,
-            currency = vacancy.currency
+            vacancyId = vacancyDetails.vacancyId,
+            vacancyName = vacancyDetails.vacancyName,
+            area = vacancyDetails.area,
+            employer = vacancyDetails.employer,
+            logoUrl = vacancyDetails.logoUrl,
+            salaryFrom = vacancyDetails.salaryFrom,
+            salaryTo = vacancyDetails.salaryTo,
+            currency = vacancyDetails.currency,
+            address = vacancyDetails.address,
+            experience = vacancyDetails.experience,
+            employment = vacancyDetails.employment,
+            workFormat = gson.toJson(vacancyDetails.workFormat),
+            description = vacancyDetails.description,
+            keySkills = gson.toJson(vacancyDetails.keySkills)
         )
     }
 
-    fun convertVacancyEntityToVacancy(vacancyEntity: VacancyEntity): Vacancy {
-        return Vacancy(
+    fun convertVacancyEntityToVacancy(vacancyEntity: VacancyEntity): VacancyDetails {
+        return VacancyDetails(
             vacancyId = vacancyEntity.vacancyId,
             vacancyName = vacancyEntity.vacancyName,
             area = vacancyEntity.area,
@@ -57,7 +67,13 @@ object Converter {
             logoUrl = vacancyEntity.logoUrl,
             salaryFrom = vacancyEntity.salaryFrom,
             salaryTo = vacancyEntity.salaryTo,
-            currency = vacancyEntity.currency
+            currency = vacancyEntity.currency,
+            address = vacancyEntity.address,
+            experience = vacancyEntity.experience,
+            employment = vacancyEntity.employment,
+            workFormat = gson.fromJson(vacancyEntity.workFormat, Array<String>::class.java).toList(),
+            description = vacancyEntity.description,
+            keySkills = gson.fromJson(vacancyEntity.keySkills, Array<String>::class.java).toList()
         )
     }
 

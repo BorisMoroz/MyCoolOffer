@@ -10,6 +10,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.State
 
 class FavouritesViewModel(
@@ -19,8 +20,8 @@ class FavouritesViewModel(
     private val vacancyListState = MutableLiveData<State.FavouriteVacancyList>()
     fun getVacancyListState(): LiveData<State.FavouriteVacancyList> = vacancyListState
 
-    private val vacancyList = MutableLiveData<List<Vacancy>>()
-    fun getVacancyList(): LiveData<List<Vacancy>> = vacancyList
+    private val vacancyList = MutableLiveData<List<VacancyDetails>>()
+    fun getVacancyList(): LiveData<List<VacancyDetails>> = vacancyList
 
     fun checkVacancyList() {
         viewModelScope.launch {

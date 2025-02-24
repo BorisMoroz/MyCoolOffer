@@ -61,7 +61,11 @@
         <argument
             android:name="vacancy"
             app:argType="ru.practicum.android.diploma.domain.models.Vacancy"
-            app:nullable="false" />
+            app:nullable="true" />
+        <argument
+            android:name="vacancyDetails"
+            app:argType="ru.practicum.android.diploma.domain.models.VacancyDetails"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/workplaceFragment"
