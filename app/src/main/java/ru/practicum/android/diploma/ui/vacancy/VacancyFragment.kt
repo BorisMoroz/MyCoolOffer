@@ -28,6 +28,8 @@ class VacancyFragment : Fragment() {
     private var url: String? = null
     private val vacancyArgs by navArgs<VacancyFragmentArgs>()
     private val viewModel by viewModel<VacancyViewModel>()
+    private var _vacancyDetails: VacancyDetails? = null
+    private val vacancyDetails get() = _vacancyDetails!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,7 +54,7 @@ class VacancyFragment : Fragment() {
                     true
                 }
                 R.id.action_like -> {
-//                    changeLikeButtonStatus(isChecked, vacancy)
+                    changeLikeButtonStatus(isChecked, vacancyDetails)
                     true
                 }
                 else -> false
@@ -67,6 +69,7 @@ class VacancyFragment : Fragment() {
             SEARCH_FRAGMENT -> {
                 viewModel.getVacancyDetails(vacancyId)
                 setVacancyFragmentObservers()
+                viewModel.checkVacancyInFavouriteList(vacancyId)
             }
             FAVOURITES_FRAGMENT -> {
 //                1. Получение детальной иноформации из БД
@@ -79,7 +82,10 @@ class VacancyFragment : Fragment() {
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
                 is VacancyDetailsState.Loading -> renderLoading()
-                is VacancyDetailsState.Content -> renderContent(vacancyDetailsState.data)
+                is VacancyDetailsState.Content -> {
+                    renderContent(vacancyDetailsState.data)
+                    _vacancyDetails = vacancyDetailsState.data
+                }
                 is VacancyDetailsState.Error -> renderError(vacancyDetailsState.errorCode)
                 else -> {}
             }
@@ -187,7 +193,7 @@ class VacancyFragment : Fragment() {
     }
 
     // Тестовая функция смены иконки избранной вакансии
-    private fun changeLikeButtonStatus(value: Boolean, vacancy: Vacancy) {
+    private fun changeLikeButtonStatus(value: Boolean, vacancy: VacancyDetails) {
         val likeButton = binding.toolbar.menu.findItem(R.id.action_like)
         if (value) {
             likeButton.setIcon(R.drawable.ic_favourite_off)

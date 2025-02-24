@@ -16,6 +16,9 @@ interface VacancyDao {
     @Query("SELECT vacancyId FROM vacancies_table WHERE vacancyId == :vacancyId")
     suspend fun checkVacancyIsFavourite(vacancyId: String): String
 
+    @Query("SELECT * FROM vacancies_table WHERE vacancyId == :vacancyId")
+    suspend fun getVacancyData(vacancyId: String): VacancyEntity
+
     @Query("SELECT * FROM vacancies_table")
     suspend fun getAllVacancies(): List<VacancyEntity>
 

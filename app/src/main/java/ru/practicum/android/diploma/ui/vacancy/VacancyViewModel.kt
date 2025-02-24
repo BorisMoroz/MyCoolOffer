@@ -10,6 +10,7 @@ import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteract
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class VacancyViewModel(
     private val vacanciesInteractor: VacanciesInteractor,
@@ -77,22 +78,22 @@ class VacancyViewModel(
         return skillsText.toString()
     }
 
-    fun addVacancyToFavourites(vacancy: Vacancy) {
+    fun addVacancyToFavourites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             favouriteVacanciesInteractor.insertVacancy(vacancy)
         }
     }
 
-    fun removeVacancyFromFavourites(vacancy: Vacancy) {
+    fun removeVacancyFromFavourites(vacancy: VacancyDetails) {
         viewModelScope.launch {
             favouriteVacanciesInteractor.removeFromFavourites(vacancy)
         }
     }
 
-    fun checkVacancyInFavouriteList(vacancy: Vacancy) {
+    fun checkVacancyInFavouriteList(vacancyId: String) {
         viewModelScope.launch {
-            val verifiable = favouriteVacanciesInteractor.checkVacancyIsFavourite(vacancy.vacancyId)
-            isVacancyFavouriteState.value = vacancy.vacancyId == verifiable
+            val verifiableId = favouriteVacanciesInteractor.checkVacancyIsFavourite(vacancyId)
+            isVacancyFavouriteState.value = vacancyId == verifiableId
         }
     }
 
