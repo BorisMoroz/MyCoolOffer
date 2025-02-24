@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.ui.vacancy
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 import ru.practicum.android.diploma.util.NOT_FOUND_ERROR
@@ -72,8 +70,9 @@ class VacancyFragment : Fragment() {
                 viewModel.checkVacancyInFavouriteList(vacancyId)
             }
             FAVOURITES_FRAGMENT -> {
-//                1. Получение детальной иноформации из БД
-//                2. Отображение этой информации
+                viewModel.getVacancyDetailsFromDb(vacancyId)
+                setVacancyFromDbObservers()
+                viewModel.checkVacancyInFavouriteList(vacancyId)
             }
         }
     }
@@ -89,6 +88,13 @@ class VacancyFragment : Fragment() {
                 is VacancyDetailsState.Error -> renderError(vacancyDetailsState.errorCode)
                 else -> {}
             }
+        }
+    }
+
+    private fun setVacancyFromDbObservers() {
+        viewModel.getVacancyFromDb().observe(viewLifecycleOwner) { vacancyFromDb ->
+            renderContent(vacancyFromDb)
+            _vacancyDetails = vacancyFromDb
         }
     }
 
@@ -132,8 +138,6 @@ class VacancyFragment : Fragment() {
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
-        url = "https://hh.ru/vacancy/" + "112317594"
-        // Пока что хардкод, тк нет передачи данных со страницы поиска
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
             vacancyDetails.salaryFrom,
@@ -209,6 +213,7 @@ class VacancyFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _vacancyDetails = null
     }
 
     private companion object {

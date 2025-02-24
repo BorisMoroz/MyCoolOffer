@@ -9,7 +9,6 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 
 class VacancyViewModel(
@@ -21,6 +20,9 @@ class VacancyViewModel(
 
     private val isVacancyFavouriteState = MutableLiveData<Boolean>()
     fun getIsVacancyFavouriteState(): LiveData<Boolean> = isVacancyFavouriteState
+
+    private val vacancyFromDb = MutableLiveData<VacancyDetails>()
+    fun getVacancyFromDb(): LiveData<VacancyDetails> = vacancyFromDb
 
     fun getVacancyDetails(vacancyId: String) {
         vacancyDetailsState.postValue(VacancyDetailsState.Loading)
@@ -94,6 +96,12 @@ class VacancyViewModel(
         viewModelScope.launch {
             val verifiableId = favouriteVacanciesInteractor.checkVacancyIsFavourite(vacancyId)
             isVacancyFavouriteState.value = vacancyId == verifiableId
+        }
+    }
+
+    fun getVacancyDetailsFromDb(vacancyId: String) {
+        viewModelScope.launch {
+            vacancyFromDb.value = favouriteVacanciesInteractor.getVacancyData(vacancyId)
         }
     }
 

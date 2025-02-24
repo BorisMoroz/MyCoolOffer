@@ -88,5 +88,4 @@ object Converter {
             currency = vacancyEntity.currency
         )
     }
-
 }

@@ -25,4 +25,8 @@ class FavouriteVacanciesInteractorImpl(
     override suspend fun removeFromFavourites(vacancy: VacancyDetails) {
         repository.removeFromFavourites(vacancy)
     }
+
+    override suspend fun getVacancyData(vacancyId: String): VacancyDetails {
+        return repository.getVacancyData(vacancyId)
+    }
 }

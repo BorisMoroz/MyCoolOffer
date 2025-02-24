@@ -31,6 +31,11 @@ class FavouriteVacanciesRepositoryImpl(
         vacancyDao.removeFromFavourites(converter.convertVacancyDetailsToVacancyEntity(vacancy))
     }
 
+    override suspend fun getVacancyData(vacancyId: String): VacancyDetails {
+        val vacancy = vacancyDao.getVacancyData(vacancyId)
+        return converter.convertVacancyEntityToVacancyDetails(vacancy)
+    }
+
     private fun convertFromVacancyEntity(vacancyList: List<VacancyEntity>): List<Vacancy> {
         return vacancyList.map { vacancy -> converter.convertVacancyEntityToVacancy(vacancy) }
     }

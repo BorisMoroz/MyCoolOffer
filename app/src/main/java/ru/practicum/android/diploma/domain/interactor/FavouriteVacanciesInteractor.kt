@@ -9,4 +9,5 @@ interface FavouriteVacanciesInteractor {
     suspend fun checkVacancyIsFavourite(vacancyId: String): String
     fun getAllVacancies(): Flow<List<Vacancy>>
     suspend fun removeFromFavourites(vacancy: VacancyDetails)
+    suspend fun getVacancyData(vacancyId: String): VacancyDetails
 }
