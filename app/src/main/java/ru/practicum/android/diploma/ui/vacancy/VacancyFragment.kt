@@ -38,7 +38,7 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpVacancyFragmentObservers()
+//        setUpVacancyFragmentObservers()
 
 //        viewModel.checkVacancyInFavouriteList(testVacancyList.getTestVacancyOne())
 
@@ -160,11 +160,11 @@ class VacancyFragment : Fragment() {
 
     }
 
-    private fun setUpVacancyFragmentObservers() {
-        viewModel.getIsVacancyFavourite().observe(viewLifecycleOwner) { isFavourite ->
-            handleIsVacancyFavourite(isFavourite)
-        }
-    }
+//    private fun setUpVacancyFragmentObservers() {
+//        viewModel.getIsVacancyFavourite().observe(viewLifecycleOwner) { isFavourite ->
+//            handleIsVacancyFavourite(isFavourite)
+//        }
+//    }
 
     private fun handleIsVacancyFavourite(isFavourite: Boolean) {
         val likeButton = binding.toolbar.menu.findItem(R.id.action_like)
