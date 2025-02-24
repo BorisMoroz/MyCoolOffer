@@ -51,10 +51,12 @@ class VacancyFragment : Fragment() {
                     url?.let { shareVacancy(it) }
                     true
                 }
+
                 R.id.action_like -> {
                     changeLikeButtonStatus(isChecked, vacancyDetails)
                     true
                 }
+
                 else -> false
             }
         }
@@ -69,6 +71,7 @@ class VacancyFragment : Fragment() {
                 setVacancyFragmentObservers()
                 viewModel.checkVacancyInFavouriteList(vacancyId)
             }
+
             FAVOURITES_FRAGMENT -> {
                 viewModel.getVacancyDetailsFromDb(vacancyId)
                 setVacancyFromDbObservers()
@@ -85,6 +88,7 @@ class VacancyFragment : Fragment() {
                     renderContent(vacancyDetailsState.data)
                     _vacancyDetails = vacancyDetailsState.data
                 }
+
                 is VacancyDetailsState.Error -> renderError(vacancyDetailsState.errorCode)
                 else -> {}
             }
@@ -121,12 +125,14 @@ class VacancyFragment : Fragment() {
                     .into(binding.placeholderErrorImage)
                 binding.placeholderErrorText.setText(R.string.connection_error)
             }
+
             NOT_FOUND_ERROR -> {
                 Glide.with(this)
                     .load(R.drawable.img_placeholder_job_error)
                     .into(binding.placeholderErrorImage)
                 binding.placeholderErrorText.setText(R.string.vacancy_error)
             }
+
             else -> {
                 Glide.with(this)
                     .load(R.drawable.img_placeholder_job_server_error)
@@ -138,12 +144,13 @@ class VacancyFragment : Fragment() {
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
-        url = URL + {vacancyDetails.vacancyId}
+        url = URL + { vacancyDetails.vacancyId }
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
             vacancyDetails.salaryFrom,
             vacancyDetails.salaryTo,
-            vacancyDetails.currency)
+            vacancyDetails.currency
+        )
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
             .centerCrop()
