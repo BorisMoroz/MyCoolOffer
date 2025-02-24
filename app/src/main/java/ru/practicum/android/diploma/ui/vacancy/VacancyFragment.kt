@@ -43,7 +43,7 @@ class VacancyFragment : Fragment() {
         setUpVacancyFragmentObservers()
 
         val vacancyId = vacancyArgs.vacancyId
-//        viewModel.checkVacancyInFavouriteList(vacancy)
+        val fragment = vacancyArgs.fragment
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -63,8 +63,19 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getVacancyDetails(vacancyId)
+        when (fragment) {
+            SEARCH_FRAGMENT -> {
+                viewModel.getVacancyDetails(vacancyId)
+                setVacancyFragmentObservers()
+            }
+            FAVOURITES_FRAGMENT -> {
+//                1. Получение детальной иноформации из БД
+//                2. Отображение этой информации
+            }
+        }
+    }
 
+    private fun setVacancyFragmentObservers() {
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
                 is VacancyDetailsState.Loading -> renderLoading()
@@ -193,4 +204,10 @@ class VacancyFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private companion object {
+        const val SEARCH_FRAGMENT = "SearchFragment"
+        const val FAVOURITES_FRAGMENT = "FavouritesFragment"
+    }
+
 }
