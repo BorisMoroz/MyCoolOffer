@@ -4,25 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.domain.models.Vacancy
 
-class VacancyViewModel(
-    private val vacanciesInteractor: VacanciesInteractor,
-    private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
-) : ViewModel() {
-    private var getVacancyDetailsState = MutableLiveData<GetVacancyDetailsState?>()
-    fun getVacancyDetailsState(): LiveData<GetVacancyDetailsState?> = getVacancyDetailsState
+class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+    private var vacancyDetailsState = MutableLiveData<VacancyDetailsState?>()
 
-    private val isVacancyFavourite = MutableLiveData<Boolean>()
-    fun getIsVacancyFavourite(): LiveData<Boolean> = isVacancyFavourite
+    fun getVacancyDetailsState(): LiveData<VacancyDetailsState?> = vacancyDetailsState
 
     fun getVacancyDetails(vacancyId: String) {
-        getVacancyDetailsState.postValue(GetVacancyDetailsState.Loading)
+        vacancyDetailsState.postValue(VacancyDetailsState.Loading)
 
         viewModelScope.launch {
             vacanciesInteractor
@@ -30,42 +22,56 @@ class VacancyViewModel(
                 .collect { result ->
                     when (result) {
                         is Resource.Error -> {
-                            val errorCode = GetVacancyDetailsState.Error(result.errorCode)
-                            getVacancyDetailsState.postValue(errorCode)
-                        }
+                            vacancyDetailsState.value = VacancyDetailsState.Error(result.errorCode)
 
+                        }
                         is Resource.Success -> {
-                            val content = GetVacancyDetailsState.Content(result.data)
-                            getVacancyDetailsState.postValue(content)
+                            vacancyDetailsState.value = VacancyDetailsState.Content(result.data)
                         }
                     }
                 }
         }
     }
 
-    fun addVacancyToFavourites(vacancy: Vacancy) {
-        viewModelScope.launch {
-            favouriteVacanciesInteractor
-                .insertVacancy(vacancy)
+    fun getSalaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?): String {
+        val salaryText = StringBuilder()
+        if (salaryFrom != null) {
+            salaryText.append("$FROM_TEXT$salaryFrom ")
         }
+        if (salaryTo != null) {
+            salaryText.append("$TO_TEXT$salaryTo ")
+        }
+        if (currency != null) {
+            when (currency) {
+                "RUR" -> salaryText.append("₽")
+                "USD" -> salaryText.append("$")
+                "EUR" -> salaryText.append("€")
+                "AZN" -> salaryText.append("₼")
+                "KZT" -> salaryText.append("₸")
+                "BYR" -> salaryText.append("Br")
+                "GEL" -> salaryText.append("₾")
+                "KGS" -> salaryText.append("с")
+                "UZS" -> salaryText.append("Soʻm")
+                "UAH" -> salaryText.append("₴")
+            }
+        }
+        return if (salaryText.isEmpty()) DEFAULT_SALARY_TEXT else salaryText.toString()
     }
 
-    fun removeVacancyFromFavourites(vacancy: Vacancy) {
-        viewModelScope.launch {
-            favouriteVacanciesInteractor
-                .removeFromFavourites(vacancy)
+    fun getSkillsText(skills: List<String?>): String {
+        val skillsText = StringBuilder()
+        for (skill in skills) {
+            if (skill != null) {
+                skillsText.append(KEY_SKILLS_NEW_LINE_TEXT).append(skill).append("\n")
+            }
         }
+        return skillsText.toString()
     }
 
-    fun checkVacancyInFavouriteList(vacancy: Vacancy) {
-        viewModelScope.launch {
-            val checkedId = favouriteVacanciesInteractor.checkVacancyIsFavourite(vacancy.vacancyId)
-            isVacancyFavourite.value = checkedId == vacancy.vacancyId
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelScope.cancel()
+    companion object {
+        const val FROM_TEXT = "от "
+        const val TO_TEXT = "до "
+        const val DEFAULT_SALARY_TEXT = "Уровень дохода не указан"
+        const val KEY_SKILLS_NEW_LINE_TEXT = "   •   "
     }
 }
