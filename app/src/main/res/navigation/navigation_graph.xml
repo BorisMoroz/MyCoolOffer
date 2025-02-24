@@ -59,8 +59,12 @@
         android:label="fragment_vacancy"
         tools:layout="@layout/fragment_vacancy" >
         <argument
-            android:name="vacancy"
-            app:argType="ru.practicum.android.diploma.domain.models.Vacancy"
+            android:name="vacancyId"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
+            android:name="fragment"
+            app:argType="string"
             app:nullable="false" />
     </fragment>
     <fragment

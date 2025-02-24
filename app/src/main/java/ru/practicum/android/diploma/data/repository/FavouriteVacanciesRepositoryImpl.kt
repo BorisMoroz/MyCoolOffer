@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.database.dao.VacancyDao
 import ru.practicum.android.diploma.data.database.entity.VacancyEntity
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.domain.repository.FavouriteVacanciesRepository
 import ru.practicum.android.diploma.util.Converter
 
@@ -13,8 +14,8 @@ class FavouriteVacanciesRepositoryImpl(
     private val converter: Converter
 ) : FavouriteVacanciesRepository {
 
-    override suspend fun insertVacancy(vacancy: Vacancy) {
-        vacancyDao.insertVacancy(converter.convertVacancyToVacancyEntity(vacancy))
+    override suspend fun insertVacancy(vacancy: VacancyDetails) {
+        vacancyDao.insertVacancy(converter.convertVacancyDetailsToVacancyEntity(vacancy))
     }
 
     override suspend fun checkVacancyIsFavourite(vacancyId: String): String {
@@ -26,8 +27,13 @@ class FavouriteVacanciesRepositoryImpl(
         emit(convertFromVacancyEntity(tracks))
     }
 
-    override suspend fun removeFromFavourites(vacancy: Vacancy) {
-        vacancyDao.removeFromFavourites(converter.convertVacancyToVacancyEntity(vacancy))
+    override suspend fun removeFromFavourites(vacancy: VacancyDetails) {
+        vacancyDao.removeFromFavourites(converter.convertVacancyDetailsToVacancyEntity(vacancy))
+    }
+
+    override suspend fun getVacancyData(vacancyId: String): VacancyDetails {
+        val vacancy = vacancyDao.getVacancyData(vacancyId)
+        return converter.convertVacancyEntityToVacancyDetails(vacancy)
     }
 
     private fun convertFromVacancyEntity(vacancyList: List<VacancyEntity>): List<Vacancy> {

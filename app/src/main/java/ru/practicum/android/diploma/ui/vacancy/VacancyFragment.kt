@@ -2,7 +2,6 @@ package ru.practicum.android.diploma.ui.vacancy
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +15,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
 import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 import ru.practicum.android.diploma.util.NOT_FOUND_ERROR
@@ -28,6 +26,8 @@ class VacancyFragment : Fragment() {
     private var url: String? = null
     private val vacancyArgs by navArgs<VacancyFragmentArgs>()
     private val viewModel by viewModel<VacancyViewModel>()
+    private var _vacancyDetails: VacancyDetails? = null
+    private val vacancyDetails get() = _vacancyDetails!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,8 +42,8 @@ class VacancyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpVacancyFragmentObservers()
 
-        val vacancy = vacancyArgs.vacancy
-        viewModel.checkVacancyInFavouriteList(vacancy)
+        val vacancyId = vacancyArgs.vacancyId
+        val fragment = vacancyArgs.fragment
 
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -52,7 +52,7 @@ class VacancyFragment : Fragment() {
                     true
                 }
                 R.id.action_like -> {
-                    changeLikeButtonStatus(isChecked, vacancy)
+                    changeLikeButtonStatus(isChecked, vacancyDetails)
                     true
                 }
                 else -> false
@@ -63,15 +63,38 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getVacancyDetails(vacancy.vacancyId)
+        when (fragment) {
+            SEARCH_FRAGMENT -> {
+                viewModel.getVacancyDetails(vacancyId)
+                setVacancyFragmentObservers()
+                viewModel.checkVacancyInFavouriteList(vacancyId)
+            }
+            FAVOURITES_FRAGMENT -> {
+                viewModel.getVacancyDetailsFromDb(vacancyId)
+                setVacancyFromDbObservers()
+                viewModel.checkVacancyInFavouriteList(vacancyId)
+            }
+        }
+    }
 
+    private fun setVacancyFragmentObservers() {
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
                 is VacancyDetailsState.Loading -> renderLoading()
-                is VacancyDetailsState.Content -> renderContent(vacancyDetailsState.data)
+                is VacancyDetailsState.Content -> {
+                    renderContent(vacancyDetailsState.data)
+                    _vacancyDetails = vacancyDetailsState.data
+                }
                 is VacancyDetailsState.Error -> renderError(vacancyDetailsState.errorCode)
                 else -> {}
             }
+        }
+    }
+
+    private fun setVacancyFromDbObservers() {
+        viewModel.getVacancyFromDb().observe(viewLifecycleOwner) { vacancyFromDb ->
+            renderContent(vacancyFromDb)
+            _vacancyDetails = vacancyFromDb
         }
     }
 
@@ -115,8 +138,6 @@ class VacancyFragment : Fragment() {
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
-        url = "https://hh.ru/vacancy/" + "112317594"
-        // Пока что хардкод, тк нет передачи данных со страницы поиска
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
             vacancyDetails.salaryFrom,
@@ -176,7 +197,7 @@ class VacancyFragment : Fragment() {
     }
 
     // Тестовая функция смены иконки избранной вакансии
-    private fun changeLikeButtonStatus(value: Boolean, vacancy: Vacancy) {
+    private fun changeLikeButtonStatus(value: Boolean, vacancy: VacancyDetails) {
         val likeButton = binding.toolbar.menu.findItem(R.id.action_like)
         if (value) {
             likeButton.setIcon(R.drawable.ic_favourite_off)
@@ -192,5 +213,12 @@ class VacancyFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _vacancyDetails = null
     }
+
+    private companion object {
+        const val SEARCH_FRAGMENT = "SearchFragment"
+        const val FAVOURITES_FRAGMENT = "FavouritesFragment"
+    }
+
 }
