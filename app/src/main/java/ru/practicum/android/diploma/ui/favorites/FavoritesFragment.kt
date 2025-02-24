@@ -40,7 +40,8 @@ class FavoritesFragment : Fragment() {
         viewModel.checkVacancyList()
 
         adapter.onFavouriteVacancyClick = {
-            val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(it.vacancyId, FAVOURITES_FRAGMENT)
+            val action =
+                FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(it.vacancyId, FAVOURITES_FRAGMENT)
             findNavController().navigate(action)
         }
     }

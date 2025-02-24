@@ -76,7 +76,7 @@ object Converter {
         )
     }
 
-    fun convertVacancyEntityToVacancy(vacancyEntity: VacancyEntity) : Vacancy {
+    fun convertVacancyEntityToVacancy(vacancyEntity: VacancyEntity): Vacancy {
         return Vacancy(
             vacancyId = vacancyEntity.vacancyId,
             vacancyName = vacancyEntity.vacancyName,
