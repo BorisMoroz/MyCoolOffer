@@ -192,7 +192,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         _binding = null
     }
 
-
     private fun getVacancyCountFormatted(count: Int): String {
         val lastDigit = count % TEN
         val lastTwoDigits = count % HUNDRED
