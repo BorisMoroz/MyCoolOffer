@@ -62,6 +62,10 @@
             android:name="vacancyId"
             app:argType="string"
             app:nullable="false" />
+        <argument
+            android:name="fragment"
+            app:argType="string"
+            app:nullable="false" />
     </fragment>
     <fragment
         android:id="@+id/workplaceFragment"

@@ -204,21 +204,24 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     override fun onVacancyClick(vacancy: Vacancy) {
         // Нужно реализовать передачу данных в VacancyFragment
-        findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.vacancyId))
+        val action = SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.vacancyId, SEARCH_FRAGMENT)
+        findNavController().navigate(action)
     }
 
-    companion object {
+    private companion object {
+
+        const val SEARCH_FRAGMENT = "SearchFragment"
         const val SELECTED_VACANCY = "selectedVacancy"
-        private const val SINGULAR_DIGIT = 1
-        private const val SINGULAR_EXCEPTION = 11
-        private const val TEN = 10
-        private const val HUNDRED = 100
-        private val FEW_DIGIT_RANGE = 2..4
-        private val FEW_EXCEPTION_RANGE = 12..14
+        const val SINGULAR_DIGIT = 1
+        const val SINGULAR_EXCEPTION = 11
+        const val TEN = 10
+        const val HUNDRED = 100
+        val FEW_DIGIT_RANGE = 2..4
+        val FEW_EXCEPTION_RANGE = 12..14
 
         // Указанные внизу две константы следует убрать после настройки пагинации
-        private const val PAGE = 1
-        private const val ITEMS_PER_PAGE = 20
+        const val PAGE = 1
+        const val ITEMS_PER_PAGE = 20
 
     }
 }
