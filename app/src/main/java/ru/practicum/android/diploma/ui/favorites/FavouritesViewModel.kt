@@ -22,17 +22,21 @@ class FavouritesViewModel(
 
     fun checkVacancyList() {
         viewModelScope.launch {
-            favouriteVacanciesInteractor
-                .getAllVacancies()
-                .collect { favouriteVacancies ->
-                    if (favouriteVacancies.isEmpty()) {
-                        vacancyListState.value = State.FavouriteVacancyList.EMPTY_LIST
-                        vacancyList.value = favouriteVacancies.reversed()
-                    } else {
-                        vacancyListState.value = State.FavouriteVacancyList.SUCCESS
-                        vacancyList.value = favouriteVacancies.reversed()
+            try {
+                favouriteVacanciesInteractor
+                    .getAllVacancies()
+                    .collect { favouriteVacancies ->
+                        if (favouriteVacancies.isEmpty()) {
+                            vacancyListState.value = State.FavouriteVacancyList.EMPTY_LIST
+                            vacancyList.value = favouriteVacancies.reversed()
+                        } else {
+                            vacancyListState.value = State.FavouriteVacancyList.SUCCESS
+                            vacancyList.value = favouriteVacancies.reversed()
+                        }
                     }
-                }
+            } catch (e: Exception) {
+                vacancyListState.value = State.FavouriteVacancyList.ERROR
+            }
         }
     }
 

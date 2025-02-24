@@ -51,14 +51,10 @@ class VacancyFragment : Fragment() {
                     url?.let { shareVacancy(it) }
                     true
                 }
-
                 R.id.action_like -> {
                     changeLikeButtonStatus(isChecked, vacancy)
-                    // Реализовать добавление вакансии в избранное
-                    Log.d("log", "Like button clicked")
                     true
                 }
-
                 else -> false
             }
         }
@@ -67,7 +63,7 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getVacancyDetails(vacancy.vacancyId) // Передача данных с экрана "поиск" пока не сделана
+        viewModel.getVacancyDetails(vacancy.vacancyId)
 
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
@@ -160,7 +156,6 @@ class VacancyFragment : Fragment() {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         startActivity(shareIntent)
-
     }
 
     private fun setUpVacancyFragmentObservers() {

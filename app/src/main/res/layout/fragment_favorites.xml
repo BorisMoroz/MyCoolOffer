@@ -14,15 +14,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/favourites" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:text="@string/vacancy_info" />
-
     <ImageView
         android:id="@+id/favourites_placeholder"
         android:layout_width="match_parent"

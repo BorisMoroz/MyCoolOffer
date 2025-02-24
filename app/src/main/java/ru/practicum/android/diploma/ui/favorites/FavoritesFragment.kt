@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.ui.favorites
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ class FavoritesFragment : Fragment() {
     private val viewModel by viewModel<FavouritesViewModel>()
     private val favouritesNotEmptyList = State.FavouriteVacancyList.SUCCESS
     private val favouritesEmptyList = State.FavouriteVacancyList.EMPTY_LIST
-    private val favouritesListError = State.FavouriteVacancyList.ERROR
     private var _adapter: FavouritesVacancyAdapter? = null
     private val adapter get() = _adapter!!
 
@@ -41,15 +39,10 @@ class FavoritesFragment : Fragment() {
         setRecyclerView()
         viewModel.checkVacancyList()
 
-//        binding.button1.setOnClickListener {
-//            findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment())
-//        }
-
         adapter.onFavouriteVacancyClick = {
             val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(it)
             findNavController().navigate(action)
         }
-
     }
 
     private fun setUpFavouritesFragmentObservers() {
@@ -87,7 +80,6 @@ class FavoritesFragment : Fragment() {
             favouritesPlaceholder.isVisible = true
             favouritesPlaceholderText.isVisible = true
             listVacancies.isGone = true
-            button1.isVisible = true
         }
     }
 
@@ -96,7 +88,6 @@ class FavoritesFragment : Fragment() {
             favouritesPlaceholder.isGone = true
             favouritesPlaceholderText.isGone = true
             listVacancies.isVisible = true
-            button1.isGone = true
         }
     }
 
@@ -107,7 +98,6 @@ class FavoritesFragment : Fragment() {
             favouritesPlaceholder.isVisible = true
             favouritesPlaceholderText.isVisible = true
             listVacancies.isGone = true
-            button1.isVisible = true
         }
     }
 

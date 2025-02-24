@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
@@ -93,6 +94,11 @@ class VacancyViewModel(
             val verifiable = favouriteVacanciesInteractor.checkVacancyIsFavourite(vacancy.vacancyId)
             isVacancyFavouriteState.value = vacancy.vacancyId == verifiable
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
     }
 
     companion object {
