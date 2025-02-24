@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 import ru.practicum.android.diploma.util.NETWORK_ERROR
 import ru.practicum.android.diploma.util.NETWORK_OK
 import ru.practicum.android.diploma.util.UNKNOWN_REQUEST_ERROR
+import java.io.IOException
 
 class RetrofitNetworkClient(
     private val hhApi: HHApi,
@@ -27,11 +28,11 @@ class RetrofitNetworkClient(
                 return response.apply { resultCode = NETWORK_CONNECTION_ERROR }
             }
             response = doActionOnRequest(dto)
-        } catch (ex: NetworkRequestException) {
-            Log.i("NetworkError", ex.message!!)
+        } catch (ex: IOException) {
+            Log.i("NetworkIOError", ex.message!!)
             response.apply { resultCode = NETWORK_ERROR }
         } catch (ex: HttpException) {
-            Log.i("NetworkError", ex.message!!)
+            Log.i("NetworkHTTPError", ex.message!!)
             response.apply { resultCode = ex.code() }
         }
         return response
