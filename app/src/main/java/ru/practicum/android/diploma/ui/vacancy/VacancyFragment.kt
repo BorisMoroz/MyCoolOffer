@@ -138,6 +138,7 @@ class VacancyFragment : Fragment() {
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
+        url = URL + {vacancyDetails.vacancyId}
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
             vacancyDetails.salaryFrom,
@@ -219,6 +220,7 @@ class VacancyFragment : Fragment() {
     private companion object {
         const val SEARCH_FRAGMENT = "SearchFragment"
         const val FAVOURITES_FRAGMENT = "FavouritesFragment"
+        const val URL = "https://hh.ru/vacancy/"
     }
 
 }
