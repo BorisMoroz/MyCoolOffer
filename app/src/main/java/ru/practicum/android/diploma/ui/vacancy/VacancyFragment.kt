@@ -111,8 +111,8 @@ class VacancyFragment : Fragment() {
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
-        /*url = vacancyDetails.url
-        * такого поля пока что нет*/
+        url = "https://hh.ru/vacancy/" + "112317594"
+        //Пока что хардкод, тк нет передачи данных со страницы поиска
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
             vacancyDetails.salaryFrom,
@@ -126,10 +126,11 @@ class VacancyFragment : Fragment() {
             .into(binding.vacancyCardImage)
         binding.vacancyCardEmployerText.text = vacancyDetails.employer
         binding.vacancyCardEmployerText.isSelected = true
-        /*Должен выводить address вместо региона.
-        Регион выводится в том случае, если адрес не указан.
-        Но в vacancyDetails нет такого поля*/
-        binding.vacancyCardRegionText.text = vacancyDetails.area
+        if (!vacancyDetails.address.isNullOrEmpty()) {
+            binding.vacancyCardRegionText.text = vacancyDetails.address
+        } else {
+            binding.vacancyCardRegionText.text = vacancyDetails.area
+        }
         binding.vacancyCardRegionText.isSelected = true
         binding.experienceText.text = vacancyDetails.experience
         binding.workFormatText.text = vacancyDetails.workFormat?.joinToString(", ")

@@ -7,6 +7,7 @@ data class VacancyDetailsResponse(
     val salary: SalaryDto?,
     val employer: EmployerDto?,
     val area: AreaDto?,
+    val address: AddressDto?,
     val experience: ExperienceDto?,
     val employment: EmploymentDto?,
     @SerializedName("work_format") val workFormat: ArrayList<WorkFormatDto?>?,

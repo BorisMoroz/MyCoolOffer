@@ -53,6 +53,7 @@ class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : Vacanc
                 vacancyDetailsResponse.employer?.name,
                 vacancyDetailsResponse.employer?.logoUrls?.original,
                 vacancyDetailsResponse.area?.name,
+                vacancyDetailsResponse.address?.raw,
                 vacancyDetailsResponse.experience?.name,
                 vacancyDetailsResponse.employment?.name,
                 vacancyDetailsResponse.workFormat?.map { it?.name },
