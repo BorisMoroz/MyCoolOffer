@@ -162,7 +162,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.listVacancies.adapter = VacancyAdapter(vacancies, this)
         binding.listVacancies.visibility = View.VISIBLE
         binding.containerPlaceholder.visibility = View.GONE
-        binding.resultSearch.text = vacancies.items.size.toString()
+        binding.resultSearch.text = getVacancyCountFormatted(vacancies.items.size)
         binding.resultSearch.visibility = View.VISIBLE
     }
 
@@ -190,6 +190,14 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun getVacancyCountFormatted(counts: Int): String {
+        return when {
+            counts % 10 == 1 && counts % 100 != 11 -> "Найдено $counts вакансия"
+            counts % 10 in 2..4 && counts % 100 !in 12..14 -> "Найдено $counts вакансии"
+            else -> "Найдено $counts вакансий"
+        }
     }
 
     override fun onVacancyClick(vacancy: Vacancy) {
