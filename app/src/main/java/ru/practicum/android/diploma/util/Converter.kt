@@ -7,9 +7,9 @@ import java.util.Locale
 
 object Converter {
 
-     private const val NO_SALARY = "Зарплата не указана"
+    private const val NO_SALARY = "Зарплата не указана"
 
-     fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currency: String?): String {
+    fun formatSalary(salaryFrom: Int?, salaryTo: Int?, currency: String?): String {
         val currencySymbols = mapOf(
             "RUR" to "₽",
             "USD" to "$",

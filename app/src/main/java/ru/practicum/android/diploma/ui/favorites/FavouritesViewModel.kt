@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.ui.favorites
 
+import android.database.sqlite.SQLiteException
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,7 +36,8 @@ class FavouritesViewModel(
                             vacancyList.value = favouriteVacancies.reversed()
                         }
                     }
-            } catch (e: Exception) {
+            } catch (e: SQLiteException) {
+                Log.d("SQLite", "Database exception: ${e.message}")
                 vacancyListState.value = State.FavouriteVacancyList.ERROR
             }
         }
