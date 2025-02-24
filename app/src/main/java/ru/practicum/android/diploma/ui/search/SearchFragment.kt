@@ -193,18 +193,11 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     private fun getVacancyCountFormatted(count: Int): String {
-        val lastDigit = count % 10
-        val lastTwoDigits = count % 100
-
-        val singularDigit = 1
-        val singularException = 11
-
-        val fewDigitsRange = 2..4
-        val fewExceptionRange = 12..14
-
+        val lastDigit = count % TEN
+        val lastTwoDigits = count % HUNDRED
         return when {
-            lastDigit == singularDigit && lastTwoDigits != singularException -> "Найдена $count вакансия"
-            lastDigit in fewDigitsRange && lastTwoDigits !in fewExceptionRange -> "Найдено $count вакансии"
+            lastDigit == SINGULAR_DIGIT && lastTwoDigits != SINGULAR_EXCEPTION -> "Найдена $count вакансия"
+            lastDigit in FEW_DIGIT_RANGE && lastTwoDigits !in FEW_EXCEPTION_RANGE -> "Найдено $count вакансии"
             else -> "Найдено $count вакансий"
         }
     }
@@ -216,9 +209,16 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     companion object {
         const val SELECTED_VACANCY = "selectedVacancy"
+        private const val SINGULAR_DIGIT = 1
+        private const val SINGULAR_EXCEPTION = 11
+        private const val TEN = 10
+        private const val HUNDRED = 100
+        private val FEW_DIGIT_RANGE = 2..4
+        private val FEW_EXCEPTION_RANGE = 12..14
 
         // Указанные внизу две константы следует убрать после настройки пагинации
         private const val PAGE = 1
         private const val ITEMS_PER_PAGE = 20
+
     }
 }
