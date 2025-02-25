@@ -52,7 +52,7 @@
     <style name="LinearLayoutVacancy">
         <item name="android:layout_width">@dimen/width_0</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/margin_16</item>
+        <item name="android:layout_marginTop">@dimen/margin_24</item>
         <item name="android:orientation">vertical</item>
     </style>
 

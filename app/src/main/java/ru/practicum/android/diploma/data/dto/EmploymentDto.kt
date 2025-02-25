@@ -1,3 +1,3 @@
 package ru.practicum.android.diploma.data.dto
 
-data class WorkFormatDto(val name: String?)
+data class EmploymentDto(val name: String?)

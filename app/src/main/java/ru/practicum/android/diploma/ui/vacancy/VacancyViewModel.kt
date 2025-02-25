@@ -68,6 +68,16 @@ class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : V
         return skillsText.toString()
     }
 
+    fun getWorkFormatText(schedule: String?, employment: String?): String {
+        val workFormatText = StringBuilder()
+        if (!schedule.isNullOrEmpty()) {
+            workFormatText.append(employment).append(", ").append(schedule)
+        } else {
+            workFormatText.append(employment)
+        }
+        return workFormatText.toString()
+    }
+
     companion object {
         const val FROM_TEXT = "от "
         const val TO_TEXT = "до "
