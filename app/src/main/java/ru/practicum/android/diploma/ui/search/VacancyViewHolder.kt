@@ -5,6 +5,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import ru.practicum.android.diploma.R
@@ -20,10 +22,12 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(model: Vacancy) {
         Glide.with(image)
             .load(model.logoUrl)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .optionalFitCenter()
-            .apply(
-                RequestOptions()
-                    .transform(RoundedCorners(itemView.context.resources.getDimensionPixelSize(R.dimen.radius_12)))
+            .transform(
+                CenterCrop(),
+                RoundedCorners(itemView.context.resources.getDimensionPixelSize(R.dimen.radius_12))
             )
             .placeholder(R.drawable.img_job_placeholder)
             .error(R.drawable.img_job_placeholder)
