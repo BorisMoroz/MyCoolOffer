@@ -68,10 +68,16 @@ class VacancyViewModel(private val vacanciesInteractor: VacanciesInteractor) : V
         return skillsText.toString()
     }
 
-    fun getWorkFormatText(schedule: String?, employment: String?): String {
+    fun getWorkFormatText(workFormat: List<String?>?, employment: String?): String {
         val workFormatText = StringBuilder()
-        if (!schedule.isNullOrEmpty()) {
-            workFormatText.append(employment).append(", ").append(schedule)
+        if (workFormat != null) {
+            workFormatText.append(employment).append(", ")
+            for (format in workFormat) {
+                if (format != null) {
+                    workFormatText.append(format).append(", ")
+                }
+            }
+            workFormatText.delete(workFormatText.length - 2, workFormatText.length)
         } else {
             workFormatText.append(employment)
         }

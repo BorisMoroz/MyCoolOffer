@@ -59,7 +59,7 @@ class VacancyFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        viewModel.getVacancyDetails("112317594") // Передача данных с экрана "поиск" пока не сделана
+        viewModel.getVacancyDetails("117582068") // Передача данных с экрана "поиск" пока не сделана
 
         viewModel.getVacancyDetailsState().observe(viewLifecycleOwner) { vacancyDetailsState ->
             when (vacancyDetailsState) {
@@ -133,7 +133,7 @@ class VacancyFragment : Fragment() {
         }
         binding.vacancyCardRegionText.isSelected = true
         binding.experienceText.text = vacancyDetails.experience
-        binding.workFormatText.text = viewModel.getWorkFormatText(vacancyDetails.schedule, vacancyDetails.employment)
+        binding.workFormatText.text = viewModel.getWorkFormatText(vacancyDetails.workFormat, vacancyDetails.employment)
         binding.vacancyDescriptionText.text = vacancyDetails.description?.let {
             HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
         }
