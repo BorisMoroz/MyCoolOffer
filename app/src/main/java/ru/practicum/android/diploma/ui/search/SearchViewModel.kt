@@ -9,46 +9,71 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.Vacancies
+import ru.practicum.android.diploma.domain.models.Vacancy
 
 class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState?>(SearchVacanciesState.Default)
 
+    private var currentPage = 1
+    private var maxPages = 1
+    private var vacanciesList = mutableListOf<Vacancy>()
+    private var isNextPageLoading = false
+
     fun getSearchVacanciesState(): LiveData<SearchVacanciesState?> = searchVacanciesState
 
-    fun searchVacancies(query: String, page: Int, perPage: Int) {
-        searchVacanciesState.postValue(SearchVacanciesState.Loading)
+    fun searchVacancies(query: String, refresh: Boolean = false) {
+        if (!isNextPageLoading && query.isNotEmpty()) {
 
-        viewModelScope.launch {
-            vacanciesInteractor
-                .searchVacancies(query, page, perPage)
-                .collect { result ->
-                    when (result) {
-                        is Resource.Error -> {
-                            val errorCode = SearchVacanciesState.Error(result.errorCode)
-                            searchVacanciesState.postValue(errorCode)
-                        }
+            if (refresh) {
+                currentPage = 1
+                maxPages = 1
+                vacanciesList.clear()
+            }
 
-                        is Resource.Success -> {
-                            val content = SearchVacanciesState.Content(result.data)
-                            searchVacanciesState.postValue(content)
+            if (currentPage <= maxPages) {
+                searchVacanciesState.postValue(SearchVacanciesState.Loading)
+                isNextPageLoading = true
+
+                viewModelScope.launch {
+                    vacanciesInteractor
+                        .searchVacancies(text = query, page = currentPage, perPage = ITEMS_PER_PAGE)
+                        .collect { result ->
+                            when (result) {
+                                is Resource.Error -> {
+                                    val errorCode = SearchVacanciesState.Error(result.errorCode)
+                                    searchVacanciesState.postValue(errorCode)
+                                    isNextPageLoading = false
+                                }
+
+                                is Resource.Success -> {
+                                    val response = result.data
+                                    maxPages = response.pages
+                                    vacanciesList.addAll(response.items)
+                                    currentPage++
+
+                                    val content = SearchVacanciesState.Content(Vacancies(vacanciesList, currentPage, response.found))
+                                    searchVacanciesState.postValue(content)
+                                    isNextPageLoading = false
+                                }
+                            }
                         }
-                    }
                 }
+            }
         }
     }
 
-    fun searchDebounce(query: String, page: Int, perPage: Int) {
+    fun searchDebounce(query: String) {
         if (query.isEmpty()) {
             searchJob?.cancel()
         } else {
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 delay(SEARCH_DEBOUNCE_DELAY)
-                searchVacancies(query, page, perPage)
+                searchVacancies(query, true)
             }
         }
-
     }
 
     fun stopSearch() {
@@ -57,5 +82,6 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private const val ITEMS_PER_PAGE = 20
     }
 }

@@ -32,7 +32,8 @@ class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : Vacanc
                 )
             }
             val pages = response.pages
-            val vacancies = Vacancies(items, pages)
+            val found = response.found
+            val vacancies = Vacancies(items, pages, found)
 
             emit(Resource.Success(vacancies))
         } else {
