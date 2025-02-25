@@ -25,7 +25,6 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
 
     fun searchVacancies(query: String, refresh: Boolean = false) {
         if (!isNextPageLoading && query.isNotEmpty()) {
-
             if (refresh) {
                 currentPage = 1
                 maxPages = 1
@@ -52,8 +51,13 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
                                     maxPages = response.pages
                                     vacanciesList.addAll(response.items)
                                     currentPage++
-
-                                    val content = SearchVacanciesState.Content(Vacancies(vacanciesList, currentPage, response.found))
+                                    val content = SearchVacanciesState.Content(
+                                        Vacancies(
+                                            vacanciesList,
+                                            currentPage,
+                                            response.found
+                                        )
+                                    )
                                     searchVacanciesState.postValue(content)
                                     isNextPageLoading = false
                                 }
