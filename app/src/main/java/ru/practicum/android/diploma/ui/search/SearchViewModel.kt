@@ -23,13 +23,10 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
 
     fun getSearchVacanciesState(): LiveData<SearchVacanciesState?> = searchVacanciesState
 
-    fun searchVacancies(query: String, refresh: Boolean) {
+    fun searchVacancies(query: String, refresh: Boolean = false) {
         if (!isNextPageLoading && query.isNotEmpty()) {
-            if (refresh) {
-                currentPage = 1
-                maxPages = 1
-                vacanciesList.clear()
-            }
+            isRefresh(refresh)
+
             if (currentPage <= maxPages) {
                 searchVacanciesState.postValue(SearchVacanciesState.Loading)
                 isNextPageLoading = true
@@ -44,6 +41,7 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
                                     searchVacanciesState.postValue(errorCode)
                                     isNextPageLoading = false
                                 }
+
                                 is Resource.Success -> {
                                     val response = result.data
                                     maxPages = response.pages
@@ -75,6 +73,14 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
                 delay(SEARCH_DEBOUNCE_DELAY)
                 searchVacancies(query, true)
             }
+        }
+    }
+
+    private fun isRefresh(refresh: Boolean) {
+        if (refresh) {
+            currentPage = 1
+            maxPages = 1
+            vacanciesList.clear()
         }
     }
 
