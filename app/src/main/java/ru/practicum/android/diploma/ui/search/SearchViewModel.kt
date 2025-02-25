@@ -23,7 +23,7 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
 
     fun getSearchVacanciesState(): LiveData<SearchVacanciesState?> = searchVacanciesState
 
-    fun searchVacancies(query: String, refresh: Boolean = false) {
+    fun searchVacancies(query: String, refresh: Boolean) {
         if (!isNextPageLoading && query.isNotEmpty()) {
             if (refresh) {
                 currentPage = 1

@@ -55,7 +55,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                     val itemsCount = recyclerView.adapter?.itemCount ?: 0
 
                     if (pos >= itemsCount - 1) {
-                        viewModel.searchVacancies(binding.inputSearchVacancy.text.toString())
+                        viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), false)
                     }
                 }
             }
