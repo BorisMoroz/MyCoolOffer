@@ -56,7 +56,7 @@
     </LinearLayout>
 
     <ScrollView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/vacancy_content"
         android:layout_width="@dimen/width_0"
         android:layout_height="@dimen/height_0"
