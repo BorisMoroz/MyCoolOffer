@@ -30,7 +30,6 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
                 maxPages = 1
                 vacanciesList.clear()
             }
-
             if (currentPage <= maxPages) {
                 searchVacanciesState.postValue(SearchVacanciesState.Loading)
                 isNextPageLoading = true
@@ -45,7 +44,6 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
                                     searchVacanciesState.postValue(errorCode)
                                     isNextPageLoading = false
                                 }
-
                                 is Resource.Success -> {
                                     val response = result.data
                                     maxPages = response.pages
