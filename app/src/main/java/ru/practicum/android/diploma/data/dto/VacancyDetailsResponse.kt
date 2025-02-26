@@ -10,7 +10,7 @@ data class VacancyDetailsResponse(
     val area: AreaDto?,
     val address: AddressDto?,
     val experience: ExperienceDto?,
-    @SerializedName("employment_form") val employmentForm: EmploymentFormDto?,
+    val employment: EmploymentDto?,
     @SerializedName("work_format") val workFormat: ArrayList<WorkFormatDto?>?,
     val description: String?,
     @SerializedName("key_skills") val keySkills: ArrayList<KeySkillDto?>?

@@ -100,7 +100,7 @@
                 android:layout_marginTop="@dimen/margin_24"
                 android:padding="@dimen/padding_16"
                 android:orientation="horizontal"
-                android:background="@drawable/rounded_corners"
+                android:background="@drawable/rounded_item"
                 app:layout_constraintTop_toBottomOf="@id/salary_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -148,8 +148,7 @@
                 style="@style/LinearLayoutVacancy"
                 app:layout_constraintTop_toBottomOf="@id/vacancy_card_layout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="@dimen/margin_24">
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     style="@style/TextViewMediumVacancy"
@@ -206,7 +205,8 @@
 
                 <TextView
                     android:id="@+id/skills_text"
-                    style="@style/TextViewRegularVacancy" />
+                    style="@style/TextViewRegularVacancy"
+                    android:layout_marginTop="@dimen/margin_16"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

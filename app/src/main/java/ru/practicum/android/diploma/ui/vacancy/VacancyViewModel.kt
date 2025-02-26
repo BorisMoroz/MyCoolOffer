@@ -110,6 +110,22 @@ class VacancyViewModel(
         viewModelScope.cancel()
     }
 
+    fun getWorkFormatText(workFormat: List<String?>?, employment: String?): String {
+        val workFormatText = StringBuilder()
+        if (workFormat != null) {
+            workFormatText.append(employment).append(", ")
+            for (format in workFormat) {
+                if (format != null) {
+                    workFormatText.append(format).append(", ")
+                }
+            }
+            workFormatText.delete(workFormatText.length - 2, workFormatText.length)
+        } else {
+            workFormatText.append(employment)
+        }
+        return workFormatText.toString()
+    }
+
     companion object {
         const val FROM_TEXT = "от "
         const val TO_TEXT = "до "

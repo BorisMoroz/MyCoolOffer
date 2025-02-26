@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -153,8 +154,10 @@ class VacancyFragment : Fragment() {
         )
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
-            .centerCrop()
-            .transform(RoundedCorners((R.dimen.radius_12 * resources.displayMetrics.density).toInt()))
+            .transform(
+                CenterCrop(),
+                RoundedCorners((R.dimen.radius_12 * resources.displayMetrics.density).toInt())
+            )
             .placeholder(R.drawable.vacancy_placeholder)
             .into(binding.vacancyCardImage)
         binding.vacancyCardEmployerText.text = vacancyDetails.employer
@@ -166,9 +169,9 @@ class VacancyFragment : Fragment() {
         }
         binding.vacancyCardRegionText.isSelected = true
         binding.experienceText.text = vacancyDetails.experience
-        binding.workFormatText.text = vacancyDetails.workFormat?.joinToString(", ")
+        binding.workFormatText.text = viewModel.getWorkFormatText(vacancyDetails.workFormat, vacancyDetails.employment)
         binding.vacancyDescriptionText.text = vacancyDetails.description?.let {
-            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
         }
         if (!vacancyDetails.keySkills.isNullOrEmpty()) {
             binding.skillsText.text = viewModel.getSkillsText(vacancyDetails.keySkills)

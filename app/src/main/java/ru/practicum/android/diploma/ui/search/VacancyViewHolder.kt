@@ -27,8 +27,7 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 CenterCrop(),
                 RoundedCorners(itemView.context.resources.getDimensionPixelSize(R.dimen.radius_12))
             )
-            .placeholder(R.drawable.img_job_placeholder)
-            .error(R.drawable.img_job_placeholder)
+            .placeholder(R.drawable.vacancy_placeholder)
             .into(image)
         vacancyTitle.text = model.area?.let { Converter.formatVacancyName(model.vacancyName, it) }
         company.text = model.employer
