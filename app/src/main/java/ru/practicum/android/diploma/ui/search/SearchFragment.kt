@@ -14,6 +14,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -26,6 +28,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private val binding get() = _binding!!
 
     private val viewModel by viewModel<SearchViewModel>()
+
+    private var vacanciesList = mutableListOf<Vacancy>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +45,24 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
         binding.icon.setImageResource(R.drawable.ic_search)
         binding.icon.isVisible = true
+
+        val adapter = VacancyAdapter(vacanciesList, this, viewLifecycleOwner.lifecycleScope)
+        binding.listVacancies.adapter = adapter
+
+        binding.listVacancies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos = (binding.listVacancies.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = recyclerView.adapter?.itemCount ?: 0
+
+                    if (pos >= itemsCount - 1) {
+                        viewModel.searchVacancies(binding.inputSearchVacancy.text.toString())
+                    }
+                }
+            }
+        })
 
         binding.icon.setOnClickListener {
             binding.inputSearchVacancy.text.clear()
@@ -59,9 +81,9 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             val isEnterPressed = event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
 
             if (isDoneOrNext || isEnterPressed) {
+                vacanciesList.clear()
                 viewModel.stopSearch()
-                // Нужно настроить пагинацию
-                viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), PAGE, ITEMS_PER_PAGE)
+                viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), true)
                 hideKeyboard()
             }
             false
@@ -84,8 +106,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                // Нужно настроить пагинацию
-                viewModel.searchDebounce(binding.inputSearchVacancy.text.toString(), PAGE, ITEMS_PER_PAGE)
+                vacanciesList.clear()
+                viewModel.searchDebounce(binding.inputSearchVacancy.text.toString())
             }
         })
 
@@ -113,7 +135,11 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             }
 
             is SearchVacanciesState.Loading -> {
-                showProgressBar()
+                if (vacanciesList.isEmpty()) {
+                    showProgressBar()
+                } else {
+                    binding.appendProgress.visibility = View.VISIBLE
+                }
             }
 
             is SearchVacanciesState.Error -> {
@@ -135,15 +161,17 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     private fun showProgressBar() {
-        binding.progress.visibility = View.VISIBLE
-        binding.resultSearch.visibility = View.GONE
-        binding.listVacancies.visibility = View.GONE
+        binding.appendProgress.visibility = View.GONE
         binding.containerPlaceholder.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
+        binding.listVacancies.visibility = View.GONE
+        binding.resultSearch.visibility = View.GONE
+        binding.progress.visibility = View.VISIBLE
         hideKeyboard()
     }
 
     private fun showInternetConnectionError() {
+        binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
@@ -155,6 +183,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     private fun showServerError() {
+        binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
@@ -166,17 +195,20 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     private fun showFoundVacancies(vacancies: Vacancies) {
+        binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
-        binding.listVacancies.adapter = VacancyAdapter(vacancies, this, viewLifecycleOwner.lifecycleScope)
+        vacanciesList.clear()
+        vacanciesList.addAll(vacancies.items)
         binding.listVacancies.visibility = View.VISIBLE
         binding.containerPlaceholder.visibility = View.GONE
-        binding.resultSearch.text = getVacancyCountFormatted(vacancies.items.size)
+        binding.resultSearch.text = getVacancyCountFormatted(vacancies.found)
         binding.resultSearch.visibility = View.VISIBLE
         hideKeyboard()
     }
 
     private fun showEmptyResult() {
+        binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
@@ -189,6 +221,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     private fun showDefaultPicture() {
+        binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
@@ -230,16 +263,11 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
         const val SEARCH_FRAGMENT = "SearchFragment"
         const val SELECTED_VACANCY = "selectedVacancy"
-        const val SINGULAR_DIGIT = 1
-        const val SINGULAR_EXCEPTION = 11
-        const val TEN = 10
-        const val HUNDRED = 100
-        val FEW_DIGIT_RANGE = 2..4
-        val FEW_EXCEPTION_RANGE = 12..14
-
-        // Указанные внизу две константы следует убрать после настройки пагинации
-        const val PAGE = 1
-        const val ITEMS_PER_PAGE = 20
-
+        private const val SINGULAR_DIGIT = 1
+        private const val SINGULAR_EXCEPTION = 11
+        private const val TEN = 10
+        private const val HUNDRED = 100
+        private val FEW_DIGIT_RANGE = 2..4
+        private val FEW_EXCEPTION_RANGE = 12..14
     }
 }

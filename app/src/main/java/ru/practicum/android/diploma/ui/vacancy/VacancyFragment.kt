@@ -166,9 +166,9 @@ class VacancyFragment : Fragment() {
         }
         binding.vacancyCardRegionText.isSelected = true
         binding.experienceText.text = vacancyDetails.experience
-        binding.workFormatText.text = vacancyDetails.workFormat?.joinToString(", ")
+        binding.workFormatText.text = viewModel.getWorkFormatText(vacancyDetails.workFormat, vacancyDetails.employment)
         binding.vacancyDescriptionText.text = vacancyDetails.description?.let {
-            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
         }
         if (!vacancyDetails.keySkills.isNullOrEmpty()) {
             binding.skillsText.text = viewModel.getSkillsText(vacancyDetails.keySkills)
