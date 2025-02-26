@@ -1,3 +1,3 @@
 package ru.practicum.android.diploma.data.dto
 
-data class EmploymentDto(val name: String?)
+data class AddressDto(val raw: String?)

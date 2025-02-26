@@ -8,7 +8,7 @@ data class VacancyDetailsDto(
     val employer: EmployerDto?,
     val area: AreaDto?,
     val experience: ExperienceDto?,
-    val employment: EmploymentDto?,
+    val employment: EmploymentFormDto?,
     @SerializedName("work_format") val workFormat: WorkFormatDto?,
     val description: String?,
     @SerializedName("key_skills") val keySkills: ArrayList<KeySkillDto?>?
