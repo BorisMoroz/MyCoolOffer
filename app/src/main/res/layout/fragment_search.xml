@@ -22,6 +22,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_end="@dimen/height_56" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="158dp" />
+
     <EditText
         android:id="@+id/input_search_vacancy"
         android:layout_width="0dp"
@@ -132,7 +139,7 @@
         app:layout_constraintBottom_toTopOf="@id/bottom_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_search_vacancy"
+        app:layout_constraintTop_toBottomOf="@+id/top_border"
         tools:ignore="UseCompoundDrawables"
         tools:visibility="visible">
 
