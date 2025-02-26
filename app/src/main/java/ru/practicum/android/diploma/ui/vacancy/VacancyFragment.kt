@@ -156,7 +156,7 @@ class VacancyFragment : Fragment() {
             .load(vacancyDetails.logoUrl)
             .transform(
                 CenterCrop(),
-                RoundedCorners((R.dimen.radius_12 * resources.displayMetrics.density).toInt())
+                RoundedCorners(requireContext().resources.getDimensionPixelSize(R.dimen.radius_12))
             )
             .placeholder(R.drawable.vacancy_placeholder)
             .into(binding.vacancyCardImage)
