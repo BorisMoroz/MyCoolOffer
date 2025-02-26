@@ -12,8 +12,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/vacancy_search"
-        app:menu="@menu/filters" />
+        app:menu="@menu/filters"
+        app:title="@string/vacancy_search" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_border"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/height_56" />
 
     <EditText
         android:id="@+id/input_search_vacancy"
@@ -58,8 +65,8 @@
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         android:clipToPadding="false"
-        android:paddingTop="36dp"
         android:orientation="vertical"
+        android:paddingTop="36dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/append_progress"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,10 +102,10 @@
         android:layout_gravity="center"
         android:indeterminateTint="@color/yp_blue"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/list_vacancies"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/list_vacancies"
+        app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
     <ProgressBar
@@ -122,10 +129,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_search_vacancy"
         tools:ignore="UseCompoundDrawables"
         tools:visibility="visible">
 
@@ -138,7 +145,6 @@
             tools:src="@drawable/img_placeholder_connection_error" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/text_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

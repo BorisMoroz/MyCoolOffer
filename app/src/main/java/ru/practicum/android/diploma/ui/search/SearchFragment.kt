@@ -189,9 +189,9 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
         binding.placeholder.setImageResource(R.drawable.img_placeholder_search_server_error)
+        binding.placeholder.visibility = View.VISIBLE
         binding.textPlaceholder.visibility = View.VISIBLE
         binding.textPlaceholder.text = getString(R.string.server_error)
-        binding.containerPlaceholder.visibility = View.VISIBLE
         binding.resultSearch.visibility = View.GONE
         hideKeyboard()
     }
@@ -231,6 +231,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.placeholder.setImageResource(R.drawable.img_placeholder_main)
         binding.textPlaceholder.visibility = View.GONE
         binding.containerPlaceholder.visibility = View.VISIBLE
+        binding.placeholder.visibility = View.VISIBLE
+        binding.textPlaceholder.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
         hideKeyboard()
     }
