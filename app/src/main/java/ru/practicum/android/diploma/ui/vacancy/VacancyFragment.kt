@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -145,7 +146,7 @@ class VacancyFragment : Fragment() {
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
-        url = URL + { vacancyDetails.vacancyId }
+        url = URL + vacancyDetails.vacancyId
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
             vacancyDetails.salaryFrom,
@@ -154,6 +155,8 @@ class VacancyFragment : Fragment() {
         )
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .transform(
                 CenterCrop(),
                 RoundedCorners(requireContext().resources.getDimensionPixelSize(R.dimen.radius_12))

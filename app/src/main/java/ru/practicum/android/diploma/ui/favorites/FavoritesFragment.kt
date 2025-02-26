@@ -78,16 +78,18 @@ class FavoritesFragment : Fragment() {
         binding.apply {
             favouritesPlaceholder.setImageResource(R.drawable.img_placeholder_favourites_error)
             favouritesPlaceholderText.text = getString(R.string.empty_favourite_list)
-            favouritesPlaceholder.isVisible = true
-            favouritesPlaceholderText.isVisible = true
+            favouritesContainerPlaceholder.isVisible = true
+//            favouritesPlaceholder.isVisible = true
+//            favouritesPlaceholderText.isVisible = true
             listVacancies.isGone = true
         }
     }
 
     private fun showVacancyList() {
         binding.apply {
-            favouritesPlaceholder.isGone = true
-            favouritesPlaceholderText.isGone = true
+            favouritesContainerPlaceholder.isVisible = false
+//            favouritesPlaceholder.isGone = true
+//            favouritesPlaceholderText.isGone = true
             listVacancies.isVisible = true
         }
     }
@@ -96,8 +98,9 @@ class FavoritesFragment : Fragment() {
         binding.apply {
             favouritesPlaceholder.setImageResource(R.drawable.img_placeholder_search_error)
             favouritesPlaceholderText.text = getString(R.string.search_error)
-            favouritesPlaceholder.isVisible = true
-            favouritesPlaceholderText.isVisible = true
+            favouritesContainerPlaceholder.isVisible = true
+//            favouritesPlaceholder.isVisible = true
+//            favouritesPlaceholderText.isVisible = true
             listVacancies.isGone = true
         }
     }

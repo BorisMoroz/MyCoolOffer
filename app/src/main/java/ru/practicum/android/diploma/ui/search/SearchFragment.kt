@@ -176,6 +176,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
         binding.placeholder.setImageResource(R.drawable.img_placeholder_connection_error)
+        binding.textPlaceholder.visibility = View.VISIBLE
         binding.textPlaceholder.text = getString(R.string.connection_error)
         binding.containerPlaceholder.visibility = View.VISIBLE
         binding.resultSearch.visibility = View.GONE
@@ -188,8 +189,9 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
         binding.placeholder.setImageResource(R.drawable.img_placeholder_search_server_error)
+        binding.placeholder.visibility = View.VISIBLE
+        binding.textPlaceholder.visibility = View.VISIBLE
         binding.textPlaceholder.text = getString(R.string.server_error)
-        binding.containerPlaceholder.visibility = View.VISIBLE
         binding.resultSearch.visibility = View.GONE
         hideKeyboard()
     }
@@ -213,6 +215,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
         binding.placeholder.setImageResource(R.drawable.img_placeholder_search_error)
+        binding.textPlaceholder.visibility = View.VISIBLE
         binding.textPlaceholder.text = getString(R.string.search_error)
         binding.containerPlaceholder.visibility = View.VISIBLE
         binding.resultSearch.text = getString(R.string.noSuchVacancies)
@@ -226,8 +229,10 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.resultSearch.visibility = View.GONE
         binding.listVacancies.visibility = View.GONE
         binding.placeholder.setImageResource(R.drawable.img_placeholder_main)
-        binding.textPlaceholder.text = ""
+        binding.textPlaceholder.visibility = View.GONE
         binding.containerPlaceholder.visibility = View.VISIBLE
+        binding.placeholder.visibility = View.VISIBLE
+        binding.textPlaceholder.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
         hideKeyboard()
     }
@@ -262,7 +267,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private companion object {
 
         const val SEARCH_FRAGMENT = "SearchFragment"
-        const val SELECTED_VACANCY = "selectedVacancy"
         private const val SINGULAR_DIGIT = 1
         private const val SINGULAR_EXCEPTION = 11
         private const val TEN = 10
