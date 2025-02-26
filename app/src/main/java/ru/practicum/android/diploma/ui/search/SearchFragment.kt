@@ -267,7 +267,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private companion object {
 
         const val SEARCH_FRAGMENT = "SearchFragment"
-        const val SELECTED_VACANCY = "selectedVacancy"
         private const val SINGULAR_DIGIT = 1
         private const val SINGULAR_EXCEPTION = 11
         private const val TEN = 10
