@@ -255,10 +255,13 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     override fun onVacancyClick(vacancy: Vacancy) {
         // Нужно реализовать передачу данных в VacancyFragment
-        findNavController().navigate(SearchFragmentDirections.actionSearchFragmentToVacancyFragment())
+        val action = SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.vacancyId, SEARCH_FRAGMENT)
+        findNavController().navigate(action)
     }
 
-    companion object {
+    private companion object {
+
+        const val SEARCH_FRAGMENT = "SearchFragment"
         const val SELECTED_VACANCY = "selectedVacancy"
         private const val SINGULAR_DIGIT = 1
         private const val SINGULAR_EXCEPTION = 11

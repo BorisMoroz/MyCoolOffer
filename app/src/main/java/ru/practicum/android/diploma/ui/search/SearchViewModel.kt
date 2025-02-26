@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
@@ -86,6 +87,11 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
 
     fun stopSearch() {
         searchJob?.cancel()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel()
     }
 
     companion object {

@@ -47,6 +47,7 @@ class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : Vacanc
         if (response.resultCode == NETWORK_OK) {
             val vacancyDetailsResponse = response as VacancyDetailsResponse
             val vacancyDetails = VacancyDetails(
+                vacancyDetailsResponse.id,
                 vacancyDetailsResponse.name,
                 vacancyDetailsResponse.salary?.from,
                 vacancyDetailsResponse.salary?.to,
