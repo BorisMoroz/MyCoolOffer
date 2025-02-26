@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.target.Target
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.Converter
@@ -27,8 +30,7 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 CenterCrop(),
                 RoundedCorners(itemView.context.resources.getDimensionPixelSize(R.dimen.radius_12))
             )
-            .placeholder(R.drawable.img_job_placeholder)
-            .error(R.drawable.img_job_placeholder)
+            .placeholder(R.drawable.vacancy_placeholder)
             .into(image)
         vacancyTitle.text = model.area?.let { Converter.formatVacancyName(model.vacancyName, it) }
         company.text = model.employer

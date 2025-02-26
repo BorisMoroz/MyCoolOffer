@@ -11,10 +11,11 @@
         android:id="@+id/image"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/rounded_item"
+        android:background="@drawable/rounded_corners"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription"
+        android:padding="@dimen/width_1"
         tools:src="@drawable/img_job_placeholder" />
 
     <TextView

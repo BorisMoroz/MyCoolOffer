@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -153,8 +154,10 @@ class VacancyFragment : Fragment() {
         )
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
-            .centerCrop()
-            .transform(RoundedCorners((R.dimen.radius_12 * resources.displayMetrics.density).toInt()))
+            .transform(
+                CenterCrop(),
+                RoundedCorners((R.dimen.radius_12 * resources.displayMetrics.density).toInt())
+            )
             .placeholder(R.drawable.vacancy_placeholder)
             .into(binding.vacancyCardImage)
         binding.vacancyCardEmployerText.text = vacancyDetails.employer
