@@ -45,14 +45,16 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
 
                                 is Resource.Success -> {
                                     val response = result.data
+                                    found = if (found == -1) response.found else found
                                     maxPages = response.pages
                                     vacanciesList.addAll(response.items)
                                     currentPage++
+
                                     val content = SearchVacanciesState.Content(
                                         Vacancies(
                                             vacanciesList,
                                             currentPage,
-                                            response.found
+                                            found
                                         )
                                     )
                                     searchVacanciesState.postValue(content)
@@ -81,6 +83,7 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
         if (refresh) {
             currentPage = 1
             maxPages = 1
+            found = -1
             vacanciesList.clear()
         }
     }
@@ -95,6 +98,7 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
     }
 
     companion object {
+        private var found = -1
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val ITEMS_PER_PAGE = 20
     }
