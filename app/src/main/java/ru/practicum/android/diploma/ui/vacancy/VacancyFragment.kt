@@ -149,9 +149,12 @@ class VacancyFragment : Fragment() {
         url = URL + vacancyDetails.vacancyId
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
-            vacancyDetails.salaryFrom,
-            vacancyDetails.salaryTo,
-            vacancyDetails.currency
+            salaryFrom = vacancyDetails.salaryFrom,
+            salaryFromText = getString(R.string.from_text),
+            salaryTo = vacancyDetails.salaryTo,
+            salaryToText = getString(R.string.to_text),
+            currency = vacancyDetails.currency,
+            defaultText = getString(R.string.default_salary_text)
         )
         Glide.with(this)
             .load(vacancyDetails.logoUrl)
@@ -177,7 +180,10 @@ class VacancyFragment : Fragment() {
             HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
         }
         if (!vacancyDetails.keySkills.isNullOrEmpty()) {
-            binding.skillsText.text = viewModel.getSkillsText(vacancyDetails.keySkills)
+            binding.skillsText.text = viewModel.getSkillsText(
+                skills = vacancyDetails.keySkills,
+                keySkillsNewLine = getString(R.string.key_skills_new_line)
+            )
         } else {
             binding.skillsLayout.isVisible = false
         }

@@ -10,7 +10,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.util.State
 
 class FavouritesViewModel(
     private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor

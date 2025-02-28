@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
@@ -45,13 +46,20 @@ class VacancyViewModel(
         }
     }
 
-    fun getSalaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?): String {
+    fun getSalaryText(
+        salaryFrom: Int?,
+        salaryFromText: String,
+        salaryTo: Int?,
+        salaryToText: String,
+        currency: String?,
+        defaultText: String
+    ): String {
         val salaryText = StringBuilder()
         if (salaryFrom != null) {
-            salaryText.append("$FROM_TEXT$salaryFrom ")
+            salaryText.append("$salaryFromText$salaryFrom ")
         }
         if (salaryTo != null) {
-            salaryText.append("$TO_TEXT$salaryTo ")
+            salaryText.append("$salaryToText$salaryTo")
         }
         if (currency != null) {
             when (currency) {
@@ -67,14 +75,14 @@ class VacancyViewModel(
                 "UAH" -> salaryText.append("₴")
             }
         }
-        return if (salaryText.isEmpty()) DEFAULT_SALARY_TEXT else salaryText.toString()
+        return if (salaryText.isEmpty()) defaultText else salaryText.toString()
     }
 
-    fun getSkillsText(skills: List<String?>): String {
+    fun getSkillsText(skills: List<String?>, keySkillsNewLine: String): String {
         val skillsText = StringBuilder()
         for (skill in skills) {
             if (skill != null) {
-                skillsText.append(KEY_SKILLS_NEW_LINE_TEXT).append(skill).append("\n")
+                skillsText.append(keySkillsNewLine).append(skill).append("\n")
             }
         }
         return skillsText.toString()
@@ -124,12 +132,5 @@ class VacancyViewModel(
             workFormatText.append(employment)
         }
         return workFormatText.toString()
-    }
-
-    companion object {
-        const val FROM_TEXT = "от "
-        const val TO_TEXT = "до "
-        const val DEFAULT_SALARY_TEXT = "Уровень дохода не указан"
-        const val KEY_SKILLS_NEW_LINE_TEXT = "   •   "
     }
 }
