@@ -23,6 +23,7 @@ import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 
+
 class SearchFragment : Fragment(), OnVacancyClickListener {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!

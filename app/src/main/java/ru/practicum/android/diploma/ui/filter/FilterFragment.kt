@@ -28,7 +28,7 @@ class FilterFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.button2.setOnClickListener {
+       /* binding.button2.setOnClickListener {
             findNavController().navigate(FilterFragmentDirections.actionFilterFragmentToWorkplaceFragment())
         }
 
@@ -38,7 +38,7 @@ class FilterFragment : Fragment() {
 
         binding.button4.setOnClickListener {
             findNavController().navigateUp()
-        }
+        }*/
     }
 
     override fun onDestroyView() {
