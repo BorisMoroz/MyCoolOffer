@@ -146,15 +146,17 @@ class VacancyFragment : Fragment() {
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
+        viewModel.setSalaryTextValues(
+            salaryFromTextValue = getString(R.string.from_text),
+            salaryToTextValue = getString(R.string.to_text),
+            defaultSalaryTextValue = getString(R.string.default_salary_text)
+        )
         url = URL + vacancyDetails.vacancyId
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
             salaryFrom = vacancyDetails.salaryFrom,
-            salaryFromText = getString(R.string.from_text),
             salaryTo = vacancyDetails.salaryTo,
-            salaryToText = getString(R.string.to_text),
             currency = vacancyDetails.currency,
-            defaultText = getString(R.string.default_salary_text)
         )
         Glide.with(this)
             .load(vacancyDetails.logoUrl)

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.interactor.FavouriteVacanciesInteractor
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
@@ -16,6 +15,11 @@ class VacancyViewModel(
     private val vacanciesInteractor: VacanciesInteractor,
     private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
 ) : ViewModel() {
+
+    private var salaryFromText = EMPTY_STRING
+    private var salaryToText = EMPTY_STRING
+    private var defaultSalaryText = EMPTY_STRING
+
     private var vacancyDetailsState = MutableLiveData<VacancyDetailsState?>()
     fun getVacancyDetailsState(): LiveData<VacancyDetailsState?> = vacancyDetailsState
 
@@ -46,13 +50,20 @@ class VacancyViewModel(
         }
     }
 
+    fun setSalaryTextValues(
+        salaryFromTextValue: String,
+        salaryToTextValue: String,
+        defaultSalaryTextValue: String
+    ) {
+        salaryFromText = salaryFromTextValue
+        salaryToText = salaryToTextValue
+        defaultSalaryText = defaultSalaryTextValue
+    }
+
     fun getSalaryText(
         salaryFrom: Int?,
-        salaryFromText: String,
         salaryTo: Int?,
-        salaryToText: String,
-        currency: String?,
-        defaultText: String
+        currency: String?
     ): String {
         val salaryText = StringBuilder()
         if (salaryFrom != null) {
@@ -75,7 +86,7 @@ class VacancyViewModel(
                 "UAH" -> salaryText.append("₴")
             }
         }
-        return if (salaryText.isEmpty()) defaultText else salaryText.toString()
+        return if (salaryText.isEmpty()) defaultSalaryText else salaryText.toString()
     }
 
     fun getSkillsText(skills: List<String?>, keySkillsNewLine: String): String {
@@ -132,5 +143,9 @@ class VacancyViewModel(
             workFormatText.append(employment)
         }
         return workFormatText.toString()
+    }
+
+    private companion object {
+        const val EMPTY_STRING = ""
     }
 }
