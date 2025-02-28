@@ -15,8 +15,8 @@ class FavouritesViewModel(
     private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
 ) : ViewModel() {
 
-    private val vacancyListState = MutableLiveData<State.FavouriteVacancyList>()
-    fun getVacancyListState(): LiveData<State.FavouriteVacancyList> = vacancyListState
+    private val vacancyListState = MutableLiveData<FavouritesVacancyState>()
+    fun getVacancyListState(): LiveData<FavouritesVacancyState> = vacancyListState
 
     private val vacancyList = MutableLiveData<List<Vacancy>>()
     fun getVacancyList(): LiveData<List<Vacancy>> = vacancyList
@@ -28,16 +28,16 @@ class FavouritesViewModel(
                     .getAllVacancies()
                     .collect { favouriteVacancies ->
                         if (favouriteVacancies.isEmpty()) {
-                            vacancyListState.value = State.FavouriteVacancyList.EMPTY_LIST
+                            vacancyListState.value = FavouritesVacancyState.Empty
                             vacancyList.value = favouriteVacancies.reversed()
                         } else {
-                            vacancyListState.value = State.FavouriteVacancyList.SUCCESS
+                            vacancyListState.value = FavouritesVacancyState.Success
                             vacancyList.value = favouriteVacancies.reversed()
                         }
                     }
             } catch (e: SQLiteException) {
                 Log.d("SQLite", "Database exception: ${e.message}")
-                vacancyListState.value = State.FavouriteVacancyList.ERROR
+                vacancyListState.value = FavouritesVacancyState.Error
             }
         }
     }

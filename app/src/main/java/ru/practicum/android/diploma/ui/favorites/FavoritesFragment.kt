@@ -18,8 +18,8 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<FavouritesViewModel>()
-    private val favouritesNotEmptyList = State.FavouriteVacancyList.SUCCESS
-    private val favouritesEmptyList = State.FavouriteVacancyList.EMPTY_LIST
+    private val favouritesNotEmptyList = FavouritesVacancyState.Success
+    private val favouritesEmptyList = FavouritesVacancyState.Empty
     private var _adapter: FavouritesVacancyAdapter? = null
     private val adapter get() = _adapter!!
 
@@ -54,7 +54,7 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun handleVacancyListState(state: State.FavouriteVacancyList) {
+    private fun handleVacancyListState(state: FavouritesVacancyState) {
         when (state) {
             favouritesEmptyList -> showEmptyListPlaceholder()
             favouritesNotEmptyList -> showVacancyList()
@@ -78,8 +78,6 @@ class FavoritesFragment : Fragment() {
             favouritesPlaceholder.setImageResource(R.drawable.img_placeholder_favourites_error)
             favouritesPlaceholderText.text = getString(R.string.empty_favourite_list)
             favouritesContainerPlaceholder.isVisible = true
-//            favouritesPlaceholder.isVisible = true
-//            favouritesPlaceholderText.isVisible = true
             listVacancies.isGone = true
         }
     }
@@ -87,8 +85,6 @@ class FavoritesFragment : Fragment() {
     private fun showVacancyList() {
         binding.apply {
             favouritesContainerPlaceholder.isVisible = false
-//            favouritesPlaceholder.isGone = true
-//            favouritesPlaceholderText.isGone = true
             listVacancies.isVisible = true
         }
     }
@@ -98,8 +94,6 @@ class FavoritesFragment : Fragment() {
             favouritesPlaceholder.setImageResource(R.drawable.img_placeholder_search_error)
             favouritesPlaceholderText.text = getString(R.string.search_error)
             favouritesContainerPlaceholder.isVisible = true
-//            favouritesPlaceholder.isVisible = true
-//            favouritesPlaceholderText.isVisible = true
             listVacancies.isGone = true
         }
     }
