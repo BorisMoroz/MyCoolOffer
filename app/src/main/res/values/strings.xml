@@ -56,4 +56,17 @@
     <string name="noSalary">Зарплата не указана</string>
     <string name="noSuchVacancies">Таких вакансий нет</string>
 
+    <!--    Фильтрация-->
+    <string name="work_place_title">Место работы</string>
+    <string name="work_place_test">Россия, Москва</string>
+    <string name="industry_title">Отрасль</string>
+    <string name="industry_test">IT</string>
+    <string name="salary_title">Ожидаемая зарплата</string>
+    <string name="hint_text">Введите сумму</string>
+    <string name="checkbox_title">Не показывать без зарплаты</string>
+    <string name="applybutton_text">Применить</string>
+    <string name="resetbutton_text">Сбросить</string>
+
+
+
 </resources>

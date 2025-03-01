@@ -5,6 +5,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.practicum.android.diploma.BuildConfig.HH_ACCESS_TOKEN
+import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsResponse
 
@@ -26,4 +27,12 @@ interface HHApi {
     @Headers("Authorization: Bearer ${HH_ACCESS_TOKEN}", "HH-User-Agent: $APP_NAME $EMAIL")
     @GET("/vacancies/{vacancyId}")
     suspend fun getVacancyDetails(@Path("vacancyId") vacancyId: String): VacancyDetailsResponse
+
+
+    @Headers("Authorization: Bearer ${HH_ACCESS_TOKEN}", "HH-User-Agent: $APP_NAME $EMAIL")
+    @GET("/industries")
+    suspend fun searchIndustries( ): List<IndustryDto>
+
+
+
 }

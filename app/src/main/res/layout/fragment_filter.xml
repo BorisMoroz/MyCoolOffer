@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:id="@+id/workplace_layout_1"
-        android:layout_width="@dimen/width_0"
+        android:layout_width="0dp"
         android:layout_height="60dp"
 
         android:orientation="horizontal"
@@ -36,519 +36,318 @@
 
             android:layout_weight="1"
 
-
-            android:maxLines="1"
-            android:singleLine="true"
-
-            android:text="Место работы"
-
-            android:textSize="@dimen/ys_display_regular_16"
             android:fontFamily="@font/ys_display_regular"
-            />
+            android:maxLines="1"
 
+            android:singleLine="true"
+            android:text="@string/work_place_title"
+            android:textSize="@dimen/ys_display_regular_16" />
 
         <ImageView
+            android:id="@+id/button_workplace_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
 
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/margin_16"
 
             android:src="@drawable/ic_forward" />
-
-
     </LinearLayout>
-
-
-
-
-
 
     <LinearLayout
         android:id="@+id/workplace_layout_2"
-        android:layout_width="@dimen/width_0"
+        android:layout_width="0dp"
         android:layout_height="60dp"
 
         android:orientation="horizontal"
-        android:padding="0dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-
         <LinearLayout
-
             android:layout_width="0dp"
             android:layout_height="60dp"
 
-            android:orientation="vertical"
-            android:padding="0dp"
-
             android:layout_weight="1"
 
-
-            >
-
+            android:orientation="vertical">
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-
-
-                android:layout_marginLeft="16dp"
-
-                android:layout_marginTop="12.5dp"
-
-
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_12.5"
 
                 android:fontFamily="@font/ys_display_regular"
-
                 android:maxLines="1"
 
                 android:singleLine="true"
 
-                android:text="Место работы"
+                android:text="@string/work_place_title"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="@dimen/ys_display_regular_12" />
 
-                android:textSize="@dimen/ys_display_regular_12"
+            <TextView
+                android:id="@+id/workplace_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginLeft="@dimen/margin_16"
+
+                android:fontFamily="@font/ys_display_regular"
+                android:maxLines="1"
+
+                android:singleLine="true"
 
                 android:textColor="?attr/colorOnSurface"
-
-
-                />
-
-
-            <TextView
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-
-                android:layout_marginLeft="16dp"
-
-                android:fontFamily="@font/ys_display_regular"
-
-                android:maxLines="1"
-
-                android:singleLine="true"
-
-                android:text="Россия, Москва"
-
                 android:textSize="@dimen/ys_display_regular_16"
 
-                android:textColor="?attr/colorOnSurface"
-
-                />
-
-
-
+                tools:text="@string/work_place_test" />
 
         </LinearLayout>
 
-
-
-
         <ImageView
+            android:id="@+id/workplace_button_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
 
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/margin_16"
 
             android:src="@drawable/ic_close" />
-
-
     </LinearLayout>
-
-
-
-
 
     <LinearLayout
         android:id="@+id/industry_layout_1"
-        android:layout_width="@dimen/width_0"
+        android:layout_width="0dp"
         android:layout_height="60dp"
 
         android:orientation="horizontal"
-        android:padding="0dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/workplace_layout_1">
 
-
         <TextView
-
-
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
             android:layout_gravity="center"
 
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/margin_16"
 
             android:layout_weight="1"
 
             android:fontFamily="@font/ys_display_regular"
-
             android:maxLines="1"
 
             android:singleLine="true"
-
-            android:text="Отрасль"
-
-            android:textSize="@dimen/ys_display_regular_16"
-
-            />
-
+            android:text="@string/industry_title"
+            android:textSize="@dimen/ys_display_regular_16" />
 
         <ImageView
+            android:id="@+id/button_industry_forward"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
 
             android:layout_marginRight="16dp"
 
             android:src="@drawable/ic_forward" />
-
-
     </LinearLayout>
-
-
-
-
 
     <LinearLayout
         android:id="@+id/industry_layout_2"
-        android:layout_width="@dimen/width_0"
+        android:layout_width="0dp"
         android:layout_height="60dp"
 
         android:orientation="horizontal"
-        android:padding="0dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/workplace_layout_1">
 
-
         <LinearLayout
-
             android:layout_width="0dp"
             android:layout_height="60dp"
 
-            android:orientation="vertical"
-            android:padding="0dp"
-
             android:layout_weight="1"
 
-
-            >
-
+            android:orientation="vertical">
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-
-
-                android:layout_marginLeft="16dp"
-
-                android:layout_marginTop="12.5dp"
-
-
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_12.5"
 
                 android:fontFamily="@font/ys_display_regular"
-
                 android:maxLines="1"
 
                 android:singleLine="true"
-
-                android:text="Отрасль"
-
-                android:textSize="@dimen/ys_display_regular_12"
-
+                android:text="@string/industry_title"
                 android:textColor="?attr/colorOnSurface"
-
-
-                />
-
+                android:textSize="@dimen/ys_display_regular_12" />
 
             <TextView
-
+                android:id="@+id/industry_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="@dimen/margin_16"
 
                 android:fontFamily="@font/ys_display_regular"
-
                 android:maxLines="1"
 
                 android:singleLine="true"
-
-                android:text="IT"
-
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="@dimen/ys_display_regular_16"
-
-                android:textColor="?attr/colorOnSurface"
-
-                />
-
-
-
+                tools:text="@string/industry_test" />
 
         </LinearLayout>
 
-
-
-
         <ImageView
+            android:id="@+id/industry_button_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
 
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/margin_16"
 
             android:src="@drawable/ic_close" />
-
-
     </LinearLayout>
 
-
-
-
-
-
-
-
-
     <LinearLayout
-        android:id="@+id/salary_layout_1"
-        android:layout_width="@dimen/width_0"
+        android:id="@+id/salary_layout"
+        android:layout_width="0dp"
         android:layout_height="51dp"
 
-        android:orientation="horizontal"
-        android:padding="0dp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/industry_layout_1"
-
         android:layout_marginLeft="@dimen/margin_16"
+
+        android:layout_marginTop="@dimen/margin_24"
         android:layout_marginRight="@dimen/margin_16"
-
-
-        android:layout_marginTop="24dp"
-
         android:background="@drawable/rounded_item"
 
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
 
-        >
-
-
-
+        app:layout_constraintTop_toBottomOf="@id/industry_layout_1">
 
         <LinearLayout
-
             android:layout_width="0dp"
             android:layout_height="51dp"
 
-            android:orientation="vertical"
-            android:padding="0dp"
-
             android:layout_weight="1"
 
-
-            >
-
+            android:orientation="vertical">
 
             <TextView
-
+                android:id="@+id/salary_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-
-
-                android:layout_marginLeft="16dp"
-
-                android:layout_marginTop="8dp"
-
-
+                android:layout_marginLeft="@dimen/margin_16"
+                android:layout_marginTop="@dimen/margin_8"
 
                 android:fontFamily="@font/ys_display_regular"
-
                 android:maxLines="1"
 
                 android:singleLine="true"
-
-                android:text="Ожидаемая зарплата"
-
-                android:textSize="@dimen/ys_display_regular_12"
-
-
-
-
-                />
-
+                android:text="@string/salary_title"
+                android:textSize="@dimen/ys_display_regular_12" />
 
             <EditText
-
+                android:id="@+id/salary_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-
-                android:layout_marginLeft="16dp"
-
-
-                android:paddingLeft="0dp"
-                android:paddingRight="0dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-
-
-                android:fontFamily="@font/ys_display_regular"
-
-                android:maxLines="1"
-
-                android:singleLine="true"
-
-                android:hint="Введите сумму"
-
-                android:textSize="@dimen/ys_display_regular_16"
-
-                android:textColor="?attr/colorOnSurface"
-
-
-                android:textCursorDrawable="@drawable/ic_cursor"
+                android:layout_marginLeft="@dimen/margin_16"
 
                 android:background="@android:color/transparent"
+                android:fontFamily="@font/ys_display_regular"
+                android:hint="@string/hint_text"
+                android:imeOptions="actionNext"
 
                 android:inputType="number"
 
+                android:maxLines="1"
+                android:paddingLeft="@dimen/padding_0"
 
-                android:imeOptions="actionNext"
+                android:paddingTop="@dimen/padding_0"
 
+                android:paddingRight="@dimen/padding_0"
+                android:paddingBottom="@dimen/padding_0"
+                android:singleLine="true"
 
-                />
-
-
-
-
-
-
-
-
+                android:textColor="@color/yp_black"
+                android:textCursorDrawable="@drawable/ic_cursor"
+                android:textSize="@dimen/ys_display_regular_16" />
 
         </LinearLayout>
 
-
-
-
         <ImageView
+            android:id="@+id/clear_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
 
+            android:layout_marginRight="@dimen/margin_16"
 
-
-
-            android:layout_marginRight="16dp"
-
-            android:src="@drawable/ic_close" />
-
-
+            android:src="@drawable/ic_close"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
     </LinearLayout>
 
-
     <LinearLayout
-        android:layout_width="@dimen/width_0"
+        android:layout_width="0dp"
         android:layout_height="60dp"
 
         android:layout_marginTop="24dp"
         android:orientation="horizontal"
 
-        android:padding="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-
-
         app:layout_constraintStart_toStartOf="parent"
-
-
-        app:layout_constraintTop_toBottomOf="@id/salary_layout_1">
-
+        app:layout_constraintTop_toBottomOf="@id/salary_layout">
 
         <TextView
-
-
             android:layout_width="0dp"
             android:layout_height="wrap_content"
 
             android:layout_gravity="center"
 
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="@dimen/margin_16"
 
             android:layout_weight="1"
 
             android:fontFamily="@font/ys_display_regular"
-
             android:maxLines="1"
 
             android:singleLine="true"
 
-            android:text="Не показывать без зарплаты"
-
+            android:text="@string/checkbox_title"
             android:textColor="?attr/colorOnSurface"
-
-            android:textSize="@dimen/ys_display_regular_16"
-
-            />
-
+            android:textSize="@dimen/ys_display_regular_16" />
 
         <CheckBox
             android:id="@+id/salaryCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-
             android:layout_gravity="center"
 
-            android:buttonTint="?attr/colorPrimary"
-
-
-            />
-
-
-
-
-        <!--
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center_vertical"
-
-            android:layout_marginRight="16dp"
-
-            android:src="@drawable/ic_forward" />
-
--->
-
-
+            android:buttonTint="?attr/colorPrimary" />
     </LinearLayout>
-
-
-
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonApply"
@@ -556,32 +355,25 @@
         android:layout_width="0dp"
         android:layout_height="59dp"
 
-        android:layout_marginHorizontal="17dp"
-
-        android:layout_marginBottom="28dp"
+        android:layout_marginHorizontal="@dimen/margin_17"
+        android:layout_marginBottom="@dimen/margin_28"
 
         android:background="@drawable/applybutton_background"
 
         android:enabled="true"
-        android:fontFamily="@font/ys_display_medium"
-        android:text="Применить"
 
+        android:fontFamily="@font/ys_display_medium"
+        android:text="@string/applybutton_text"
         android:textAllCaps="false"
         android:textColor="?attr/colorOnPrimary"
-
-
-
         android:textSize="@dimen/ys_display_medium_16"
-        android:visibility="visible"
 
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/buttonReset"
-
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-
         tools:visibility="visible" />
-
-
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonReset"
@@ -589,123 +381,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginHorizontal="17dp"
-
-        android:layout_marginBottom="44dp"
-
-        android:padding="0dp"
-
-        android:minWidth="0dp"
-        android:minHeight="0dp"
+        android:layout_marginBottom="@dimen/margin_44"
 
         android:background="@null"
-
         android:enabled="true"
         android:fontFamily="@font/ys_display_medium"
-        android:text="Сбросить"
 
+        android:minWidth="0dp"
+
+        android:minHeight="0dp"
+
+        android:padding="@dimen/padding_0"
+        android:text="@string/resetbutton_text"
         android:textAllCaps="false"
         android:textColor="@color/yp_red"
-
-
-
         android:textSize="@dimen/ys_display_medium_16"
-        android:visibility="visible"
 
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-
         tools:visibility="visible" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--
-
-        <EditText
-            android:id="@+id/inputEditText"
-            style="@style/SearchActivityEditTextStyle"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-
-            android:background="@android:color/transparent"
-
-            android:drawableLeft="@drawable/ic_search"
-            android:drawablePadding="8dp"
-
-            android:hint="@string/search_screen_edittext_hint"
-            android:imeOptions="actionDone"
-
-            android:inputType="text"
-
-            android:maxLines="1"
-            android:paddingLeft="14dp"
-            android:singleLine="true"
-
-            android:textCursorDrawable="@drawable/blue_cursor" />
-
-    -->
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--    <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            android:text="@string/set_vacancy_place" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button2"
-            android:text="@string/set_industry" />
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button3"
-            android:text="@string/vacancy_search" />      -->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
