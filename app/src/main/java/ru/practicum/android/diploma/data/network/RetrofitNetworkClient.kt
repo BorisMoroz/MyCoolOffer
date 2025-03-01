@@ -7,9 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.data.dto.Response
-import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
-import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
+import ru.practicum.android.diploma.data.dto.requests.AreasRequest
+import ru.practicum.android.diploma.data.dto.requests.VacanciesSearchRequest
+import ru.practicum.android.diploma.data.dto.requests.VacancyDetailsRequest
+import ru.practicum.android.diploma.data.dto.responses.Response
 import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 import ru.practicum.android.diploma.util.NETWORK_ERROR
 import ru.practicum.android.diploma.util.NETWORK_OK
@@ -52,6 +53,13 @@ class RetrofitNetworkClient(
             is VacancyDetailsRequest -> {
                 withContext(Dispatchers.IO) {
                     response = hhApi.getVacancyDetails(dto.vacancyId)
+                    response.apply { resultCode = NETWORK_OK }
+                }
+            }
+
+            is AreasRequest -> {
+                withContext(Dispatchers.IO) {
+                    response = hhApi.getAreas(dto.id)
                     response.apply { resultCode = NETWORK_OK }
                 }
             }
