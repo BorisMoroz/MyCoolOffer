@@ -14,11 +14,13 @@
 
     <!--    Ошибки-->
     <string name="connection_error">Нет интернета</string>
+    <string name="connection_error_1">Проверьте подключение к интернету</string>
     <string name="search_error">Не удалось получить\nсписок вакансий</string>
     <string name="region_search_error">Такого региона нет</string>
     <string name="region_list_error">Не удалось получить\nсписок</string>
     <string name="vacancy_error">Вакансия не найдена или\nудалена</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="server_error_1">Произошла ошибка</string>
     <string name="empty_favourite_list">Список пуст</string>
 
     <!--    Навигация-->

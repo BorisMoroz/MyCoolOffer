@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -173,26 +174,38 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private fun showInternetConnectionError() {
         binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
-        binding.resultSearch.visibility = View.GONE
-        binding.listVacancies.visibility = View.GONE
-        binding.placeholder.setImageResource(R.drawable.img_placeholder_connection_error)
-        binding.textPlaceholder.visibility = View.VISIBLE
-        binding.textPlaceholder.text = getString(R.string.connection_error)
-        binding.containerPlaceholder.visibility = View.VISIBLE
-        binding.resultSearch.visibility = View.GONE
+        if (adapter?.itemCount?.equals(0) == true) {
+            binding.resultSearch.visibility = View.GONE
+            binding.listVacancies.visibility = View.GONE
+            binding.placeholder.setImageResource(R.drawable.img_placeholder_connection_error)
+            binding.textPlaceholder.text = getString(R.string.connection_error)
+            binding.textPlaceholder.visibility = View.VISIBLE
+            binding.containerPlaceholder.visibility = View.VISIBLE
+        } else {
+            binding.containerPlaceholder.visibility = View.GONE
+            binding.resultSearch.visibility = View.VISIBLE
+            binding.listVacancies.visibility = View.VISIBLE
+            Toast.makeText(requireContext(), getString(R.string.connection_error_1), Toast.LENGTH_LONG).show()
+        }
         hideKeyboard()
     }
 
     private fun showServerError() {
         binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
-        binding.resultSearch.visibility = View.GONE
-        binding.listVacancies.visibility = View.GONE
-        binding.placeholder.setImageResource(R.drawable.img_placeholder_search_server_error)
-        binding.placeholder.visibility = View.VISIBLE
-        binding.textPlaceholder.visibility = View.VISIBLE
-        binding.textPlaceholder.text = getString(R.string.server_error)
-        binding.resultSearch.visibility = View.GONE
+        if (adapter?.itemCount?.equals(0) == true) {
+            binding.resultSearch.visibility = View.GONE
+            binding.listVacancies.visibility = View.GONE
+            binding.placeholder.setImageResource(R.drawable.img_placeholder_search_server_error)
+            binding.textPlaceholder.text = getString(R.string.server_error)
+            binding.textPlaceholder.visibility = View.VISIBLE
+            binding.containerPlaceholder.visibility = View.VISIBLE
+        } else {
+            binding.containerPlaceholder.visibility = View.GONE
+            binding.resultSearch.visibility = View.VISIBLE
+            binding.listVacancies.visibility = View.VISIBLE
+            Toast.makeText(requireContext(), getString(R.string.server_error_1), Toast.LENGTH_LONG).show()
+        }
         hideKeyboard()
     }
 
