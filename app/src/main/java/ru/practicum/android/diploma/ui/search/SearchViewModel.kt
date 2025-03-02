@@ -98,6 +98,10 @@ class SearchViewModel(
         searchJob?.cancel()
     }
 
+    fun resetState() {
+        searchVacanciesState.value = SearchVacanciesState.Default
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()

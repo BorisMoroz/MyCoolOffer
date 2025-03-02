@@ -69,7 +69,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             binding.inputSearchVacancy.text.clear()
             viewModel.stopSearch()
             adapter?.clearVacancies()
-            showDefaultPicture()
+            viewModel.resetState()
+//            showDefaultPicture()
         }
 
         viewModel.getSearchVacanciesState().observe(viewLifecycleOwner) { _state ->
@@ -271,7 +272,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     override fun onVacancyClick(vacancy: Vacancy) {
-        // Нужно реализовать передачу данных в VacancyFragment
         val action = SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.vacancyId, SEARCH_FRAGMENT)
         findNavController().navigate(action)
     }
