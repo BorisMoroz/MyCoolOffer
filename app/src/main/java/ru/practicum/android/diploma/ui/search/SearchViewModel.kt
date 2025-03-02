@@ -13,16 +13,18 @@ import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+class SearchViewModel(
+    private val vacanciesInteractor: VacanciesInteractor
+) : ViewModel() {
     private var searchJob: Job? = null
-    private var searchVacanciesState = MutableLiveData<SearchVacanciesState?>(SearchVacanciesState.Default)
+    private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
 
     private var currentPage = 1
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
     private var isNextPageLoading = false
 
-    fun getSearchVacanciesState(): LiveData<SearchVacanciesState?> = searchVacanciesState
+    fun getSearchVacanciesState(): LiveData<SearchVacanciesState> = searchVacanciesState
 
     fun searchVacancies(query: String, refresh: Boolean = false) {
         if (!isNextPageLoading && query.isNotEmpty()) {

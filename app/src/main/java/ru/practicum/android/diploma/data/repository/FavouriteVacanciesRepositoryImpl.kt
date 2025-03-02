@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.data.database.dao.VacancyDao
 import ru.practicum.android.diploma.data.database.entity.VacancyEntity
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -22,9 +23,10 @@ class FavouriteVacanciesRepositoryImpl(
         return vacancyDao.checkVacancyIsFavourite(vacancyId)
     }
 
-    override fun getAllVacancies(): Flow<List<Vacancy>> = flow {
-        val tracks = vacancyDao.getAllVacancies()
-        emit(convertFromVacancyEntity(tracks))
+    override fun getAllVacancies(): Flow<List<Vacancy>> {
+        return vacancyDao.getAllVacancies().map { list ->
+            convertFromVacancyEntity(list)
+        }
     }
 
     override suspend fun removeFromFavourites(vacancy: VacancyDetails) {
