@@ -37,9 +37,8 @@ class CountryFragment : Fragment(), OnCountryClickListener {
         _binding = null
     }
 
-
-    //Тестовый метод для генерации данных
-    private fun getCountryListForTest(): List<Country>{
+    // Тестовый метод для генерации данных
+    private fun getCountryListForTest(): List<Country> {
         var list = mutableListOf<Country>()
         list.add(Country("1", "Россия"))
         list.add(Country("2", "Украина"))

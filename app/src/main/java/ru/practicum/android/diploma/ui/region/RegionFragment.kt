@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
-import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
-import ru.practicum.android.diploma.ui.country.CountryFragmentDirections
 
 class RegionFragment : Fragment(), OnRegionClickListener {
     private var _binding: FragmentRegionBinding? = null
@@ -43,7 +41,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
         _binding = null
     }
 
-    //Тестовый метод для генерации данных
+    // Тестовый метод для генерации данных
     private fun getRegionListForTest(): List<Region> {
         var list = mutableListOf<Region>()
         list.add(Region("1", "Москва"))

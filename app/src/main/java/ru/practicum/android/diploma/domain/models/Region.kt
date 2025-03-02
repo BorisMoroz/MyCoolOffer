@@ -7,4 +7,4 @@ import kotlinx.parcelize.Parcelize
 data class Region(
     val regionId: String,
     val regionName: String,
-): Parcelable
+) : Parcelable

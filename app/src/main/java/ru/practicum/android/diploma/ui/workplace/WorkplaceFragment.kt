@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.practicum.android.diploma.databinding.FragmentWorkplaceBinding
 
-
 class WorkplaceFragment : Fragment() {
     private var _binding: FragmentWorkplaceBinding? = null
     private val binding get() = _binding!!
@@ -27,10 +26,10 @@ class WorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!args.countryId.isNullOrEmpty()){
+        if (!args.countryId.isNullOrEmpty()) {
             binding.countryEditText.setText(args.countryId)
         }
-        if (!args.regionId.isNullOrEmpty()){
+        if (!args.regionId.isNullOrEmpty()) {
             binding.regionEditText.setText(args.regionId)
         }
         binding.toolbar.setNavigationOnClickListener {
