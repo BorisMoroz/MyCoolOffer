@@ -28,9 +28,9 @@ class CountryFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.button2.setOnClickListener {
-            findNavController().navigateUp()
-        }
+//        binding.button2.setOnClickListener {
+//            findNavController().navigateUp()
+//        }
     }
 
     override fun onDestroyView() {

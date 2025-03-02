@@ -63,5 +63,6 @@
     <string name="noSuchVacancies">Таких вакансий нет</string>
     <string name="country">Страна</string>
     <string name="region">Регион</string>
+    <string name="type_region">Введите регион</string>
 
 </resources>
