@@ -28,17 +28,17 @@ class WorkplaceFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.button2.setOnClickListener {
-            findNavController().navigate(WorkplaceFragmentDirections.actionWorkplaceFragmentToCountryFragment())
-        }
-
-        binding.button3.setOnClickListener {
-            findNavController().navigate(WorkplaceFragmentDirections.actionWorkplaceFragmentToRegionFragment())
-        }
-
-        binding.button4.setOnClickListener {
-            findNavController().navigateUp()
-        }
+//        binding.button2.setOnClickListener {
+//            findNavController().navigate(WorkplaceFragmentDirections.actionWorkplaceFragmentToCountryFragment())
+//        }
+//
+//        binding.button3.setOnClickListener {
+//            findNavController().navigate(WorkplaceFragmentDirections.actionWorkplaceFragmentToRegionFragment())
+//        }
+//
+//        binding.button4.setOnClickListener {
+//            findNavController().navigateUp()
+//        }
     }
 
     override fun onDestroyView() {
