@@ -10,6 +10,8 @@ import ru.practicum.android.diploma.domain.models.Resource
 
 class IndustryViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
 
+    private var industriesLoaded = false
+
     private var getIndustriesState = MutableLiveData<GetIndustriesState?>()
 
     fun getGetIndustriesState(): LiveData<GetIndustriesState?> = getIndustriesState
@@ -32,5 +34,19 @@ class IndustryViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewMode
                 }
         }
     }
+
+
+    fun searchIndustries(text: String){
+
+
+
+
+
+
+
+
+    }
+
+
 
 }

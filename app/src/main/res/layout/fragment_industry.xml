@@ -47,7 +47,7 @@
 
             android:imeOptions="actionNext"
 
-            android:inputType="number"
+            android:inputType="text"
             android:maxLines="1"
 
             android:singleLine="true"
@@ -78,6 +78,8 @@
         android:layout_marginBottom="@dimen/margin_16"
         app:layout_constraintBottom_toTopOf="@id/buttonApply"
         app:layout_constraintTop_toBottomOf="@id/search_layout"
+
+        android:visibility="visible"
 
         tools:listitem="@layout/industry_item" />
 
@@ -114,7 +116,9 @@
             android:singleLine="true"
             android:text="@string/no_industry_placeholder_text"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="@dimen/ys_display_medium_22" />
+            android:textSize="@dimen/ys_display_medium_22"
+            android:visibility="gone"
+            tools:visibility="visible"/>
     </LinearLayout>
 
     <LinearLayout
@@ -150,7 +154,9 @@
             android:singleLine="true"
             android:text="@string/industry_list_error_placeholder_text"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="@dimen/ys_display_medium_22" />
+            android:textSize="@dimen/ys_display_medium_22"
+            android:visibility="gone"
+            tools:visibility="visible"/>
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

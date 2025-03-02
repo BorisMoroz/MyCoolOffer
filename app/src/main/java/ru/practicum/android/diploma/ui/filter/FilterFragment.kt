@@ -139,11 +139,13 @@ class FilterFragment : Fragment() {
         binding.workplaceLayout1.setOnClickListener {
             inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
             binding.salaryEdittext.clearFocus()
+            findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
         }
 
         binding.industryLayout1.setOnClickListener {
             inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
             binding.salaryEdittext.clearFocus()
+            findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
         }
 
         binding.clearButton.setOnClickListener {
@@ -195,25 +197,6 @@ class FilterFragment : Fragment() {
             inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
             binding.salaryEdittext.clearFocus()
         }
-
-
-
-        binding.buttonWorkplaceForward.setOnClickListener {
-
-
-
-        }
-
-        binding.buttonIndustryForward.setOnClickListener {
-
-
-            findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
-
-
-
-        }
-
-
 
         binding.buttonReset.setOnClickListener {
             binding.workplaceLayout1.visibility = View.VISIBLE
