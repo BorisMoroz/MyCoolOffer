@@ -207,6 +207,9 @@ class FilterFragment : Fragment() {
         binding.buttonIndustryForward.setOnClickListener {
 
 
+            findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
+
+
 
         }
 

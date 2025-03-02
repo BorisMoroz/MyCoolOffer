@@ -2,11 +2,15 @@ package ru.practicum.android.diploma.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.dto.IndustriesGetRequest
+import ru.practicum.android.diploma.data.dto.IndustriesGetResponse
 import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.network.NetworkClient
+import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -63,6 +67,28 @@ class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : Vacanc
                 vacancyDetailsResponse.keySkills?.map { it?.name }
             )
             emit(Resource.Success(vacancyDetails))
+        } else {
+            emit(Resource.Error(response.resultCode))
+        }
+    }
+
+    override fun getIndustries(): Flow<Resource<Industries>> = flow {
+        val response = networkClient.doRequest(IndustriesGetRequest())
+
+        if (response.resultCode == NETWORK_OK) {
+            val industriesDto = (response as IndustriesGetResponse).industries
+            val industries = mutableListOf<Industry>()
+
+            for(industryDto in industriesDto){
+                industries.add(Industry( industryId = industryDto.id, industryName = industryDto.name))
+                if(industryDto.industries != null) {
+                    for(subIndustryDto in industryDto.industries){
+                        industries.add(Industry( industryId = subIndustryDto.id, industryName = subIndustryDto.name))
+                    }
+                }
+            }
+            industries.sortBy{it.industryName}
+            emit(Resource.Success(Industries(industries)))
         } else {
             emit(Resource.Error(response.resultCode))
         }

@@ -67,6 +67,9 @@
     <string name="applybutton_text">Применить</string>
     <string name="resetbutton_text">Сбросить</string>
 
-
-
+    <!--    Отрасли-->
+    <string name="industry_hint_text">Введите отрасль</string>
+    <string name="no_industry_placeholder_text">Такой отрасли нет</string>
+    <string name="industry_list_error_placeholder_text">Не удалось получить\nсписок</string>
+    <string name="industries_item_test_text">Электронно-вычислительная, оптическая, контрольно-измерительная техника, радиоэлектроника, автоматика (продвижение, оптовая торговля)</string>
 </resources>

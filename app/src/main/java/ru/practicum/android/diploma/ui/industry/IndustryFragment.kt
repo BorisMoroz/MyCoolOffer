@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
+import ru.practicum.android.diploma.ui.search.SearchViewModel
 
 class IndustryFragment : Fragment() {
     private var _binding: FragmentIndustryBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModel<IndustryViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,7 +33,12 @@ class IndustryFragment : Fragment() {
         }
 
         binding.button2.setOnClickListener {
-            findNavController().navigateUp()
+
+
+            viewModel.getIndustries()
+
+
+           // findNavController().navigateUp()
         }
     }
 
