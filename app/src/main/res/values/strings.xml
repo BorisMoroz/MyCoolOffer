@@ -64,5 +64,6 @@
     <string name="country">Страна</string>
     <string name="region">Регион</string>
     <string name="type_region">Введите регион</string>
+    <string name="no_such_region">Такого региона нет</string>
 
 </resources>
