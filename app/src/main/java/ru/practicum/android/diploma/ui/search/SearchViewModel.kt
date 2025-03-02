@@ -13,54 +13,62 @@ import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.domain.models.Vacancy
 
-class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel() {
+class SearchViewModel(
+    private val vacanciesInteractor: VacanciesInteractor
+) : ViewModel() {
     private var searchJob: Job? = null
-    private var searchVacanciesState = MutableLiveData<SearchVacanciesState?>(SearchVacanciesState.Default)
+    private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
 
     private var currentPage = 1
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
     private var isNextPageLoading = false
 
-    fun getSearchVacanciesState(): LiveData<SearchVacanciesState?> = searchVacanciesState
+    fun getSearchVacanciesState(): LiveData<SearchVacanciesState> = searchVacanciesState
 
     fun searchVacancies(query: String, refresh: Boolean = false) {
         if (!isNextPageLoading && query.isNotEmpty()) {
             isRefresh(refresh)
 
-            if (currentPage <= maxPages) {
-                searchVacanciesState.postValue(SearchVacanciesState.Loading)
-                isNextPageLoading = true
+            checkCurrentPageAndSearchVacancies(query)
+        }
+    }
 
-                viewModelScope.launch {
-                    vacanciesInteractor
-                        .searchVacancies(text = query, page = currentPage, perPage = ITEMS_PER_PAGE)
-                        .collect { result ->
-                            when (result) {
-                                is Resource.Error -> {
-                                    val errorCode = SearchVacanciesState.Error(result.errorCode)
-                                    searchVacanciesState.postValue(errorCode)
-                                    isNextPageLoading = false
-                                }
+    private fun checkCurrentPageAndSearchVacancies(query: String) {
+        if (currentPage <= maxPages) {
+            searchVacanciesState.postValue(SearchVacanciesState.Loading)
+            isNextPageLoading = true
 
-                                is Resource.Success -> {
-                                    val response = result.data
-                                    maxPages = response.pages
-                                    vacanciesList.addAll(response.items)
-                                    currentPage++
-                                    val content = SearchVacanciesState.Content(
-                                        Vacancies(
-                                            vacanciesList,
-                                            currentPage,
-                                            response.found
-                                        )
+            viewModelScope.launch {
+                vacanciesInteractor
+                    .searchVacancies(text = query, page = currentPage, perPage = ITEMS_PER_PAGE)
+                    .collect { result ->
+                        when (result) {
+                            is Resource.Error -> {
+                                val errorCode = SearchVacanciesState.Error(result.errorCode)
+                                searchVacanciesState.postValue(errorCode)
+                                isNextPageLoading = false
+                            }
+
+                            is Resource.Success -> {
+                                val response = result.data
+                                found = if (found == -1) response.found else found
+                                maxPages = response.pages
+                                vacanciesList.addAll(response.items)
+                                currentPage++
+
+                                val content = SearchVacanciesState.Content(
+                                    Vacancies(
+                                        vacanciesList,
+                                        currentPage,
+                                        found
                                     )
-                                    searchVacanciesState.postValue(content)
-                                    isNextPageLoading = false
-                                }
+                                )
+                                searchVacanciesState.postValue(content)
+                                isNextPageLoading = false
                             }
                         }
-                }
+                    }
             }
         }
     }
@@ -81,6 +89,7 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
         if (refresh) {
             currentPage = 1
             maxPages = 1
+            found = -1
             vacanciesList.clear()
         }
     }
@@ -89,12 +98,17 @@ class SearchViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewModel(
         searchJob?.cancel()
     }
 
+    fun resetState() {
+        searchVacanciesState.value = SearchVacanciesState.Default
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
     }
 
     companion object {
+        private var found = -1
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val ITEMS_PER_PAGE = 20
     }

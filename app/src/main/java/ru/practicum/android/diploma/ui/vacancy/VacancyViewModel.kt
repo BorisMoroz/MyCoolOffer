@@ -15,6 +15,11 @@ class VacancyViewModel(
     private val vacanciesInteractor: VacanciesInteractor,
     private val favouriteVacanciesInteractor: FavouriteVacanciesInteractor
 ) : ViewModel() {
+
+    private var salaryFromText = EMPTY_STRING
+    private var salaryToText = EMPTY_STRING
+    private var defaultSalaryText = EMPTY_STRING
+
     private var vacancyDetailsState = MutableLiveData<VacancyDetailsState?>()
     fun getVacancyDetailsState(): LiveData<VacancyDetailsState?> = vacancyDetailsState
 
@@ -45,13 +50,27 @@ class VacancyViewModel(
         }
     }
 
-    fun getSalaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?): String {
+    fun setSalaryTextValues(
+        salaryFromTextValue: String,
+        salaryToTextValue: String,
+        defaultSalaryTextValue: String
+    ) {
+        salaryFromText = salaryFromTextValue
+        salaryToText = salaryToTextValue
+        defaultSalaryText = defaultSalaryTextValue
+    }
+
+    fun getSalaryText(
+        salaryFrom: Int?,
+        salaryTo: Int?,
+        currency: String?
+    ): String {
         val salaryText = StringBuilder()
         if (salaryFrom != null) {
-            salaryText.append("$FROM_TEXT$salaryFrom ")
+            salaryText.append("$salaryFromText$salaryFrom ")
         }
         if (salaryTo != null) {
-            salaryText.append("$TO_TEXT$salaryTo ")
+            salaryText.append("$salaryToText$salaryTo")
         }
         if (currency != null) {
             when (currency) {
@@ -67,14 +86,14 @@ class VacancyViewModel(
                 "UAH" -> salaryText.append("₴")
             }
         }
-        return if (salaryText.isEmpty()) DEFAULT_SALARY_TEXT else salaryText.toString()
+        return if (salaryText.isEmpty()) defaultSalaryText else salaryText.toString()
     }
 
-    fun getSkillsText(skills: List<String?>): String {
+    fun getSkillsText(skills: List<String?>, keySkillsNewLine: String): String {
         val skillsText = StringBuilder()
         for (skill in skills) {
             if (skill != null) {
-                skillsText.append(KEY_SKILLS_NEW_LINE_TEXT).append(skill).append("\n")
+                skillsText.append(keySkillsNewLine).append(skill).append("\n")
             }
         }
         return skillsText.toString()
@@ -126,10 +145,7 @@ class VacancyViewModel(
         return workFormatText.toString()
     }
 
-    companion object {
-        const val FROM_TEXT = "от "
-        const val TO_TEXT = "до "
-        const val DEFAULT_SALARY_TEXT = "Уровень дохода не указан"
-        const val KEY_SKILLS_NEW_LINE_TEXT = "   •   "
+    private companion object {
+        const val EMPTY_STRING = ""
     }
 }

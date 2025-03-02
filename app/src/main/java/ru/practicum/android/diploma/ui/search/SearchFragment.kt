@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -29,7 +30,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     private val viewModel by viewModel<SearchViewModel>()
 
-    private var vacanciesList = mutableListOf<Vacancy>()
+    private var adapter: VacancyAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +47,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.icon.setImageResource(R.drawable.ic_search)
         binding.icon.isVisible = true
 
-        val adapter = VacancyAdapter(vacanciesList, this, viewLifecycleOwner.lifecycleScope)
+        adapter = VacancyAdapter(this, viewLifecycleOwner.lifecycleScope)
         binding.listVacancies.adapter = adapter
 
         binding.listVacancies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -66,8 +67,10 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
         binding.icon.setOnClickListener {
             binding.inputSearchVacancy.text.clear()
-            hideKeyboard()
             viewModel.stopSearch()
+            adapter?.clearVacancies()
+            viewModel.resetState()
+//            showDefaultPicture()
         }
 
         viewModel.getSearchVacanciesState().observe(viewLifecycleOwner) { _state ->
@@ -81,7 +84,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             val isEnterPressed = event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
 
             if (isDoneOrNext || isEnterPressed) {
-                vacanciesList.clear()
+                adapter?.clearVacancies()
                 viewModel.stopSearch()
                 viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), true)
                 hideKeyboard()
@@ -106,7 +109,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                vacanciesList.clear()
                 viewModel.searchDebounce(binding.inputSearchVacancy.text.toString())
             }
         })
@@ -135,7 +137,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             }
 
             is SearchVacanciesState.Loading -> {
-                if (vacanciesList.isEmpty()) {
+                if (adapter?.itemCount?.equals(0) == true) {
                     showProgressBar()
                 } else {
                     binding.appendProgress.visibility = View.VISIBLE
@@ -173,26 +175,38 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private fun showInternetConnectionError() {
         binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
-        binding.resultSearch.visibility = View.GONE
-        binding.listVacancies.visibility = View.GONE
-        binding.placeholder.setImageResource(R.drawable.img_placeholder_connection_error)
-        binding.textPlaceholder.visibility = View.VISIBLE
-        binding.textPlaceholder.text = getString(R.string.connection_error)
-        binding.containerPlaceholder.visibility = View.VISIBLE
-        binding.resultSearch.visibility = View.GONE
+        if (adapter?.itemCount?.equals(0) == true) {
+            binding.resultSearch.visibility = View.GONE
+            binding.listVacancies.visibility = View.GONE
+            binding.placeholder.setImageResource(R.drawable.img_placeholder_connection_error)
+            binding.textPlaceholder.text = getString(R.string.connection_error)
+            binding.textPlaceholder.visibility = View.VISIBLE
+            binding.containerPlaceholder.visibility = View.VISIBLE
+        } else {
+            binding.containerPlaceholder.visibility = View.GONE
+            binding.resultSearch.visibility = View.VISIBLE
+            binding.listVacancies.visibility = View.VISIBLE
+            Toast.makeText(requireContext(), getString(R.string.connection_error_1), Toast.LENGTH_LONG).show()
+        }
         hideKeyboard()
     }
 
     private fun showServerError() {
         binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
-        binding.resultSearch.visibility = View.GONE
-        binding.listVacancies.visibility = View.GONE
-        binding.placeholder.setImageResource(R.drawable.img_placeholder_search_server_error)
-        binding.placeholder.visibility = View.VISIBLE
-        binding.textPlaceholder.visibility = View.VISIBLE
-        binding.textPlaceholder.text = getString(R.string.server_error)
-        binding.resultSearch.visibility = View.GONE
+        if (adapter?.itemCount?.equals(0) == true) {
+            binding.resultSearch.visibility = View.GONE
+            binding.listVacancies.visibility = View.GONE
+            binding.placeholder.setImageResource(R.drawable.img_placeholder_search_server_error)
+            binding.textPlaceholder.text = getString(R.string.server_error)
+            binding.textPlaceholder.visibility = View.VISIBLE
+            binding.containerPlaceholder.visibility = View.VISIBLE
+        } else {
+            binding.containerPlaceholder.visibility = View.GONE
+            binding.resultSearch.visibility = View.VISIBLE
+            binding.listVacancies.visibility = View.VISIBLE
+            Toast.makeText(requireContext(), getString(R.string.server_error_1), Toast.LENGTH_LONG).show()
+        }
         hideKeyboard()
     }
 
@@ -200,8 +214,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
         binding.resultSearch.visibility = View.GONE
-        vacanciesList.clear()
-        vacanciesList.addAll(vacancies.items)
+        adapter?.updateVacancies(vacancies.items)
         binding.listVacancies.visibility = View.VISIBLE
         binding.containerPlaceholder.visibility = View.GONE
         binding.resultSearch.text = getVacancyCountFormatted(vacancies.found)
@@ -259,7 +272,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     override fun onVacancyClick(vacancy: Vacancy) {
-        // Нужно реализовать передачу данных в VacancyFragment
         val action = SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.vacancyId, SEARCH_FRAGMENT)
         findNavController().navigate(action)
     }
