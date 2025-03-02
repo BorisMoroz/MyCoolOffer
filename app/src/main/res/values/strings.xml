@@ -14,11 +14,13 @@
 
     <!--    Ошибки-->
     <string name="connection_error">Нет интернета</string>
+    <string name="connection_error_1">Проверьте подключение к интернету</string>
     <string name="search_error">Не удалось получить\nсписок вакансий</string>
     <string name="region_search_error">Такого региона нет</string>
     <string name="region_list_error">Не удалось получить\nсписок</string>
     <string name="vacancy_error">Вакансия не найдена или\nудалена</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="server_error_1">Произошла ошибка</string>
     <string name="empty_favourite_list">Список пуст</string>
 
     <!--    Навигация-->
@@ -39,8 +41,25 @@
     <string name="team_member_four">Данил Юферев</string>
     <string name="team_member_five">Денис Михеенко</string>
 
+    <!--    Вакансия-->
+    <string name="vacancy_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="vacancy_responsibility">Обязанности</string>
+    <string name="vacancy_requirements">Требования</string>
+    <string name="vacancy_conditions">Условия</string>
+    <string name="vacancy_skills">Ключевые навыки</string>
+    <string name="no_salary">Зарплата не указана</string>
+    <string name="from_text">от&#160;</string>
+    <string name="to_text">до&#160;</string>
+    <string name="default_salary_text">Уровень дохода не указан</string>
+    <string name="key_skills_new_line">&#160;&#160;&#160;•&#160;&#160;&#160;</string>
+
     <!--    Для иконок тулбаров-->
     <string name="share">Поделиться</string>
     <string name="like">Добавить в избранное</string>
+
+    <string name="input_search">Введите запрос</string>
+    <string name="noSalary">Зарплата не указана</string>
+    <string name="noSuchVacancies">Таких вакансий нет</string>
 
 </resources>

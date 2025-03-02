@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.vacancy.VacancyFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -14,6 +15,199 @@
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/vacancy_menu"
         app:navigationIcon="@drawable/ic_back"
-        app:title="@string/vacancy_info" />
+        app:title="@string/vacancy_info"
+        android:overScrollMode="never"/>
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:indeterminateTint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/placeholder_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/placeholder_error_image"
+            android:layout_width="328dp"
+            android:layout_height="223dp"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/placeholder_error_text"
+            style="@style/TextViewMediumVacancy"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_gravity="center"
+            android:textSize="@dimen/ys_display_medium_22"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <ScrollView
+        android:visibility="gone"
+        android:id="@+id/vacancy_content"
+        android:layout_width="@dimen/width_0"
+        android:layout_height="@dimen/height_0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/padding_16">
+
+            <TextView
+                android:id="@+id/name_text"
+                android:layout_width="@dimen/width_0"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/margin_24"
+                android:fontFamily="@font/ys_display_bold"
+                android:textSize="@dimen/ys_display_bold_32"
+                android:textColor="?attr/colorOnSurface" />
+
+            <TextView
+                android:id="@+id/salary_text"
+                android:layout_width="@dimen/width_0"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/name_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/ys_display_medium"
+                android:textSize="@dimen/ys_display_medium_22"
+                android:textColor="?attr/colorOnSurface" />
+
+            <LinearLayout
+                android:id="@+id/vacancy_card_layout"
+                android:layout_width="@dimen/width_0"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_24"
+                android:padding="@dimen/padding_16"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_item"
+                app:layout_constraintTop_toBottomOf="@id/salary_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/vacancy_card_image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp" />
+
+                <LinearLayout
+                    android:id="@+id/vacancy_card_text_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/margin_8"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/vacancy_card_employer_text"
+                        style="@style/TextViewMediumVacancy"
+                        android:textColor="@color/yp_black"
+                        android:textSize="@dimen/ys_display_medium_22"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true"/>
+
+                    <TextView
+                        android:id="@+id/vacancy_card_region_text"
+                        style="@style/TextViewRegularVacancy"
+                        android:textColor="@color/yp_black"
+                        android:layout_marginTop="0dp"
+                        android:ellipsize="marquee"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:singleLine="true" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/experience_layout"
+                style="@style/LinearLayoutVacancy"
+                app:layout_constraintTop_toBottomOf="@id/vacancy_card_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    style="@style/TextViewMediumVacancy"
+                    android:text="@string/vacancy_experience" />
+                <TextView
+                    android:id="@+id/experience_text"
+                    style="@style/TextViewRegularVacancy" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/work_format_text"
+                android:layout_width="@dimen/width_0"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/experience_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/margin_8"
+                android:fontFamily="@font/ys_display_regular"
+                android:textSize="@dimen/ys_display_regular_16"
+                android:textColor="?attr/colorOnSurface" />
+
+            <TextView
+                android:id="@+id/vacancy_description_header"
+                android:layout_width="@dimen/width_0"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/work_format_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/margin_32"
+                android:fontFamily="@font/ys_display_medium"
+                android:textSize="@dimen/ys_display_medium_22"
+                android:textColor="?attr/colorOnSurface"
+                android:text="@string/vacancy_description" />
+
+            <TextView
+                android:id="@+id/vacancy_description_text"
+                style="@style/TextViewRegularVacancy"
+                app:layout_constraintTop_toBottomOf="@+id/vacancy_description_header"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/margin_16" />
+
+            <LinearLayout
+                android:id="@+id/skills_layout"
+                style="@style/LinearLayoutVacancy"
+                app:layout_constraintTop_toBottomOf="@id/vacancy_description_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    style="@style/TextViewMediumVacancy"
+                    android:textSize="@dimen/ys_display_medium_22"
+                    android:text="@string/vacancy_skills" />
+
+                <TextView
+                    android:id="@+id/skills_text"
+                    style="@style/TextViewRegularVacancy"
+                    android:layout_marginTop="@dimen/margin_16"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

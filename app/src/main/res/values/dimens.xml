@@ -9,16 +9,26 @@
     <dimen name="ys_display_regular_12">12sp</dimen>
 
     <!--    Основные отступы-->
+    <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_16">16dp</dimen>
     <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
 
     <!--    Размеры View элементов-->
+    <dimen name="height_56">64dp</dimen>
     <dimen name="height_64">64dp</dimen>
     <dimen name="height_92">92dp</dimen>
     <dimen name="width_0">0dp</dimen>
+    <dimen name="width_1">1dp</dimen>
+    <dimen name="height_0">0dp</dimen>
     <dimen name="height_1">1dp</dimen>
 
     <!--    Другие размеры-->
     <dimen name="elevation_0">0dp</dimen>
+
+    <dimen name="radius_12">12dp</dimen>
 
 </resources>
