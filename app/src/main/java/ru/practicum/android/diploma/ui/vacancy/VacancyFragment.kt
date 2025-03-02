@@ -158,16 +158,7 @@ class VacancyFragment : Fragment() {
             salaryTo = vacancyDetails.salaryTo,
             currency = vacancyDetails.currency,
         )
-        Glide.with(this)
-            .load(vacancyDetails.logoUrl)
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .transform(
-                CenterCrop(),
-                RoundedCorners(requireContext().resources.getDimensionPixelSize(R.dimen.radius_12))
-            )
-            .placeholder(R.drawable.vacancy_placeholder)
-            .into(binding.vacancyCardImage)
+        loadVacancyCover(vacancyDetails.logoUrl)
         binding.vacancyCardEmployerText.text = vacancyDetails.employer
         binding.vacancyCardEmployerText.isSelected = true
         if (!vacancyDetails.address.isNullOrEmpty()) {
@@ -230,6 +221,19 @@ class VacancyFragment : Fragment() {
             isChecked = true
             viewModel.addVacancyToFavourites(vacancy)
         }
+    }
+
+    private fun loadVacancyCover(coverUrl: String?) {
+        Glide.with(this)
+            .load(coverUrl)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .transform(
+                CenterCrop(),
+                RoundedCorners(requireContext().resources.getDimensionPixelSize(R.dimen.radius_12))
+            )
+            .placeholder(R.drawable.vacancy_placeholder)
+            .into(binding.vacancyCardImage)
     }
 
     override fun onDestroyView() {

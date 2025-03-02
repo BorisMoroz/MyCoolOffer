@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.data.database.dao.VacancyDao
 import ru.practicum.android.diploma.data.database.entity.VacancyEntity
