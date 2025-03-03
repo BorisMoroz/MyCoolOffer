@@ -266,13 +266,12 @@ class FilterFragment : Fragment() {
 
     private fun updatesSalary() {
         if (salaryChanged) {
-
-            if (binding.salaryEdittext.text.isNotEmpty()) {
-                _currentFilterParameters = currentFilterParameters.copy(
+            _currentFilterParameters = if (binding.salaryEdittext.text.isNotEmpty()) {
+                currentFilterParameters.copy(
                     salary = binding.salaryEdittext.text.toString().toInt()
                 )
             } else {
-                _currentFilterParameters = currentFilterParameters.copy(
+                currentFilterParameters.copy(
                     salary = 0
                 )
             }
