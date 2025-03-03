@@ -64,12 +64,12 @@ class FilterFragment : Fragment() {
         }
     }
 
-    fun hideKeyBoard() {
+    private fun hideKeyBoard() {
         val inputMethod = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
     }
 
-    fun setupWorkplaceLayout() {
+    private fun setupWorkplaceLayout() {
         if (currentFilterParameters.areaId.isEmpty()) {
             binding.workplaceLayout1.visibility = View.VISIBLE
             binding.workplaceLayout2.visibility = View.INVISIBLE
@@ -80,8 +80,8 @@ class FilterFragment : Fragment() {
             binding.workplaceName.text = currentFilterParameters.countryName
 
             if (currentFilterParameters.countryId != currentFilterParameters.areaId) {
-                binding.workplaceName.text =
-                    currentFilterParameters.countryName + ", " + currentFilterParameters.areaName
+                val text = currentFilterParameters.countryName + ", " + currentFilterParameters.areaName
+                binding.workplaceName.text = text
             }
         }
         binding.workplaceLayout1.setOnClickListener {
@@ -101,7 +101,7 @@ class FilterFragment : Fragment() {
         }
     }
 
-    fun setupIndustryLayout() {
+    private fun setupIndustryLayout() {
         if (currentFilterParameters.industryId.isEmpty()) {
             binding.industryLayout1.visibility = View.VISIBLE
             binding.industryLayout2.visibility = View.INVISIBLE
@@ -135,7 +135,7 @@ class FilterFragment : Fragment() {
         }
     }
 
-    fun setupSalaryEditText() {
+    private fun setupSalaryEditText() {
         val inputTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // здесь можно не реализовывать
@@ -183,11 +183,11 @@ class FilterFragment : Fragment() {
             false
         }
         binding.clearButton.setOnClickListener {
-            binding.salaryEdittext.setText("")
+            binding.salaryEdittext.setText(EMPTY_STRING)
         }
     }
 
-    fun setupSalaryCheckBox() {
+    private fun setupSalaryCheckBox() {
         binding.salaryCheckBox.isChecked = currentFilterParameters.onlyWithSalary
 
         binding.salaryCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -203,16 +203,16 @@ class FilterFragment : Fragment() {
         }
     }
 
-    fun setupWorkplaceAndIndustryResetButtons() {
+    private fun setupWorkplaceAndIndustryResetButtons() {
         binding.workplaceButtonReset.setOnClickListener {
             binding.workplaceLayout1.visibility = View.VISIBLE
             binding.workplaceLayout2.visibility = View.INVISIBLE
 
             with(currentFilterParameters) {
-                countryName = ""
-                countryId = ""
-                areaName = ""
-                areaId = ""
+                countryName = EMPTY_STRING
+                countryId = EMPTY_STRING
+                areaName = EMPTY_STRING
+                areaId = EMPTY_STRING
             }
 
             saveCurrentFilterParameters()
@@ -227,8 +227,8 @@ class FilterFragment : Fragment() {
             binding.industryLayout2.visibility = View.INVISIBLE
 
             with(currentFilterParameters) {
-                industryName = ""
-                industryId = ""
+                industryName = EMPTY_STRING
+                industryId = EMPTY_STRING
             }
 
             saveCurrentFilterParameters()
@@ -239,7 +239,7 @@ class FilterFragment : Fragment() {
         }
     }
 
-    fun setupButtons() {
+    private fun setupButtons() {
         if (isFilterParametersNotEmpty(currentFilterParameters)) {
             binding.buttonReset.visibility = View.VISIBLE
         }
@@ -250,7 +250,7 @@ class FilterFragment : Fragment() {
             binding.industryLayout1.visibility = View.VISIBLE
             binding.industryLayout2.visibility = View.INVISIBLE
 
-            binding.salaryEdittext.setText("")
+            binding.salaryEdittext.setText(EMPTY_STRING)
             binding.salaryEdittext.clearFocus()
 
             binding.salaryCheckBox.isChecked = false
@@ -266,7 +266,7 @@ class FilterFragment : Fragment() {
 
     }
 
-    fun updatesSalary() {
+    private fun updatesSalary() {
         if (salaryChanged) {
             with(currentFilterParameters) {
                 if (binding.salaryEdittext.text.isNotEmpty()) {
@@ -281,7 +281,7 @@ class FilterFragment : Fragment() {
         }
     }
 
-    fun updateButtons() {
+    private fun updateButtons() {
         if (isFilterParametersNotEmpty(currentFilterParameters)) {
             binding.buttonReset.visibility = View.VISIBLE
         } else {
@@ -294,50 +294,50 @@ class FilterFragment : Fragment() {
         val filterSettings = viewModel.getFilterSettings()
 
         return FilterParameters(
-            countryId = filterSettings["countryId"].orEmpty(),
-            countryName = filterSettings["countryName"].orEmpty(),
-            areaId = filterSettings["areaId"].orEmpty(),
-            areaName = filterSettings["areaName"].orEmpty(),
-            industryId = filterSettings["industryId"].orEmpty(),
-            industryName = filterSettings["industryName"].orEmpty(),
-            salary = filterSettings["salary"]?.toIntOrNull() ?: 0,
-            onlyWithSalary = filterSettings["onlyWithSalary"]?.toBoolean() ?: false
+            countryId = filterSettings[COUNTRY_ID].orEmpty(),
+            countryName = filterSettings[COUNTRY_NAME].orEmpty(),
+            areaId = filterSettings[AREA_ID].orEmpty(),
+            areaName = filterSettings[AREA_NAME].orEmpty(),
+            industryId = filterSettings[INDUSTRY_ID].orEmpty(),
+            industryName = filterSettings[INDUSTRY_NAME].orEmpty(),
+            salary = filterSettings[SALARY]?.toIntOrNull() ?: 0,
+            onlyWithSalary = filterSettings[ONLY_WITH_SALARY]?.toBoolean() ?: false
         )
     }
 
-    fun saveCurrentFilterParameters() {
+    private fun saveCurrentFilterParameters() {
         viewModel.saveFilterSettings(
             mapOf(
-                "countryId" to currentFilterParameters.countryId,
-                "countryName" to currentFilterParameters.countryName,
-                "areaId" to currentFilterParameters.areaId,
-                "areaName" to currentFilterParameters.areaName,
-                "industryId" to currentFilterParameters.industryId,
-                "industryName" to currentFilterParameters.industryName,
-                "salary" to currentFilterParameters.salary.toString(),
-                "onlyWithSalary" to currentFilterParameters.onlyWithSalary.toString(),
+                COUNTRY_ID to currentFilterParameters.countryId,
+                COUNTRY_NAME to currentFilterParameters.countryName,
+                AREA_ID to currentFilterParameters.areaId,
+                AREA_NAME to currentFilterParameters.areaName,
+                INDUSTRY_ID to currentFilterParameters.industryId,
+                INDUSTRY_NAME to currentFilterParameters.industryName,
+                SALARY to currentFilterParameters.salary.toString(),
+                ONLY_WITH_SALARY to currentFilterParameters.onlyWithSalary.toString(),
             )
         )
     }
 
-    fun clearCurrentFilterParameters() {
+    private fun clearCurrentFilterParameters() {
         with(currentFilterParameters) {
-            countryName = ""
-            countryId = ""
-            areaName = ""
-            areaId = ""
-            industryId = ""
-            industryName = ""
+            countryName = EMPTY_STRING
+            countryId = EMPTY_STRING
+            areaName = EMPTY_STRING
+            areaId = EMPTY_STRING
+            industryId = EMPTY_STRING
+            industryName = EMPTY_STRING
             salary = 0
             onlyWithSalary = false
         }
         viewModel.clearFilterSettings()
     }
 
-    fun isFilterParametersNotEmpty(filterParameters: FilterParameters): Boolean {
+    private fun isFilterParametersNotEmpty(filterParameters: FilterParameters): Boolean {
         with(filterParameters) {
-            val checkArea = countryId != "" || areaId != ""
-            val checkIndustryAndSalary = industryId != "" || salary != 0 || onlyWithSalary
+            val checkArea = countryId != EMPTY_STRING || areaId != EMPTY_STRING
+            val checkIndustryAndSalary = industryId != EMPTY_STRING || salary != 0 || onlyWithSalary
 
             return if (checkArea || checkIndustryAndSalary) {
                 true
@@ -348,20 +348,20 @@ class FilterFragment : Fragment() {
     }
 
     private fun getResultFilter() {
-        setFragmentResultListener("filter_key") { _, bundle ->
+        setFragmentResultListener(FILTER_KEY) { _, bundle ->
             bundle.keySet().forEach { key ->
                 val value = bundle.getString(key)
                 if (value != null) {
                     when (key) {
-                        "industryId" -> {
+                        INDUSTRY_ID -> {
                             currentFilterParameters.industryId = value
-                            viewModel.saveFilterSettings(mapOf("industryId" to value))
+                            viewModel.saveFilterSettings(mapOf(INDUSTRY_ID to value))
                         }
 
-                        "industryName" -> {
+                        INDUSTRY_NAME -> {
                             binding.industryName.text = currentFilterParameters.industryName
                             currentFilterParameters.industryName = value
-                            viewModel.saveFilterSettings(mapOf("industryName" to value))
+                            viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to value))
                         }
 
                         else -> {}
@@ -376,7 +376,17 @@ class FilterFragment : Fragment() {
         _binding = null
     }
 
-    companion object{
-        private const val DELAY: Long = 50
+    private companion object{
+        const val DELAY: Long = 50
+        const val COUNTRY_ID = "countryId"
+        const val COUNTRY_NAME = "countryName"
+        const val AREA_ID = "areaId"
+        const val AREA_NAME = "areaName"
+        const val INDUSTRY_ID = "industryId"
+        const val INDUSTRY_NAME = "industryName"
+        const val SALARY = "salary"
+        const val ONLY_WITH_SALARY = "onlyWithSalary"
+        const val EMPTY_STRING = ""
+        const val FILTER_KEY = "filter_key"
     }
 }
