@@ -85,6 +85,10 @@ class IndustryFragment : Fragment() {
 
         binding.clearOrSearchButton.setOnClickListener { binding.industryEdittext.setText("") }
 
+        binding.buttonApply.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }

@@ -22,8 +22,6 @@ class FilterFragment : Fragment() {
     private var _binding: FragmentFilterBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var inputMethod: InputMethodManager
-
     private lateinit var currentFilterParameters: FilterParameters
 
     var salaryChanged = false
@@ -46,8 +44,6 @@ class FilterFragment : Fragment() {
 
         currentFilterParameters = getCurrentFilterParameters()
 
-        inputMethod = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
         setupWorkplaceLayout()
         setupIndustryLayout()
         setupSalaryEditText()
@@ -56,7 +52,12 @@ class FilterFragment : Fragment() {
         setupButtons()
     }
 
-    fun setupWorkplaceLayout(){
+    fun hideKeyBoard() {
+        val inputMethod = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+    }
+
+    fun setupWorkplaceLayout() {
         if (currentFilterParameters.areaId.isEmpty()) {
             binding.workplaceLayout1.visibility = View.VISIBLE
             binding.workplaceLayout2.visibility = View.INVISIBLE
@@ -72,23 +73,23 @@ class FilterFragment : Fragment() {
             }
         }
         binding.workplaceLayout1.setOnClickListener {
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
             findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
         }
         binding.workplaceTitle.setOnClickListener {
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
             findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
         }
         binding.workplaceName.setOnClickListener {
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
             findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
         }
     }
 
-    fun setupIndustryLayout(){
+    fun setupIndustryLayout() {
         if (currentFilterParameters.industryId.isEmpty()) {
             binding.industryLayout1.visibility = View.VISIBLE
             binding.industryLayout2.visibility = View.INVISIBLE
@@ -106,23 +107,23 @@ class FilterFragment : Fragment() {
         }
 
         binding.industryLayout1.setOnClickListener {
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
             findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
         }
         binding.industryTitle.setOnClickListener {
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
             findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
         }
         binding.industryName.setOnClickListener {
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
             findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
         }
     }
 
-    fun setupSalaryEditText(){
+    fun setupSalaryEditText() {
         val inputTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // здесь можно не реализовывать
@@ -164,8 +165,7 @@ class FilterFragment : Fragment() {
         }
         binding.salaryEdittext.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
-
+                hideKeyBoard()
                 updatesSalary()
             }
             false
@@ -175,7 +175,7 @@ class FilterFragment : Fragment() {
         }
     }
 
-    fun setupSalaryCheckBox(){
+    fun setupSalaryCheckBox() {
         binding.salaryCheckBox.isChecked = currentFilterParameters.onlyWithSalary
 
         binding.salaryCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -186,12 +186,12 @@ class FilterFragment : Fragment() {
             saveCurrentFilterParameters()
             updateButtons()
 
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
         }
     }
 
-    fun setupWorkplaceAndIndustryResetButtons(){
+    fun setupWorkplaceAndIndustryResetButtons() {
         binding.workplaceButtonReset.setOnClickListener {
             binding.workplaceLayout1.visibility = View.VISIBLE
             binding.workplaceLayout2.visibility = View.INVISIBLE
@@ -206,7 +206,7 @@ class FilterFragment : Fragment() {
             saveCurrentFilterParameters()
             updateButtons()
 
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
         }
 
@@ -222,13 +222,12 @@ class FilterFragment : Fragment() {
             saveCurrentFilterParameters()
             updateButtons()
 
-            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            hideKeyBoard()
             binding.salaryEdittext.clearFocus()
         }
     }
 
-    fun setupButtons(){
-
+    fun setupButtons() {
         if (isFilterParametersNotEmpty(currentFilterParameters)) {
             binding.buttonReset.visibility = View.VISIBLE
         }
@@ -288,7 +287,7 @@ class FilterFragment : Fragment() {
             areaName = "Москва",
             industryId = "3000",
             industryName = "Торговля",
-            salary = 100000,
+            salary = 100_000,
             onlyWithSalary = true
         )
     }
@@ -312,7 +311,10 @@ class FilterFragment : Fragment() {
 
     fun isFilterParametersNotEmpty(filterParameters: FilterParameters): Boolean {
         with(filterParameters) {
-            return if (countryId != "" || areaId != "" || industryId != "" || salary != 0 || onlyWithSalary) {
+            val checkArea = countryId != "" || areaId != ""
+            val checkIndustryAndSalary = industryId != "" || salary != 0 || onlyWithSalary
+
+            return if (checkArea || checkIndustryAndSalary) {
                 true
             } else {
                 false

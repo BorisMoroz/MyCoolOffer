@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.IndustriesGetRequest
 import ru.practicum.android.diploma.data.dto.IndustriesGetResponse
+import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
@@ -77,28 +78,27 @@ class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : Vacanc
 
         if (response.resultCode == NETWORK_OK) {
             val industriesDto = (response as IndustriesGetResponse).industries
-            val industries = mutableListOf<Industry>()
 
-            for (industryDto in industriesDto) {
-                industries.add(Industry(industryId = industryDto.id, industryName = industryDto.name))
-                if (industryDto.industries != null) {
-                    for (subIndustryDto in industryDto.industries) {
-                        industries.add(Industry(industryId = subIndustryDto.id, industryName = subIndustryDto.name))
-                    }
-                }
-            }
-            industries.sortBy { it.industryName }
-
+            val industries = createIndustries(industriesDto)
             emit(Resource.Success(Industries(industries)))
         } else {
             emit(Resource.Error(response.resultCode))
         }
     }
 
+    fun createIndustries(industriesDto: List<IndustryDto>): MutableList<Industry> {
+        val industries = mutableListOf<Industry>()
 
+        for (industryDto in industriesDto) {
+            industries.add(Industry(industryId = industryDto.id, industryName = industryDto.name))
+            if (industryDto.industries != null) {
+                for (subIndustryDto in industryDto.industries) {
+                    industries.add(Industry(industryId = subIndustryDto.id, industryName = subIndustryDto.name))
+                }
+            }
+        }
+        industries.sortBy { it.industryName }
 
-
-
-
-
+        return industries
+    }
 }
