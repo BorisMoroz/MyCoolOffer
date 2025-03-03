@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -112,6 +113,10 @@ class SearchViewModel(
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
+    }
+
+    init {
+        filterSettingsInteractor.clearSettings()
     }
 
     companion object {
