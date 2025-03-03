@@ -29,7 +29,9 @@ class FilterFragment : Fragment() {
 
     private val viewModel by viewModel<FilterViewModel>()
 
-    private lateinit var currentFilterParameters: FilterParameters
+    private val currentFilterParameters: FilterParameters by lazy {
+        currentFilterParameters()
+    }
 
     var salaryChanged = false
 
@@ -52,8 +54,7 @@ class FilterFragment : Fragment() {
         }
 
         lifecycle.coroutineScope.launch {
-            delay(50)
-            currentFilterParameters = getCurrentFilterParameters()
+            delay(DELAY)
             setupWorkplaceLayout()
             setupIndustryLayout()
             setupSalaryEditText()
@@ -289,16 +290,16 @@ class FilterFragment : Fragment() {
         binding.buttonApply.visibility = View.VISIBLE
     }
 
-    fun getCurrentFilterParameters(): FilterParameters {
+    private fun currentFilterParameters(): FilterParameters {
         val filterSettings = viewModel.getFilterSettings()
 
         return FilterParameters(
-            countryId = filterSettings["countryId"] ?: "",
-            countryName = filterSettings["countryName"] ?: "",
-            areaId = filterSettings["areaId"] ?: "",
-            areaName = filterSettings["areaName"] ?: "",
-            industryId = filterSettings["industryId"] ?: "",
-            industryName = filterSettings["industryName"] ?: "",
+            countryId = filterSettings["countryId"].orEmpty(),
+            countryName = filterSettings["countryName"].orEmpty(),
+            areaId = filterSettings["areaId"].orEmpty(),
+            areaName = filterSettings["areaName"].orEmpty(),
+            industryId = filterSettings["industryId"].orEmpty(),
+            industryName = filterSettings["industryName"].orEmpty(),
             salary = filterSettings["salary"]?.toIntOrNull() ?: 0,
             onlyWithSalary = filterSettings["onlyWithSalary"]?.toBoolean() ?: false
         )
@@ -373,5 +374,9 @@ class FilterFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object{
+        private const val DELAY: Long = 50
     }
 }

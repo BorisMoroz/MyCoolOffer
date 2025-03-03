@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.domain.models
 
-class FilterParameters(
+data class FilterParameters(
     var countryId: String,
     var countryName: String,
     var areaId: String,

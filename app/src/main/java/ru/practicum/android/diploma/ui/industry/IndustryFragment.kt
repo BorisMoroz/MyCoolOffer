@@ -25,8 +25,8 @@ class IndustryFragment : Fragment() {
     private var _binding: FragmentIndustryBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var industryAdapter: IndustryAdapter
-    private lateinit var inputMethod: InputMethodManager
+    private var industryAdapter: IndustryAdapter? = null
+    private var inputMethod: InputMethodManager? = null
 
     private val viewModel by viewModel<IndustryViewModel>()
 
@@ -80,7 +80,7 @@ class IndustryFragment : Fragment() {
 
         binding.industryEdittext.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                inputMethod.hideSoftInputFromWindow(binding.industryEdittext.windowToken, 0)
+                inputMethod?.hideSoftInputFromWindow(binding.industryEdittext.windowToken, 0)
             }
             false
         }
@@ -120,7 +120,7 @@ class IndustryFragment : Fragment() {
 
     private fun showError(errorCode: Int) {
         industries.clear()
-        industryAdapter.notifyDataSetChanged()
+        industryAdapter?.notifyDataSetChanged()
 
         binding.buttonApply.isVisible = false
         binding.getIndustriesErrorLayout.isVisible = true
@@ -142,7 +142,7 @@ class IndustryFragment : Fragment() {
             }
         }
 
-        industryAdapter.notifyDataSetChanged()
+        industryAdapter?.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
