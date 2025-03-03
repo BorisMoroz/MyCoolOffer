@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.ui.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -11,17 +11,45 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 class VacancyAdapter(
-    private val vacancies: List<Vacancy>,
     private val listener: OnVacancyClickListener,
     private val coroutineScope: CoroutineScope
-) : ListAdapter<Vacancy, VacancyViewHolder>(VacancyDiffCallback()) {
+) : RecyclerView.Adapter<VacancyViewHolder>() {
 
+    private var vacancies = mutableListOf<Vacancy>()
     private var isClickAllowed = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.vacancy_item, parent, false)
         return VacancyViewHolder(view)
+    }
+
+    fun updateVacancies(newVacancies: List<Vacancy>) {
+        val oldVacancies = vacancies
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int {
+                return oldVacancies.size
+            }
+
+            override fun getNewListSize(): Int {
+                return newVacancies.size
+            }
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldVacancies[oldItemPosition].vacancyId == newVacancies[newItemPosition].vacancyId
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldVacancies[oldItemPosition] == newVacancies[newItemPosition]
+            }
+        })
+        vacancies = newVacancies.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun clearVacancies() {
+        vacancies.clear()
+        this.notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -47,14 +75,6 @@ class VacancyAdapter(
             }
         }
         return current
-    }
-
-    private class VacancyDiffCallback : DiffUtil.ItemCallback<Vacancy>() {
-        override fun areItemsTheSame(oldItem: Vacancy, newItem: Vacancy): Boolean =
-            oldItem.vacancyId == newItem.vacancyId
-
-        override fun areContentsTheSame(oldItem: Vacancy, newItem: Vacancy): Boolean =
-            oldItem == newItem
     }
 
     companion object {

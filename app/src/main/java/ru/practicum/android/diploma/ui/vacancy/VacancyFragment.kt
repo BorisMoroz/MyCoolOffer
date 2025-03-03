@@ -146,23 +146,19 @@ class VacancyFragment : Fragment() {
     }
 
     private fun bindVacancyDetails(vacancyDetails: VacancyDetails) {
+        viewModel.setSalaryTextValues(
+            salaryFromTextValue = getString(R.string.from_text),
+            salaryToTextValue = getString(R.string.to_text),
+            defaultSalaryTextValue = getString(R.string.default_salary_text)
+        )
         url = URL + vacancyDetails.vacancyId
         binding.nameText.text = vacancyDetails.vacancyName
         binding.salaryText.text = viewModel.getSalaryText(
-            vacancyDetails.salaryFrom,
-            vacancyDetails.salaryTo,
-            vacancyDetails.currency
+            salaryFrom = vacancyDetails.salaryFrom,
+            salaryTo = vacancyDetails.salaryTo,
+            currency = vacancyDetails.currency,
         )
-        Glide.with(this)
-            .load(vacancyDetails.logoUrl)
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .transform(
-                CenterCrop(),
-                RoundedCorners(requireContext().resources.getDimensionPixelSize(R.dimen.radius_12))
-            )
-            .placeholder(R.drawable.vacancy_placeholder)
-            .into(binding.vacancyCardImage)
+        loadVacancyCover(vacancyDetails.logoUrl)
         binding.vacancyCardEmployerText.text = vacancyDetails.employer
         binding.vacancyCardEmployerText.isSelected = true
         if (!vacancyDetails.address.isNullOrEmpty()) {
@@ -177,7 +173,10 @@ class VacancyFragment : Fragment() {
             HtmlCompat.fromHtml(it, HtmlCompat.FROM_HTML_MODE_LEGACY).trimEnd()
         }
         if (!vacancyDetails.keySkills.isNullOrEmpty()) {
-            binding.skillsText.text = viewModel.getSkillsText(vacancyDetails.keySkills)
+            binding.skillsText.text = viewModel.getSkillsText(
+                skills = vacancyDetails.keySkills,
+                keySkillsNewLine = getString(R.string.key_skills_new_line)
+            )
         } else {
             binding.skillsLayout.isVisible = false
         }
@@ -222,6 +221,19 @@ class VacancyFragment : Fragment() {
             isChecked = true
             viewModel.addVacancyToFavourites(vacancy)
         }
+    }
+
+    private fun loadVacancyCover(coverUrl: String?) {
+        Glide.with(this)
+            .load(coverUrl)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .transform(
+                CenterCrop(),
+                RoundedCorners(requireContext().resources.getDimensionPixelSize(R.dimen.radius_12))
+            )
+            .placeholder(R.drawable.vacancy_placeholder)
+            .into(binding.vacancyCardImage)
     }
 
     override fun onDestroyView() {
