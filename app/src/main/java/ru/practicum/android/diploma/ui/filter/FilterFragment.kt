@@ -376,7 +376,7 @@ class FilterFragment : Fragment() {
         _binding = null
     }
 
-    private companion object{
+    private companion object {
         const val DELAY: Long = 50
         const val COUNTRY_ID = "countryId"
         const val COUNTRY_NAME = "countryName"
