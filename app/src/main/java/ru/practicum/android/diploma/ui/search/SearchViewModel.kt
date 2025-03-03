@@ -10,6 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.SearchFilters
 import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.domain.models.Vacancy
 
@@ -42,12 +43,15 @@ class SearchViewModel(
             viewModelScope.launch {
                 vacanciesInteractor
                     .searchVacancies(
-                        text = query,
-                        page = currentPage,
-                        perPage = ITEMS_PER_PAGE,
-                        area = null,
-                        industries = null,
-                        onlyWithSalary = false)
+                        SearchFilters(
+                            text = query,
+                            page = currentPage,
+                            perPage = ITEMS_PER_PAGE,
+                            area = null,
+                            industries = null,
+                            onlyWithSalary = false
+                        )
+                    )
                     .collect { result ->
                         when (result) {
                             is Resource.Error -> {
