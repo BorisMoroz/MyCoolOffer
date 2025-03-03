@@ -17,10 +17,10 @@
 
     <EditText
         android:id="@+id/input_search_region"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_16"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/_8dp"
         android:background="@drawable/rounded_item"
         android:fontFamily="@font/ys_display_regular"
         android:gravity="center_vertical"
@@ -28,9 +28,10 @@
         android:imeOptions="actionNext"
         android:importantForAutofill="no"
         android:inputType="text"
+        android:drawableEnd="@drawable/ic_search"
         android:maxLines="1"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="16dp"
+        android:paddingHorizontal="@dimen/padding_16"
+        android:paddingVertical="@dimen/padding_16"
         android:singleLine="true"
         android:textColor="@color/yp_black"
         android:textColorHint="?attr/colorOnSecondary"
@@ -40,23 +41,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/input_search_region"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/input_search_region"
-        app:tint="@color/black"
-        tools:ignore="ContentDescription"
-        tools:src="@drawable/ic_search" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_regions"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/_0dp"
+        android:layout_marginTop="@dimen/_8dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -18,8 +18,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_countries"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="@dimen/_0dp"
+        android:layout_marginTop="@dimen/_8dp"
         android:clipToPadding="false"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

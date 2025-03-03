@@ -30,5 +30,9 @@
     <dimen name="elevation_0">0dp</dimen>
 
     <dimen name="radius_12">12dp</dimen>
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="select_button_width_326dp">326dp</dimen>
+    <dimen name="select_button_height_60dp">60dp</dimen>
 
 </resources>
