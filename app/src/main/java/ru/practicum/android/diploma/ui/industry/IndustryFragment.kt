@@ -1,15 +1,21 @@
 package ru.practicum.android.diploma.ui.industry
 
+import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentIndustryBinding
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Industry
@@ -23,13 +29,19 @@ class IndustryFragment : Fragment() {
 
     private val viewModel by viewModel<IndustryViewModel>()
 
+    private lateinit var inputMethod: InputMethodManager
 
     //var industries = mutableListOf<Industry>()
 
 
     //var industriesWithMark = listOf<IndustryWithMark>()
 
-    var industriesWithMark = mutableListOf<IndustryWithMark>()
+    //var industriesWithMark = mutableListOf<IndustryWithMark>()
+
+
+    var industries = mutableListOf<Industry>()
+
+    var selectedIndustry: Industry? = null
 
 
     override fun onCreateView(
@@ -45,21 +57,83 @@ class IndustryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        inputMethod = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
+        industryAdapter = IndustryAdapter(industries, onChoosedIndustry)
 
-
-        industryAdapter = IndustryAdapter(industriesWithMark, onChoosedIndustry)
+        //industryAdapter = IndustryAdapter(industriesWithMark, onChoosedIndustry)
 
         binding.industriesList.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.industriesList.adapter = industryAdapter
 
 
-        viewModel.getIndustries()
+
+        //viewModel.searchIndustries("")
+
+        viewModel.searchIndustries("")
 
         viewModel.getGetIndustriesState().observe(viewLifecycleOwner) { state ->
             renderState(state)
+
         }
+
+
+
+
+        val inputTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                if(s.isNullOrEmpty()){
+
+                    binding.clearOrSearchButton.setImageResource(R.drawable.ic_search)
+
+                }else{
+
+                    binding.clearOrSearchButton.setImageResource(R.drawable.ic_close)
+
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+
+
+                viewModel.searchIndustries(s.toString())
+
+
+
+
+
+
+                /*SalaryChanged = true
+                binding.buttonApply.isVisible = true*/
+
+
+
+
+            }
+        }
+
+        binding.industryEdittext .addTextChangedListener(inputTextWatcher)
+
+
+
+        binding.industryEdittext.setOnEditorActionListener { v, actionId, event ->
+            if(actionId == EditorInfo.IME_ACTION_NEXT){
+                inputMethod.hideSoftInputFromWindow(binding.industryEdittext.windowToken, 0)
+
+
+            }
+            false
+        }
+
+
+
+        binding.clearOrSearchButton.setOnClickListener { binding.industryEdittext.setText("")}
 
 
 
@@ -92,15 +166,15 @@ class IndustryFragment : Fragment() {
 
 
 
-    val onChoosedIndustry: (selectedPosition: Int) -> Unit = { selectedPosition ->
+    val onChoosedIndustry: (selectedIndustry: Industry?) -> Unit = { selected ->
 
 
-        binding.buttonApply.isVisible = true
+       binding.buttonApply.isVisible = true
+        selectedIndustry = selected
 
 
 
     }
-
 
     fun renderState(state: GetIndustriesState?) {
 
@@ -113,12 +187,12 @@ class IndustryFragment : Fragment() {
                 tracks.clear()*/
             }
         }
-
     }
 
 
     private fun showError(errorCode: Int) {
-        industriesWithMark.clear()
+        industries.clear()
+        //industriesWithMark.clear()
         industryAdapter.notifyDataSetChanged()
 
         binding.buttonApply.isVisible = false
@@ -128,13 +202,35 @@ class IndustryFragment : Fragment() {
 
     private fun showIndustries(data: Industries) {
 
-        industriesWithMark.clear()
+
+        industries.clear()
+        industries.addAll(data.items)
+
+        if(industries.isEmpty()){
 
 
-        for(industry in data.items){
+            binding.noIndustryFoundLayout.isVisible = true
+
+            binding.buttonApply.isVisible = false
 
 
-            industriesWithMark.add(IndustryWithMark(industry,false))
+        }else{
+
+            binding.noIndustryFoundLayout.isVisible = false
+
+
+            if(selectedIndustry == null){
+
+                binding.buttonApply.isVisible = false
+
+            }else{
+
+
+                binding.buttonApply.isVisible = true
+
+            }
+
+
 
 
 
@@ -144,22 +240,35 @@ class IndustryFragment : Fragment() {
 
 
 
+        //industriesWithMark.clear()
+
+
+        /*for(industry in data.items){
+
+
+            industriesWithMark.add(IndustryWithMark(industry,false))
 
 
 
-        industriesWithMark = data.items.map {
+
+
+        }*/
+
+
+
+        /*industriesWithMark = data.items.map {
 
 
             IndustryWithMark(it, false)
 
 
-        } as MutableList
+        } as MutableList */
 
 
 
 
 
-       // industries.addAll(data.items)
+        //industries.  .addAll(data.items)
 
 
 

@@ -148,6 +148,60 @@ class FilterFragment : Fragment() {
             findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
         }
 
+
+
+        binding.workplaceTitle.setOnClickListener {
+
+            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            binding.salaryEdittext.clearFocus()
+            findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
+
+
+        }
+
+
+        binding.workplaceName.setOnClickListener {
+
+            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            binding.salaryEdittext.clearFocus()
+            findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
+
+
+        }
+
+
+
+        binding.industryTitle.setOnClickListener {
+
+            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            binding.salaryEdittext.clearFocus()
+            findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
+
+
+
+        }
+
+
+        binding.industryName.setOnClickListener {
+
+
+            inputMethod.hideSoftInputFromWindow(binding.salaryEdittext.windowToken, 0)
+            binding.salaryEdittext.clearFocus()
+            findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
         binding.clearButton.setOnClickListener {
             binding.salaryEdittext.setText("")
         }

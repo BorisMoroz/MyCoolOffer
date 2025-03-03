@@ -75,6 +75,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/workplaceTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -91,7 +92,7 @@
                 android:textSize="@dimen/ys_display_regular_12" />
 
             <TextView
-                android:id="@+id/workplace_name"
+                android:id="@+id/workplaceName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -181,6 +182,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/industryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
