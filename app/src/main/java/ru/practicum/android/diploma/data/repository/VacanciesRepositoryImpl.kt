@@ -79,18 +79,26 @@ class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : Vacanc
             val industriesDto = (response as IndustriesGetResponse).industries
             val industries = mutableListOf<Industry>()
 
-            for(industryDto in industriesDto){
-                industries.add(Industry( industryId = industryDto.id, industryName = industryDto.name))
-                if(industryDto.industries != null) {
-                    for(subIndustryDto in industryDto.industries){
-                        industries.add(Industry( industryId = subIndustryDto.id, industryName = subIndustryDto.name))
+            for (industryDto in industriesDto) {
+                industries.add(Industry(industryId = industryDto.id, industryName = industryDto.name))
+                if (industryDto.industries != null) {
+                    for (subIndustryDto in industryDto.industries) {
+                        industries.add(Industry(industryId = subIndustryDto.id, industryName = subIndustryDto.name))
                     }
                 }
             }
-            industries.sortBy{it.industryName}
+            industries.sortBy { it.industryName }
+
             emit(Resource.Success(Industries(industries)))
         } else {
             emit(Resource.Error(response.resultCode))
         }
     }
+
+
+
+
+
+
+
 }

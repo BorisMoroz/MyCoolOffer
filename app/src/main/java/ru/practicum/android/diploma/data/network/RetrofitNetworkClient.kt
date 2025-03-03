@@ -64,7 +64,6 @@ class RetrofitNetworkClient(
                     response.apply { resultCode = NETWORK_OK }
                 }
             }
-
             else -> response = response.apply { resultCode = UNKNOWN_REQUEST_ERROR }
         }
         return response

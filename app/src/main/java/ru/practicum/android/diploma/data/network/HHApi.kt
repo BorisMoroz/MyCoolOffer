@@ -28,11 +28,7 @@ interface HHApi {
     @GET("/vacancies/{vacancyId}")
     suspend fun getVacancyDetails(@Path("vacancyId") vacancyId: String): VacancyDetailsResponse
 
-
     @Headers("Authorization: Bearer ${HH_ACCESS_TOKEN}", "HH-User-Agent: $APP_NAME $EMAIL")
     @GET("/industries")
-    suspend fun searchIndustries( ): List<IndustryDto>
-
-
-
+    suspend fun searchIndustries(): List<IndustryDto>
 }
