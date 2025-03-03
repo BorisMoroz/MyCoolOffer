@@ -29,9 +29,8 @@ class FilterFragment : Fragment() {
 
     private val viewModel by viewModel<FilterViewModel>()
 
-    private val currentFilterParameters: FilterParameters by lazy {
-        currentFilterParameters()
-    }
+    private var _currentFilterParameters: FilterParameters? = null
+    private val currentFilterParameters get() = _currentFilterParameters!!
 
     var salaryChanged = false
 
@@ -47,6 +46,7 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        currentFilterParameters()
         getResultFilter()
 
         binding.toolbar.setNavigationOnClickListener {
@@ -191,9 +191,7 @@ class FilterFragment : Fragment() {
         binding.salaryCheckBox.isChecked = currentFilterParameters.onlyWithSalary
 
         binding.salaryCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
-            with(currentFilterParameters) {
-                onlyWithSalary = isChecked
-            }
+            _currentFilterParameters = currentFilterParameters.copy(onlyWithSalary = isChecked)
 
             saveCurrentFilterParameters()
             updateButtons()
@@ -208,12 +206,12 @@ class FilterFragment : Fragment() {
             binding.workplaceLayout1.visibility = View.VISIBLE
             binding.workplaceLayout2.visibility = View.INVISIBLE
 
-            with(currentFilterParameters) {
-                countryName = EMPTY_STRING
-                countryId = EMPTY_STRING
-                areaName = EMPTY_STRING
+            _currentFilterParameters = currentFilterParameters.copy(
+                countryName = EMPTY_STRING,
+                countryId = EMPTY_STRING,
+                areaName = EMPTY_STRING,
                 areaId = EMPTY_STRING
-            }
+            )
 
             saveCurrentFilterParameters()
             updateButtons()
@@ -226,10 +224,10 @@ class FilterFragment : Fragment() {
             binding.industryLayout1.visibility = View.VISIBLE
             binding.industryLayout2.visibility = View.INVISIBLE
 
-            with(currentFilterParameters) {
-                industryName = EMPTY_STRING
+            _currentFilterParameters = currentFilterParameters.copy(
+                industryName = EMPTY_STRING,
                 industryId = EMPTY_STRING
-            }
+            )
 
             saveCurrentFilterParameters()
             updateButtons()
@@ -268,13 +266,17 @@ class FilterFragment : Fragment() {
 
     private fun updatesSalary() {
         if (salaryChanged) {
-            with(currentFilterParameters) {
-                if (binding.salaryEdittext.text.isNotEmpty()) {
+
+            if (binding.salaryEdittext.text.isNotEmpty()) {
+                _currentFilterParameters = currentFilterParameters.copy(
                     salary = binding.salaryEdittext.text.toString().toInt()
-                } else {
+                )
+            } else {
+                _currentFilterParameters = currentFilterParameters.copy(
                     salary = 0
-                }
+                )
             }
+
             saveCurrentFilterParameters()
             updateButtons()
             salaryChanged = false
@@ -290,10 +292,10 @@ class FilterFragment : Fragment() {
         binding.buttonApply.visibility = View.VISIBLE
     }
 
-    private fun currentFilterParameters(): FilterParameters {
+    private fun currentFilterParameters() {
         val filterSettings = viewModel.getFilterSettings()
 
-        return FilterParameters(
+        _currentFilterParameters = FilterParameters(
             countryId = filterSettings[COUNTRY_ID].orEmpty(),
             countryName = filterSettings[COUNTRY_NAME].orEmpty(),
             areaId = filterSettings[AREA_ID].orEmpty(),
@@ -321,16 +323,16 @@ class FilterFragment : Fragment() {
     }
 
     private fun clearCurrentFilterParameters() {
-        with(currentFilterParameters) {
-            countryName = EMPTY_STRING
-            countryId = EMPTY_STRING
-            areaName = EMPTY_STRING
-            areaId = EMPTY_STRING
-            industryId = EMPTY_STRING
-            industryName = EMPTY_STRING
-            salary = 0
+        _currentFilterParameters = currentFilterParameters.copy(
+            countryName = EMPTY_STRING,
+            countryId = EMPTY_STRING,
+            areaName = EMPTY_STRING,
+            areaId = EMPTY_STRING,
+            industryId = EMPTY_STRING,
+            industryName = EMPTY_STRING,
+            salary = 0,
             onlyWithSalary = false
-        }
+        )
         viewModel.clearFilterSettings()
     }
 
@@ -354,13 +356,17 @@ class FilterFragment : Fragment() {
                 if (value != null) {
                     when (key) {
                         INDUSTRY_ID -> {
-                            currentFilterParameters.industryId = value
+                            _currentFilterParameters = currentFilterParameters.copy(
+                                industryId = value
+                            )
                             viewModel.saveFilterSettings(mapOf(INDUSTRY_ID to value))
                         }
 
                         INDUSTRY_NAME -> {
                             binding.industryName.text = currentFilterParameters.industryName
-                            currentFilterParameters.industryName = value
+                            _currentFilterParameters = currentFilterParameters.copy(
+                                industryName = value
+                            )
                             viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to value))
                         }
 
@@ -374,6 +380,7 @@ class FilterFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        _currentFilterParameters = null
     }
 
     private companion object {
