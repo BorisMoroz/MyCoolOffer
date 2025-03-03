@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.bundle.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.databinding.FragmentCountryBinding
@@ -48,15 +49,15 @@ class CountryFragment : Fragment(), OnCountryClickListener {
     }
 
     override fun onCountryClick(country: Country) {
-        val navController = findNavController()
-        val currentBackStackEntry = navController.previousBackStackEntry
-        val args = currentBackStackEntry?.arguments
+        parentFragmentManager.setFragmentResult(
+            SENDING_DATA_KEY,
+            bundleOf(COUNTRY_ID_KEY to country.countryId)
+        )
+        findNavController().navigateUp()
+    }
 
-        val regionId = args?.getString("regionId") ?: ""
-
-        val action = CountryFragmentDirections
-            .actionCountryFragmentToWorkplaceFragment(country.countryId, regionId)
-
-        navController.navigate(action)
+    companion object {
+        private const val SENDING_DATA_KEY = "sendingDataKey"
+        private const val COUNTRY_ID_KEY = "countryIdKey"
     }
 }

@@ -94,14 +94,6 @@
         <action
             android:id="@+id/action_workplaceFragment_to_regionFragment"
             app:destination="@id/regionFragment" />
-        <argument
-            android:name="countryId"
-            app:argType="string"
-            android:defaultValue=""/>
-        <argument
-            android:name="regionId"
-            app:argType="string"
-            android:defaultValue=""/>
     </fragment>
     <fragment
         android:id="@+id/teamFragment"

@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentWorkplaceBinding
 
 class WorkplaceFragment : Fragment() {
     private var _binding: FragmentWorkplaceBinding? = null
     private val binding get() = _binding!!
-    private val args by navArgs<WorkplaceFragmentArgs>()
+    private val viewModel by viewModel<WorkplaceViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,11 +26,20 @@ class WorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (!args.countryId.isNullOrEmpty()) {
-            binding.countryEditText.setText(args.countryId)
+        viewModel.countryId.observe(viewLifecycleOwner) { countryId ->
+            binding.countryEditText.setText(countryId)
         }
-        if (!args.regionId.isNullOrEmpty()) {
-            binding.regionEditText.setText(args.regionId)
+
+        viewModel.regionId.observe(viewLifecycleOwner) { regionId ->
+            binding.regionEditText.setText(regionId)
+        }
+
+        parentFragmentManager.setFragmentResultListener(
+            SENDING_DATA_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            bundle.getString(COUNTRY_ID_KEY)?.let { viewModel.setCountryId(it) }
+            bundle.getString(REGION_ID_KEY)?.let { viewModel.setRegionId(it) }
         }
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -52,5 +61,11 @@ class WorkplaceFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val SENDING_DATA_KEY = "sendingDataKey"
+        private const val COUNTRY_ID_KEY = "countryIdKey"
+        private const val REGION_ID_KEY = "regionIdKey"
     }
 }
