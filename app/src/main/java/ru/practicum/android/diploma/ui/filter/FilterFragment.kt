@@ -13,7 +13,12 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
 import ru.practicum.android.diploma.domain.models.FilterParameters
@@ -21,6 +26,8 @@ import ru.practicum.android.diploma.domain.models.FilterParameters
 class FilterFragment : Fragment() {
     private var _binding: FragmentFilterBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModel<FilterViewModel>()
 
     private lateinit var currentFilterParameters: FilterParameters
 
@@ -38,18 +45,22 @@ class FilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getResultFilter()
+
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
 
-        currentFilterParameters = getCurrentFilterParameters()
-
-        setupWorkplaceLayout()
-        setupIndustryLayout()
-        setupSalaryEditText()
-        setupSalaryCheckBox()
-        setupWorkplaceAndIndustryResetButtons()
-        setupButtons()
+        lifecycle.coroutineScope.launch {
+            delay(50)
+            currentFilterParameters = getCurrentFilterParameters()
+            setupWorkplaceLayout()
+            setupIndustryLayout()
+            setupSalaryEditText()
+            setupSalaryCheckBox()
+            setupWorkplaceAndIndustryResetButtons()
+            setupButtons()
+        }
     }
 
     fun hideKeyBoard() {
@@ -246,7 +257,6 @@ class FilterFragment : Fragment() {
             binding.buttonReset.visibility = View.INVISIBLE
 
             clearCurrentFilterParameters()
-            saveCurrentFilterParameters()
         }
 
         binding.buttonApply.setOnClickListener {
@@ -280,20 +290,33 @@ class FilterFragment : Fragment() {
     }
 
     fun getCurrentFilterParameters(): FilterParameters {
+        val filterSettings = viewModel.getFilterSettings()
+
         return FilterParameters(
-            countryId = "1000",
-            countryName = "Россия",
-            areaId = "2000",
-            areaName = "Москва",
-            industryId = "3000",
-            industryName = "Торговля",
-            salary = 100_000,
-            onlyWithSalary = true
+            countryId = filterSettings["countryId"] ?: "",
+            countryName = filterSettings["countryName"] ?: "",
+            areaId = filterSettings["areaId"] ?: "",
+            areaName = filterSettings["areaName"] ?: "",
+            industryId = filterSettings["industryId"] ?: "",
+            industryName = filterSettings["industryName"] ?: "",
+            salary = filterSettings["salary"]?.toIntOrNull() ?: 0,
+            onlyWithSalary = filterSettings["onlyWithSalary"]?.toBoolean() ?: false
         )
     }
 
     fun saveCurrentFilterParameters() {
-        // здесь использовать метод для сохранения в шареды
+        viewModel.saveFilterSettings(
+            mapOf(
+                "countryId" to currentFilterParameters.countryId,
+                "countryName" to currentFilterParameters.countryName,
+                "areaId" to currentFilterParameters.areaId,
+                "areaName" to currentFilterParameters.areaName,
+                "industryId" to currentFilterParameters.industryId,
+                "industryName" to currentFilterParameters.industryName,
+                "salary" to currentFilterParameters.salary.toString(),
+                "onlyWithSalary" to currentFilterParameters.onlyWithSalary.toString(),
+            )
+        )
     }
 
     fun clearCurrentFilterParameters() {
@@ -307,6 +330,7 @@ class FilterFragment : Fragment() {
             salary = 0
             onlyWithSalary = false
         }
+        viewModel.clearFilterSettings()
     }
 
     fun isFilterParametersNotEmpty(filterParameters: FilterParameters): Boolean {
@@ -318,6 +342,30 @@ class FilterFragment : Fragment() {
                 true
             } else {
                 false
+            }
+        }
+    }
+
+    private fun getResultFilter() {
+        setFragmentResultListener("filter_key") { _, bundle ->
+            bundle.keySet().forEach { key ->
+                val value = bundle.getString(key)
+                if (value != null) {
+                    when (key) {
+                        "industryId" -> {
+                            currentFilterParameters.industryId = value
+                            viewModel.saveFilterSettings(mapOf("industryId" to value))
+                        }
+
+                        "industryName" -> {
+                            binding.industryName.text = currentFilterParameters.industryName
+                            currentFilterParameters.industryName = value
+                            viewModel.saveFilterSettings(mapOf("industryName" to value))
+                        }
+
+                        else -> {}
+                    }
+                }
             }
         }
     }

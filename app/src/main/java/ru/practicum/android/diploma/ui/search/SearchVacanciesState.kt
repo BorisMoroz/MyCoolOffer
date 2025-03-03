@@ -7,4 +7,5 @@ sealed interface SearchVacanciesState {
     data object Loading : SearchVacanciesState
     data class Error(val errorCode: Int) : SearchVacanciesState
     data class Content(val data: Vacancies) : SearchVacanciesState
+    data class GetFilterSettings(val settings: Map<String, String>) : SearchVacanciesState
 }
