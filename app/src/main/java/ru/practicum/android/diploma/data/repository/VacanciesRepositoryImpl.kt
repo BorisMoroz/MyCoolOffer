@@ -15,8 +15,16 @@ import ru.practicum.android.diploma.domain.repository.VacanciesRepository
 import ru.practicum.android.diploma.util.NETWORK_OK
 
 class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : VacanciesRepository {
-    override fun searchVacancies(text: String, page: Int, perPage: Int): Flow<Resource<Vacancies>> = flow {
-        val response = networkClient.doRequest(VacanciesSearchRequest(text, page, perPage))
+    override fun searchVacancies(
+        text: String,
+        page: Int,
+        perPage: Int,
+        area: Int?,
+        industries: Int?,
+        onlyWithSalary: Boolean
+    ): Flow<Resource<Vacancies>> = flow {
+        val response =
+            networkClient.doRequest(VacanciesSearchRequest(text, page, perPage, area, industries, onlyWithSalary))
 
         if (response.resultCode == NETWORK_OK) {
             val items = (response as VacanciesSearchResponse).items.map {

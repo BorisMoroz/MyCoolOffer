@@ -41,7 +41,13 @@ class SearchViewModel(
 
             viewModelScope.launch {
                 vacanciesInteractor
-                    .searchVacancies(text = query, page = currentPage, perPage = ITEMS_PER_PAGE)
+                    .searchVacancies(
+                        text = query,
+                        page = currentPage,
+                        perPage = ITEMS_PER_PAGE,
+                        area = null,
+                        industries = null,
+                        onlyWithSalary = false)
                     .collect { result ->
                         when (result) {
                             is Resource.Error -> {
