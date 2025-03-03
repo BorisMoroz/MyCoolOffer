@@ -9,9 +9,6 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import ru.practicum.android.diploma.data.dto.IndustriesGetRequest
 import ru.practicum.android.diploma.data.dto.IndustriesGetResponse
-import ru.practicum.android.diploma.data.dto.Response
-import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
-import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.requests.AreasRequest
 import ru.practicum.android.diploma.data.dto.requests.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.requests.VacancyDetailsRequest

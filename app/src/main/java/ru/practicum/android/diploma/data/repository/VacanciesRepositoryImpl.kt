@@ -5,10 +5,6 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.IndustriesGetRequest
 import ru.practicum.android.diploma.data.dto.IndustriesGetResponse
 import ru.practicum.android.diploma.data.dto.IndustryDto
-import ru.practicum.android.diploma.data.dto.VacanciesSearchRequest
-import ru.practicum.android.diploma.data.dto.VacanciesSearchResponse
-import ru.practicum.android.diploma.data.dto.VacancyDetailsRequest
-import ru.practicum.android.diploma.data.dto.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.dto.requests.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.requests.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.responses.VacanciesSearchResponse
