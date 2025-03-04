@@ -18,6 +18,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -372,13 +373,13 @@ class FilterFragment : Fragment() {
     }
 
     private fun navigateToWorkPlaceFragment() {
+        val countryJson = Gson().toJson(Country(currentFilterParameters.countryId, currentFilterParameters.countryName))
+        val regionJson = Gson().toJson(Region(currentFilterParameters.areaId, currentFilterParameters.countryId, currentFilterParameters.areaName))
         setFragmentResult(
-            "workplace_key",
+            "sendingDataKey",
             bundleOf(
-                "countryName" to currentFilterParameters.countryName,
-                "countryId" to currentFilterParameters.countryId,
-                "areaName" to currentFilterParameters.areaName,
-                "areaId" to currentFilterParameters.areaId,
+                "country" to countryJson,
+                "region" to regionJson
             )
         )
         findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
