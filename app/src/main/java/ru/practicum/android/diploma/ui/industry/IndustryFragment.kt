@@ -157,31 +157,33 @@ class IndustryFragment : Fragment() {
             }
         }
 
-        if(firstTimeShowIndustries && selectedIndustry != null) {
+        if (firstTimeShowIndustries && selectedIndustry != null) {
             var position = -1
             for (ind in industries.indices) {
                 if (industries[ind].industryId == selectedIndustry!!.industryId) {
                     position = ind
-                    if(position > 0) {
-                        position--
-                    }
+                    break
                 }
+            }
+
+            if (position > 0) {
+                position--
             }
 
             industryAdapter?.setSelectedIndutsry(selectedIndustry)
 
-            if(position != -1) {
+            if (position != -1) {
                 binding.industriesList.layoutManager?.scrollToPosition(position)
             }
+
             firstTimeShowIndustries = false
         }
-
         industryAdapter?.notifyDataSetChanged()
     }
 
     private fun getIndustryFilter() {
         var industryId: String? = null
-        var industryName : String? = null
+        var industryName: String? = null
 
         setFragmentResultListener(INDUSTRY_KEY) { _, bundle ->
             bundle.keySet().forEach { key ->
@@ -191,14 +193,16 @@ class IndustryFragment : Fragment() {
                         INDUSTRY_ID -> {
                             industryId = value
                         }
+
                         INDUSTRY_NAME -> {
                             industryName = value
                         }
+
                         else -> {}
                     }
                 }
             }
-        selectedIndustry = Industry(industryId.orEmpty(), industryName.orEmpty())
+            selectedIndustry = Industry(industryId.orEmpty(), industryName.orEmpty())
         }
     }
 

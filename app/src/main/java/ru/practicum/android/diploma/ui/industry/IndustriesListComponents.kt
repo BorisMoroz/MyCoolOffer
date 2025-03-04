@@ -51,13 +51,7 @@ class IndustryAdapter(
         return industries.size
     }
 
-
-    fun setSelectedIndutsry(selectedIndustry: Industry? ){
-
+    fun setSelectedIndutsry(selectedIndustry: Industry?) {
         this.selectedIndustry = selectedIndustry
-
     }
-
-
-
 }

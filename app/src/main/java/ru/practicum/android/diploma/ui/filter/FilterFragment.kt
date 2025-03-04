@@ -209,8 +209,8 @@ class FilterFragment : Fragment() {
 
     private fun setupWorkplaceAndIndustryResetButtons() {
         binding.workplaceButtonReset.setOnClickListener {
-            binding.workplaceLayout1.visibility = View.VISIBLE
             binding.workplaceLayout2.visibility = View.INVISIBLE
+            binding.workplaceLayout1.visibility = View.VISIBLE
 
             _currentFilterParameters = currentFilterParameters.copy(
                 countryName = EMPTY_STRING,
@@ -227,8 +227,8 @@ class FilterFragment : Fragment() {
         }
 
         binding.industryButtonReset.setOnClickListener {
-            binding.industryLayout1.visibility = View.VISIBLE
             binding.industryLayout2.visibility = View.INVISIBLE
+            binding.industryLayout1.visibility = View.VISIBLE
 
             _currentFilterParameters = currentFilterParameters.copy(
                 industryName = EMPTY_STRING,
@@ -354,7 +354,7 @@ class FilterFragment : Fragment() {
         }
     }
 
-    private fun navigateToIndustriesFragment(){
+    private fun navigateToIndustriesFragment() {
         setFragmentResult(
             "industry_key",
             bundleOf(
@@ -365,7 +365,7 @@ class FilterFragment : Fragment() {
         findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
     }
 
-    private fun navigateToWorkPlaceFragment(){
+    private fun navigateToWorkPlaceFragment() {
         setFragmentResult(
             "workplace_key",
             bundleOf(

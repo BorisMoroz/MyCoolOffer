@@ -52,7 +52,7 @@
 
             android:layout_gravity="center"
 
-            android:layout_marginRight="@dimen/margin_16"
+            android:layout_marginRight="@dimen/margin_22"
 
             android:src="@drawable/ic_forward" />
     </LinearLayout>
@@ -164,7 +164,7 @@
 
             android:layout_gravity="center"
 
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="@dimen/margin_22"
 
             android:src="@drawable/ic_forward" />
     </LinearLayout>
