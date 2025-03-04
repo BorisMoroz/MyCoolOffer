@@ -146,15 +146,10 @@ class IndustryFragment : Fragment() {
         if (industries.isEmpty()) {
             binding.noIndustryFoundLayout.isVisible = true
             binding.buttonApply.isVisible = false
-
             hideKeyBoard()
         } else {
             binding.noIndustryFoundLayout.isVisible = false
-            if (selectedIndustry == null) {
-                binding.buttonApply.isVisible = false
-            } else {
-                binding.buttonApply.isVisible = true
-            }
+            checkSelectedIndustry(selectedIndustry)
         }
 
         if (firstTimeShowIndustries && selectedIndustry != null) {
@@ -204,6 +199,10 @@ class IndustryFragment : Fragment() {
             }
             selectedIndustry = Industry(industryId.orEmpty(), industryName.orEmpty())
         }
+    }
+
+    private fun checkSelectedIndustry(selectedIndustry: Industry?) {
+        binding.buttonApply.isVisible = selectedIndustry != null
     }
 
     override fun onDestroyView() {

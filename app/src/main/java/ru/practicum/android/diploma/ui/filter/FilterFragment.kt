@@ -374,7 +374,13 @@ class FilterFragment : Fragment() {
 
     private fun navigateToWorkPlaceFragment() {
         val countryJson = Gson().toJson(Country(currentFilterParameters.countryId, currentFilterParameters.countryName))
-        val regionJson = Gson().toJson(Region(currentFilterParameters.areaId, currentFilterParameters.countryId, currentFilterParameters.areaName))
+        val regionJson = Gson().toJson(
+            Region(
+                currentFilterParameters.areaId,
+                currentFilterParameters.countryId,
+                currentFilterParameters.areaName
+            )
+        )
         setFragmentResult(
             "sendingDataKey",
             bundleOf(
@@ -391,66 +397,78 @@ class FilterFragment : Fragment() {
                 when (key) {
                     INDUSTRY_ID -> {
                         val industryId = bundle.getString(INDUSTRY_ID)
-                        if (industryId != null) {
-                            _currentFilterParameters = currentFilterParameters.copy(
-                                industryId = industryId
-                            )
-                            viewModel.saveFilterSettings(mapOf(INDUSTRY_ID to industryId))
-                            binding.buttonApply.isVisible = true
-                        }
+                        setIndustryId(industryId)
                     }
-
                     INDUSTRY_NAME -> {
                         val industryName = bundle.getString(INDUSTRY_NAME)
-                        if (industryName != null) {
-                            _currentFilterParameters = currentFilterParameters.copy(
-                                industryName = industryName
-                            )
-                            viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to industryName))
-                            binding.industryName.text = currentFilterParameters.industryName
-                            binding.buttonApply.isVisible = true
-                        }
+                        setIndustryName(industryName)
                     }
-
                     COUNTRY -> {
                         val country = bundle.getParcelable<Country>(COUNTRY)
-                        if (country != null) {
-                            _currentFilterParameters = currentFilterParameters.copy(
-                                countryId = country.countryId,
-                                countryName = country.countryName
-                            )
-                            viewModel.saveFilterSettings(
-                                mapOf(
-                                    COUNTRY_ID to country.countryId,
-                                    COUNTRY_NAME to country.countryName
-                                )
-                            )
-                            binding.buttonApply.isVisible = true
-                        }
+                        setCountry(country)
                     }
-
                     REGION -> {
                         val region = bundle.getParcelable<Region>(REGION)
-                        if (region != null) {
-                            _currentFilterParameters = currentFilterParameters.copy(
-                                areaId = region.regionId,
-                                areaName = region.regionName
-                            )
-                            viewModel.saveFilterSettings(
-                                mapOf(
-                                    AREA_ID to region.regionId,
-                                    AREA_NAME to region.regionName
-                                )
-                            )
-                            binding.workplaceName.text =
-                                "${_currentFilterParameters?.countryName}, ${_currentFilterParameters?.areaName}"
-                            binding.buttonApply.isVisible = true
-                        }
+                        setRegion(region)
                     }
-
                     else -> {}
                 }
             }
+        }
+    }
+
+    private fun setIndustryId(industryId: String?) {
+        if (industryId != null) {
+            _currentFilterParameters = currentFilterParameters.copy(
+                industryId = industryId
+            )
+            viewModel.saveFilterSettings(mapOf(INDUSTRY_ID to industryId))
+            binding.buttonApply.isVisible = true
+        }
+    }
+
+    private fun setIndustryName(industryName: String?) {
+        if (industryName != null) {
+            _currentFilterParameters = currentFilterParameters.copy(
+                industryName = industryName
+            )
+            viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to industryName))
+            binding.industryName.text = currentFilterParameters.industryName
+            binding.buttonApply.isVisible = true
+        }
+    }
+
+    private fun setCountry(country: Country?) {
+        if (country != null) {
+            _currentFilterParameters = currentFilterParameters.copy(
+                countryId = country.countryId,
+                countryName = country.countryName
+            )
+            viewModel.saveFilterSettings(
+                mapOf(
+                    COUNTRY_ID to country.countryId,
+                    COUNTRY_NAME to country.countryName
+                )
+            )
+            binding.buttonApply.isVisible = true
+        }
+    }
+
+    private fun setRegion(region: Region?) {
+        if (region != null) {
+            _currentFilterParameters = currentFilterParameters.copy(
+                areaId = region.regionId,
+                areaName = region.regionName
+            )
+            viewModel.saveFilterSettings(
+                mapOf(
+                    AREA_ID to region.regionId,
+                    AREA_NAME to region.regionName
+                )
+            )
+            binding.workplaceName.text =
+                "${_currentFilterParameters?.countryName}, ${_currentFilterParameters?.areaName}"
+            binding.buttonApply.isVisible = true
         }
     }
 
