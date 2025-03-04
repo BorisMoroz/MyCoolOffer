@@ -53,6 +53,7 @@ class RetrofitNetworkClient(
                         dto.params.perPage,
                         dto.params.area,
                         dto.params.industries,
+                        dto.params.salary,
                         dto.params.onlyWithSalary
                     )
                     response.apply { resultCode = NETWORK_OK }

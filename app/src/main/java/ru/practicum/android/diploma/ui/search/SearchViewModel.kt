@@ -53,6 +53,7 @@ class SearchViewModel(
                             perPage = ITEMS_PER_PAGE,
                             area = filterSettings["areaId"]?.toIntOrNull(),
                             industries = filterSettings["industryId"],
+                            salary = 100_000,
                             onlyWithSalary = filterSettings["onlyWithSalary"].toBoolean()
                         )
                     )

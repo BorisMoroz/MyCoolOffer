@@ -6,5 +6,6 @@ data class SearchFilters(
     val perPage: Int,
     val area: Int?,
     val industries: String?,
+    val salary: Int?,
     val onlyWithSalary: Boolean
 )
