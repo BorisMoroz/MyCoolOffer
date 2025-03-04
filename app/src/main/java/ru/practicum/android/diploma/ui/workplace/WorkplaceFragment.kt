@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentWorkplaceBinding
+import ru.practicum.android.diploma.domain.models.Country
+import ru.practicum.android.diploma.domain.models.Region
 
 class WorkplaceFragment : Fragment() {
     private var _binding: FragmentWorkplaceBinding? = null
@@ -26,20 +29,26 @@ class WorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.countryId.observe(viewLifecycleOwner) { countryId ->
-            binding.countryEditText.setText(countryId)
+        viewModel.countryName.observe(viewLifecycleOwner) { countryName ->
+            binding.countryEditText.setText(countryName)
         }
 
-        viewModel.regionId.observe(viewLifecycleOwner) { regionId ->
-            binding.regionEditText.setText(regionId)
+        viewModel.regionName.observe(viewLifecycleOwner) { regionName ->
+            binding.regionEditText.setText(regionName)
         }
 
         parentFragmentManager.setFragmentResultListener(
             SENDING_DATA_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
-            bundle.getString(COUNTRY_ID_KEY)?.let { viewModel.setCountryId(it) }
-            bundle.getString(REGION_ID_KEY)?.let { viewModel.setRegionId(it) }
+            Gson().fromJson(
+                bundle.getString(COUNTRY),
+                Country::class.java
+            )?.let { viewModel.setCountryName(it.countryName) }
+            Gson().fromJson(
+                bundle.getString(REGION),
+                Region::class.java
+            )?.let { viewModel.setRegionName(it.regionName) }
         }
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -65,7 +74,7 @@ class WorkplaceFragment : Fragment() {
 
     companion object {
         private const val SENDING_DATA_KEY = "sendingDataKey"
-        private const val COUNTRY_ID_KEY = "countryIdKey"
-        private const val REGION_ID_KEY = "regionIdKey"
+        private const val COUNTRY = "country"
+        private const val REGION = "region"
     }
 }
