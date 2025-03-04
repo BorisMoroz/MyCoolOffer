@@ -22,7 +22,7 @@ class SearchViewModel(
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
-    private lateinit var filterSettings: Map<String, String>
+    private var filterSettings: Map<String, String> = emptyMap()
     private var currentPage = 1
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
@@ -44,9 +44,9 @@ class SearchViewModel(
             isNextPageLoading = true
 
             viewModelScope.launch {
-
                 val areaValue = if (filterSettings[AREA_ID] == EMPTY_STRING) null else filterSettings[AREA_ID]
-                val industryValue = if (filterSettings[INDUSTRY_ID] == EMPTY_STRING) null else filterSettings[INDUSTRY_ID]
+                val industryValue =
+                    if (filterSettings[INDUSTRY_ID] == EMPTY_STRING) null else filterSettings[INDUSTRY_ID]
                 val salaryValue = if (filterSettings[SALARY] == EMPTY_STRING) null else filterSettings[SALARY]
                 val onlyWithSalaryValue = filterSettings[ONLY_WITH_SALARY].toBoolean()
 
