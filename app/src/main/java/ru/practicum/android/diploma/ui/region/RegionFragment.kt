@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.bundle.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
 import ru.practicum.android.diploma.domain.models.Region
 
@@ -49,15 +50,16 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     }
 
     override fun onRegionClick(region: Region) {
+        val regionJson = Gson().toJson(region)
         parentFragmentManager.setFragmentResult(
             SENDING_DATA_KEY,
-            bundleOf(REGION_ID_KEY to region.regionId)
+            bundleOf(REGION to regionJson)
         )
         findNavController().navigateUp()
     }
 
     companion object {
         private const val SENDING_DATA_KEY = "sendingDataKey"
-        private const val REGION_ID_KEY = "regionIdKey"
+        private const val REGION = "region"
     }
 }

@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class WorkplaceViewModel : ViewModel() {
-    private val _countryId = MutableLiveData<String>()
-    val countryId: LiveData<String> get() = _countryId
+    private val _countryName = MutableLiveData<String>()
+    val countryName: LiveData<String> get() = _countryName
 
-    private val _regionId = MutableLiveData<String>()
-    val regionId: LiveData<String> get() = _regionId
+    private val _regionName = MutableLiveData<String>()
+    val regionName: LiveData<String> get() = _regionName
 
-    fun setCountryId(id: String) {
-        _countryId.value = id
+    fun setCountryName(name: String) {
+        _countryName.value = name
     }
 
-    fun setRegionId(id: String) {
-        _regionId.value = id
+    fun setRegionName(name: String) {
+        _regionName.value = name
     }
 }
