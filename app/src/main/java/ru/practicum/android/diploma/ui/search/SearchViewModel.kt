@@ -44,17 +44,22 @@ class SearchViewModel(
             isNextPageLoading = true
 
             viewModelScope.launch {
-                Log.d("log", "${filterSettings["industryId"]}")
+
+                val areaValue = if (filterSettings["areaId"] == "") null else filterSettings["areaId"]
+                val industryValue = if (filterSettings["industryId"] == "") null else filterSettings["industryId"]
+                val salaryValue = if (filterSettings["salary"] == "") null else filterSettings["salary"]
+                val onlyWithSalaryValue = filterSettings["onlyWithSalary"].toBoolean()
+
                 vacanciesInteractor
                     .searchVacancies(
                         SearchFilters(
                             text = query,
                             page = currentPage,
                             perPage = ITEMS_PER_PAGE,
-                            area = filterSettings["areaId"]?.toIntOrNull(),
-                            industries = filterSettings["industryId"],
-                            salary = 100_000,
-                            onlyWithSalary = filterSettings["onlyWithSalary"].toBoolean()
+                            area = areaValue,
+                            industries = industryValue,
+                            salary = salaryValue,
+                            onlyWithSalary = onlyWithSalaryValue
                         )
                     )
                     .collect { result ->

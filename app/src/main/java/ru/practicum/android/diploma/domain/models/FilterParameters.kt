@@ -7,6 +7,6 @@ data class FilterParameters(
     val areaName: String,
     val industryId: String,
     val industryName: String,
-    val salary: Int,
+    val salary: String,
     val onlyWithSalary: Boolean
 )

@@ -112,7 +112,7 @@ class FilterFragment : Fragment() {
             binding.industryName.text = currentFilterParameters.industryName
         }
 
-        if (currentFilterParameters.salary != 0) {
+        if (currentFilterParameters.salary != EMPTY_STRING) {
             binding.salaryEdittext.setText(currentFilterParameters.salary.toString())
             val color = ContextCompat.getColor(requireContext(), R.color.yp_black)
             binding.salaryTitle.setTextColor(color)
@@ -268,11 +268,11 @@ class FilterFragment : Fragment() {
         if (salaryChanged) {
             _currentFilterParameters = if (binding.salaryEdittext.text.isNotEmpty()) {
                 currentFilterParameters.copy(
-                    salary = binding.salaryEdittext.text.toString().toInt()
+                    salary = binding.salaryEdittext.text.toString()
                 )
             } else {
                 currentFilterParameters.copy(
-                    salary = 0
+                    salary = EMPTY_STRING
                 )
             }
 
@@ -301,7 +301,7 @@ class FilterFragment : Fragment() {
             areaName = filterSettings[AREA_NAME].orEmpty(),
             industryId = filterSettings[INDUSTRY_ID].orEmpty(),
             industryName = filterSettings[INDUSTRY_NAME].orEmpty(),
-            salary = filterSettings[SALARY]?.toIntOrNull() ?: 0,
+            salary = filterSettings[SALARY].orEmpty(),
             onlyWithSalary = filterSettings[ONLY_WITH_SALARY]?.toBoolean() ?: false
         )
     }
@@ -329,7 +329,7 @@ class FilterFragment : Fragment() {
             areaId = EMPTY_STRING,
             industryId = EMPTY_STRING,
             industryName = EMPTY_STRING,
-            salary = 0,
+            salary = EMPTY_STRING,
             onlyWithSalary = false
         )
         viewModel.clearFilterSettings()
@@ -338,7 +338,7 @@ class FilterFragment : Fragment() {
     private fun isFilterParametersNotEmpty(filterParameters: FilterParameters): Boolean {
         with(filterParameters) {
             val checkArea = countryId != EMPTY_STRING || areaId != EMPTY_STRING
-            val checkIndustryAndSalary = industryId != EMPTY_STRING || salary != 0 || onlyWithSalary
+            val checkIndustryAndSalary = industryId != EMPTY_STRING || salary != EMPTY_STRING || onlyWithSalary
 
             return if (checkArea || checkIndustryAndSalary) {
                 true
@@ -369,9 +369,7 @@ class FilterFragment : Fragment() {
                             viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to value))
                         }
 
-                        else -> {
-                            viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to "null"))
-                        }
+                        else -> {}
                     }
                 }
             }
