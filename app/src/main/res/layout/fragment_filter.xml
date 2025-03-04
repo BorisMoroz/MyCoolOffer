@@ -24,7 +24,9 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        android:visibility="invisible"
+        tools:visibility="visible">
 
         <TextView
             android:layout_width="0dp"
@@ -64,7 +66,10 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar">
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+
+        android:visibility="invisible"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -131,7 +136,9 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/workplace_layout_1">
+        app:layout_constraintTop_toBottomOf="@id/workplace_layout_1"
+        android:visibility="invisible"
+        tools:visibility="visible">
 
         <TextView
             android:layout_width="0dp"
@@ -171,7 +178,9 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/workplace_layout_1">
+        app:layout_constraintTop_toBottomOf="@id/workplace_layout_1"
+        android:visibility="invisible"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="0dp"

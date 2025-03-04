@@ -18,7 +18,7 @@ class IndustryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (selectedIndustry == null) {
             industryRadioButton.isChecked = false
         } else {
-            industryRadioButton.isChecked = industry.industryId == selectedIndustry!!.industryId
+            industryRadioButton.isChecked = industry.industryId == selectedIndustry.industryId
         }
     }
 }
@@ -50,4 +50,14 @@ class IndustryAdapter(
     override fun getItemCount(): Int {
         return industries.size
     }
+
+
+    fun setSelectedIndutsry(selectedIndustry: Industry? ){
+
+        this.selectedIndustry = selectedIndustry
+
+    }
+
+
+
 }

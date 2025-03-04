@@ -11,8 +11,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
@@ -92,12 +94,14 @@ class FilterFragment : Fragment() {
         binding.workplaceTitle.setOnClickListener {
             hideKeyBoard()
             binding.salaryEdittext.clearFocus()
-            findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
+
+            navigateToWorkPlaceFragment()
         }
         binding.workplaceName.setOnClickListener {
             hideKeyBoard()
             binding.salaryEdittext.clearFocus()
-            findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
+
+            navigateToWorkPlaceFragment()
         }
     }
 
@@ -126,12 +130,14 @@ class FilterFragment : Fragment() {
         binding.industryTitle.setOnClickListener {
             hideKeyBoard()
             binding.salaryEdittext.clearFocus()
-            findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
+
+            navigateToIndustriesFragment()
         }
         binding.industryName.setOnClickListener {
             hideKeyBoard()
             binding.salaryEdittext.clearFocus()
-            findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
+
+            navigateToIndustriesFragment()
         }
     }
 
@@ -348,6 +354,30 @@ class FilterFragment : Fragment() {
         }
     }
 
+    private fun navigateToIndustriesFragment(){
+        setFragmentResult(
+            "industry_key",
+            bundleOf(
+                "industryName" to currentFilterParameters.industryName,
+                "industryId" to currentFilterParameters.industryId
+            )
+        )
+        findNavController().navigate(R.id.action_filterFragment_to_industryFragment)
+    }
+
+    private fun navigateToWorkPlaceFragment(){
+        setFragmentResult(
+            "workplace_key",
+            bundleOf(
+                "countryName" to currentFilterParameters.countryName,
+                "countryId" to currentFilterParameters.countryId,
+                "areaName" to currentFilterParameters.areaName,
+                "areaId" to currentFilterParameters.areaId,
+            )
+        )
+        findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
+    }
+
     private fun getResultFilter() {
         setFragmentResultListener(FILTER_KEY) { _, bundle ->
             bundle.keySet().forEach { key ->
@@ -359,6 +389,7 @@ class FilterFragment : Fragment() {
                                 industryId = value
                             )
                             viewModel.saveFilterSettings(mapOf(INDUSTRY_ID to value))
+                            binding.buttonApply.isVisible = true
                         }
 
                         INDUSTRY_NAME -> {
@@ -367,6 +398,7 @@ class FilterFragment : Fragment() {
                                 industryName = value
                             )
                             viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to value))
+                            binding.buttonApply.isVisible = true
                         }
 
                         else -> {}
