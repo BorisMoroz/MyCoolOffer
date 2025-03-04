@@ -22,13 +22,13 @@
         android:layout_marginHorizontal="@dimen/margin_16"
         android:layout_marginTop="@dimen/_8dp"
         android:background="@drawable/rounded_item"
+        android:drawableEnd="@drawable/ic_search"
         android:fontFamily="@font/ys_display_regular"
         android:gravity="center_vertical"
         android:hint="@string/type_region"
         android:imeOptions="actionNext"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:drawableEnd="@drawable/ic_search"
         android:maxLines="1"
         android:paddingHorizontal="@dimen/padding_16"
         android:paddingVertical="@dimen/padding_16"
@@ -54,6 +54,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/input_search_region"
         tools:listitem="@layout/country_or_region_item" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/yp_blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/container_placeholder"

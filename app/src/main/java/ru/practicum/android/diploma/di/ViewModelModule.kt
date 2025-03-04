@@ -36,7 +36,7 @@ val viewModelModule = module {
     }
 
     viewModel<WorkplaceViewModel> {
-        WorkplaceViewModel()
+        WorkplaceViewModel(get())
     }
 
     viewModel {
