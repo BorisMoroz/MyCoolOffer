@@ -3,19 +3,21 @@ package ru.practicum.android.diploma.ui.workplace
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import ru.practicum.android.diploma.domain.models.Country
+import ru.practicum.android.diploma.domain.models.Region
 
 class WorkplaceViewModel : ViewModel() {
-    private val _countryName = MutableLiveData<String>()
-    val countryName: LiveData<String> get() = _countryName
+    private val _country = MutableLiveData<Country>()
+    val country: LiveData<Country> get() = _country
 
-    private val _regionName = MutableLiveData<String>()
-    val regionName: LiveData<String> get() = _regionName
+    private val _region = MutableLiveData<Region>()
+    val region: LiveData<Region> get() = _region
 
-    fun setCountryName(name: String) {
-        _countryName.value = name
+    fun setCountry(country: Country) {
+        _country.value = country
     }
 
-    fun setRegionName(name: String) {
-        _regionName.value = name
+    fun setRegion(region: Region) {
+        _region.value = region
     }
 }

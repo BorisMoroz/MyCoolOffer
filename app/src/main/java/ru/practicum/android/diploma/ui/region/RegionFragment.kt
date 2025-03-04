@@ -8,13 +8,20 @@ import androidx.core.bundle.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentRegionBinding
+import ru.practicum.android.diploma.domain.models.Area
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
+import ru.practicum.android.diploma.ui.country.AreaConverter
+import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 
 class RegionFragment : Fragment(), OnRegionClickListener {
     private var _binding: FragmentRegionBinding? = null
     private val binding get() = _binding!!
-
+    private val viewModel by viewModel<RegionViewModel>()
+    private var country = Country("", "")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,26 +34,85 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.listRegions.adapter = RegionAdapter(getRegionListForTest(), this)
+        val countryJson = arguments?.getString(COUNTRY)
+        country = Gson().fromJson(countryJson, Country::class.java)
+
+        if (country.countryId.isNullOrEmpty()) {
+            viewModel.getRegions("113")
+        } else {
+            viewModel.getRegions(country.countryId)
+        }
+
+        viewModel.getRegionState().observe(viewLifecycleOwner) { state ->
+            render(state)
+        }
 
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
     }
 
+    private fun render(state: RegionState) {
+        when (state) {
+            is RegionState.Loading -> {
+                showLoading()
+            }
+
+            is RegionState.Error -> {
+                if (state.errorCode == NETWORK_CONNECTION_ERROR) {
+                    showInternetConnectionError()
+                } else {
+
+                }
+            }
+
+            is RegionState.Content -> {
+                showResult(state.areas)
+            }
+        }
+    }
+
+    private fun showLoading() {
+        binding.progress.visibility = View.VISIBLE
+        binding.listRegions.visibility = View.GONE
+        binding.containerPlaceholder.visibility = View.GONE
+    }
+
+    private fun showInternetConnectionError() {
+        binding.progress.visibility = View.GONE
+        binding.listRegions.visibility = View.GONE
+        binding.placeholder.setImageResource(R.drawable.img_placeholder_connection_error)
+        binding.textPlaceholder.text = getString(R.string.connection_error)
+        binding.containerPlaceholder.visibility = View.VISIBLE
+    }
+
+    private fun showError() {
+        binding.progress.visibility = View.GONE
+        binding.listRegions.visibility = View.GONE
+        binding.placeholder.setImageResource(R.drawable.img_placeholder_search_error)
+        binding.textPlaceholder.text = getString(R.string.failed_to_get_regions)
+        binding.containerPlaceholder.visibility = View.VISIBLE
+    }
+
+    private fun showResult(areas: List<Area>) {
+        binding.progress.visibility = View.GONE
+        binding.listRegions.adapter = RegionAdapter(mapAreaListToRegionList(areas), this)
+        binding.listRegions.visibility = View.VISIBLE
+        binding.containerPlaceholder.visibility = View.GONE
+    }
+
+    private fun mapAreaListToRegionList(areas: List<Area>): List<Region> {
+        val convertor = AreaConverter()
+        var areaList = mutableListOf<Region>()
+        for (item in areas) {
+            areaList.add(convertor.mapToRegion(item))
+        }
+        return areaList
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    // Метод для генерации данных
-    private fun getRegionListForTest(): List<Region> {
-        var list = mutableListOf<Region>()
-        list.add(Region("1", "Москва"))
-        list.add(Region("2", "Санкт-Петербург"))
-        list.add(Region("3", "Кисловодск"))
-        list.add(Region("4", "Рязань"))
-        return list
     }
 
     override fun onRegionClick(region: Region) {
@@ -61,5 +127,6 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     companion object {
         private const val SENDING_DATA_KEY = "sendingDataKey"
         private const val REGION = "region"
+        private const val COUNTRY = "country"
     }
 }

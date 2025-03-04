@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.bundle.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentWorkplaceBinding
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
@@ -29,26 +31,25 @@ class WorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.countryName.observe(viewLifecycleOwner) { countryName ->
-            binding.countryEditText.setText(countryName)
+        viewModel.country.observe(viewLifecycleOwner) { country ->
+            binding.countryEditText.setText(country.countryName)
         }
 
-        viewModel.regionName.observe(viewLifecycleOwner) { regionName ->
-            binding.regionEditText.setText(regionName)
+        viewModel.region.observe(viewLifecycleOwner) { region ->
+            binding.regionEditText.setText(region.regionName)
         }
 
         parentFragmentManager.setFragmentResultListener(
             SENDING_DATA_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
-            Gson().fromJson(
-                bundle.getString(COUNTRY),
-                Country::class.java
-            )?.let { viewModel.setCountryName(it.countryName) }
-            Gson().fromJson(
-                bundle.getString(REGION),
-                Region::class.java
-            )?.let { viewModel.setRegionName(it.regionName) }
+            bundle.getString(COUNTRY)?.takeIf { it.isNotEmpty() }?.let { countryJson ->
+                viewModel.setCountry(Gson().fromJson(countryJson, Country::class.java))
+            }
+
+            bundle.getString(REGION)?.takeIf { it.isNotEmpty() }?.let { regionJson ->
+                viewModel.setRegion(Gson().fromJson(regionJson, Region::class.java))
+            }
         }
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
@@ -59,7 +60,17 @@ class WorkplaceFragment : Fragment() {
         }
 
         binding.regionEditText.setOnClickListener {
-            findNavController().navigate(WorkplaceFragmentDirections.actionWorkplaceFragmentToRegionFragment())
+            var country = Country("","")
+            viewModel.country.observe(viewLifecycleOwner) { _country ->
+                country = _country
+            }
+            val countryJson = Gson().toJson(country)
+            val bundle = bundleOf(COUNTRY to countryJson)
+
+            findNavController().navigate(
+                R.id.action_workplaceFragment_to_regionFragment,
+                bundle
+            )
         }
 
         binding.selectButton.setOnClickListener {
