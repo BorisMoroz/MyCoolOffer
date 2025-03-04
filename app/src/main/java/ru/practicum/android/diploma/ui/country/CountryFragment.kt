@@ -37,7 +37,6 @@ class CountryFragment : Fragment(), OnCountryClickListener {
             render(state)
         }
 
-
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }
@@ -81,7 +80,7 @@ class CountryFragment : Fragment(), OnCountryClickListener {
         binding.containerPlaceholder.visibility = View.VISIBLE
     }
 
-    private fun showError(){
+    private fun showError() {
         binding.progress.visibility = View.GONE
         binding.listCountries.visibility = View.GONE
         binding.placeholder.setImageResource(R.drawable.img_placeholder_search_error)

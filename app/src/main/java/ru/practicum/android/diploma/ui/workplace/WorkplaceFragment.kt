@@ -37,13 +37,18 @@ class WorkplaceFragment : Fragment() {
             binding.regionEditText.setText(regionName)
         }
 
-
         parentFragmentManager.setFragmentResultListener(
             SENDING_DATA_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
-            Gson().fromJson(bundle.getString(COUNTRY), Country::class.java)?.let { viewModel.setCountryName(it.countryName) }
-            Gson().fromJson(bundle.getString(REGION), Region::class.java)?.let { viewModel.setRegionName(it.regionName) }
+            Gson().fromJson(
+                bundle.getString(COUNTRY),
+                Country::class.java
+            )?.let { viewModel.setCountryName(it.countryName) }
+            Gson().fromJson(
+                bundle.getString(REGION),
+                Region::class.java
+            )?.let { viewModel.setRegionName(it.regionName) }
         }
         binding.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
