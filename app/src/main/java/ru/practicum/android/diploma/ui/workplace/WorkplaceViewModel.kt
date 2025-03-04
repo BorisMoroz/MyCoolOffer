@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.workplace
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,7 +9,6 @@ import ru.practicum.android.diploma.domain.interactor.FiltersInteractor
 import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.domain.models.Resource
-import ru.practicum.android.diploma.ui.country.CountryState
 
 class WorkplaceViewModel(private val filtersInteractor: FiltersInteractor) : ViewModel() {
     private val _country = MutableLiveData<Country>()
