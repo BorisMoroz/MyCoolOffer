@@ -61,6 +61,10 @@
     <string name="input_search">Введите запрос</string>
     <string name="noSalary">Зарплата не указана</string>
     <string name="noSuchVacancies">Таких вакансий нет</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="type_region">Введите регион</string>
+    <string name="no_such_region">Такого региона нет</string>
 
     <!--    Фильтрация-->
     <string name="work_place_title">Место работы</string>

@@ -9,6 +9,7 @@ import ru.practicum.android.diploma.ui.region.RegionViewModel
 import ru.practicum.android.diploma.ui.filter.FilterViewModel
 import ru.practicum.android.diploma.ui.search.SearchViewModel
 import ru.practicum.android.diploma.ui.vacancy.VacancyViewModel
+import ru.practicum.android.diploma.ui.workplace.WorkplaceViewModel
 
 val viewModelModule = module {
     viewModel {
@@ -32,6 +33,10 @@ val viewModelModule = module {
         FavouritesViewModel(
             favouriteVacanciesInteractor = get()
         )
+    }
+
+    viewModel<WorkplaceViewModel> {
+        WorkplaceViewModel()
     }
 
     viewModel {
