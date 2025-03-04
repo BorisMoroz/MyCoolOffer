@@ -45,10 +45,15 @@ class SearchViewModel(
 
             viewModelScope.launch {
 
-                val areaValue = if (filterSettings["areaId"] == "") null else filterSettings["areaId"]
-                val industryValue = if (filterSettings["industryId"] == "") null else filterSettings["industryId"]
-                val salaryValue = if (filterSettings["salary"] == "") null else filterSettings["salary"]
-                val onlyWithSalaryValue = filterSettings["onlyWithSalary"].toBoolean()
+                val areaValue = if (filterSettings[AREA_ID] == EMPTY_STRING) null else filterSettings[AREA_ID]
+                val industryValue = if (filterSettings[INDUSTRY_ID] == EMPTY_STRING) null else filterSettings[INDUSTRY_ID]
+                val salaryValue = if (filterSettings[SALARY] == EMPTY_STRING) null else filterSettings[SALARY]
+                val onlyWithSalaryValue = filterSettings[ONLY_WITH_SALARY].toBoolean()
+
+                Log.d("log", "areaValue: $areaValue")
+                Log.d("log", "industryValue: $industryValue")
+                Log.d("log", "salaryValue: $salaryValue")
+                Log.d("log", "onlyWithSalaryValue: $onlyWithSalaryValue")
 
                 vacanciesInteractor
                     .searchVacancies(
@@ -136,5 +141,10 @@ class SearchViewModel(
         private var found = -1
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val ITEMS_PER_PAGE = 20
+        const val AREA_ID = "areaId"
+        const val INDUSTRY_ID = "industryId"
+        const val SALARY = "salary"
+        const val ONLY_WITH_SALARY = "onlyWithSalary"
+        const val EMPTY_STRING = ""
     }
 }

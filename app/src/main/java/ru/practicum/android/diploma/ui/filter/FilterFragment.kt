@@ -315,7 +315,7 @@ class FilterFragment : Fragment() {
                 AREA_NAME to currentFilterParameters.areaName,
                 INDUSTRY_ID to currentFilterParameters.industryId,
                 INDUSTRY_NAME to currentFilterParameters.industryName,
-                SALARY to currentFilterParameters.salary.toString(),
+                SALARY to currentFilterParameters.salary,
                 ONLY_WITH_SALARY to currentFilterParameters.onlyWithSalary.toString(),
             )
         )
