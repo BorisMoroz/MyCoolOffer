@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,7 @@ class SearchViewModel(
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
-
+    private var filterSettings: Map<String, String> = emptyMap()
     private var currentPage = 1
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
@@ -43,15 +44,27 @@ class SearchViewModel(
             isNextPageLoading = true
 
             viewModelScope.launch {
+                val areaValue = if (filterSettings[AREA_ID] == EMPTY_STRING) null else filterSettings[AREA_ID]
+                val industryValue =
+                    if (filterSettings[INDUSTRY_ID] == EMPTY_STRING) null else filterSettings[INDUSTRY_ID]
+                val salaryValue = if (filterSettings[SALARY] == EMPTY_STRING) null else filterSettings[SALARY]
+                val onlyWithSalaryValue = filterSettings[ONLY_WITH_SALARY].toBoolean()
+
+                Log.d("log", "areaValue: $areaValue")
+                Log.d("log", "industryValue: $industryValue")
+                Log.d("log", "salaryValue: $salaryValue")
+                Log.d("log", "onlyWithSalaryValue: $onlyWithSalaryValue")
+
                 vacanciesInteractor
                     .searchVacancies(
                         SearchFilters(
                             text = query,
                             page = currentPage,
                             perPage = ITEMS_PER_PAGE,
-                            area = null,
-                            industries = null,
-                            onlyWithSalary = false
+                            area = areaValue,
+                            industries = industryValue,
+                            salary = salaryValue,
+                            onlyWithSalary = onlyWithSalaryValue
                         )
                     )
                     .collect { result ->
@@ -115,8 +128,8 @@ class SearchViewModel(
     }
 
     fun getFilterSettings() {
-        val settings = filterSettingsInteractor.getSettings()
-        searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(settings))
+        filterSettings = filterSettingsInteractor.getSettings()
+        searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(filterSettings))
     }
 
     override fun onCleared() {
@@ -128,5 +141,10 @@ class SearchViewModel(
         private var found = -1
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val ITEMS_PER_PAGE = 20
+        const val AREA_ID = "areaId"
+        const val INDUSTRY_ID = "industryId"
+        const val SALARY = "salary"
+        const val ONLY_WITH_SALARY = "onlyWithSalary"
+        const val EMPTY_STRING = ""
     }
 }

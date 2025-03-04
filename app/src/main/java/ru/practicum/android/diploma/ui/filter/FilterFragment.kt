@@ -116,7 +116,7 @@ class FilterFragment : Fragment() {
             binding.industryName.text = currentFilterParameters.industryName
         }
 
-        if (currentFilterParameters.salary != 0) {
+        if (currentFilterParameters.salary != EMPTY_STRING) {
             binding.salaryEdittext.setText(currentFilterParameters.salary.toString())
             val color = ContextCompat.getColor(requireContext(), R.color.yp_black)
             binding.salaryTitle.setTextColor(color)
@@ -274,11 +274,11 @@ class FilterFragment : Fragment() {
         if (salaryChanged) {
             _currentFilterParameters = if (binding.salaryEdittext.text.isNotEmpty()) {
                 currentFilterParameters.copy(
-                    salary = binding.salaryEdittext.text.toString().toInt()
+                    salary = binding.salaryEdittext.text.toString()
                 )
             } else {
                 currentFilterParameters.copy(
-                    salary = 0
+                    salary = EMPTY_STRING
                 )
             }
 
@@ -307,24 +307,28 @@ class FilterFragment : Fragment() {
             areaName = filterSettings[AREA_NAME].orEmpty(),
             industryId = filterSettings[INDUSTRY_ID].orEmpty(),
             industryName = filterSettings[INDUSTRY_NAME].orEmpty(),
-            salary = filterSettings[SALARY]?.toIntOrNull() ?: 0,
+            salary = filterSettings[SALARY].orEmpty(),
             onlyWithSalary = filterSettings[ONLY_WITH_SALARY]?.toBoolean() ?: false
         )
     }
 
     private fun saveCurrentFilterParameters() {
-        viewModel.saveFilterSettings(
-            mapOf(
-                COUNTRY_ID to currentFilterParameters.countryId,
-                COUNTRY_NAME to currentFilterParameters.countryName,
-                AREA_ID to currentFilterParameters.areaId,
-                AREA_NAME to currentFilterParameters.areaName,
-                INDUSTRY_ID to currentFilterParameters.industryId,
-                INDUSTRY_NAME to currentFilterParameters.industryName,
-                SALARY to currentFilterParameters.salary.toString(),
-                ONLY_WITH_SALARY to currentFilterParameters.onlyWithSalary.toString(),
+        if (isFilterParametersNotEmpty(currentFilterParameters)) {
+            viewModel.saveFilterSettings(
+                mapOf(
+                    COUNTRY_ID to currentFilterParameters.countryId,
+                    COUNTRY_NAME to currentFilterParameters.countryName,
+                    AREA_ID to currentFilterParameters.areaId,
+                    AREA_NAME to currentFilterParameters.areaName,
+                    INDUSTRY_ID to currentFilterParameters.industryId,
+                    INDUSTRY_NAME to currentFilterParameters.industryName,
+                    SALARY to currentFilterParameters.salary,
+                    ONLY_WITH_SALARY to currentFilterParameters.onlyWithSalary.toString(),
+                )
             )
-        )
+        } else {
+            viewModel.clearFilterSettings()
+        }
     }
 
     private fun clearCurrentFilterParameters() {
@@ -335,7 +339,7 @@ class FilterFragment : Fragment() {
             areaId = EMPTY_STRING,
             industryId = EMPTY_STRING,
             industryName = EMPTY_STRING,
-            salary = 0,
+            salary = EMPTY_STRING,
             onlyWithSalary = false
         )
         viewModel.clearFilterSettings()
@@ -344,7 +348,7 @@ class FilterFragment : Fragment() {
     private fun isFilterParametersNotEmpty(filterParameters: FilterParameters): Boolean {
         with(filterParameters) {
             val checkArea = countryId != EMPTY_STRING || areaId != EMPTY_STRING
-            val checkIndustryAndSalary = industryId != EMPTY_STRING || salary != 0 || onlyWithSalary
+            val checkIndustryAndSalary = industryId != EMPTY_STRING || salary != EMPTY_STRING || onlyWithSalary
 
             return if (checkArea || checkIndustryAndSalary) {
                 true

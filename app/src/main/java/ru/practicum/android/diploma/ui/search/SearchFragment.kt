@@ -128,6 +128,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     override fun onResume() {
         super.onResume()
+        viewModel.getFilterSettings()
         viewModel.stopSearch()
     }
 
@@ -288,7 +289,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     private companion object {
-
         const val SEARCH_FRAGMENT = "SearchFragment"
         private const val SINGULAR_DIGIT = 1
         private const val SINGULAR_EXCEPTION = 11
