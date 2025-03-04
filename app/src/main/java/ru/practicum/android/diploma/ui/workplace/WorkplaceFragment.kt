@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.bundle.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -18,6 +19,9 @@ class WorkplaceFragment : Fragment() {
     private var _binding: FragmentWorkplaceBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<WorkplaceViewModel>()
+
+    private var countryBundle: Country? = null
+    private var regionBundle: Region? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +36,7 @@ class WorkplaceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.country.observe(viewLifecycleOwner) { country ->
+            countryBundle = country
             binding.countryEditText.setText(country.countryName)
         }
 
@@ -45,11 +50,15 @@ class WorkplaceFragment : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
             bundle.getString(COUNTRY)?.takeIf { it.isNotEmpty() }?.let { countryJson ->
-                viewModel.setCountry(Gson().fromJson(countryJson, Country::class.java))
+                val country: Country = Gson().fromJson(countryJson, Country::class.java)
+                countryBundle = country
+                viewModel.setCountry(country)
             }
 
             bundle.getString(REGION)?.takeIf { it.isNotEmpty() }?.let { regionJson ->
-                viewModel.setRegion(Gson().fromJson(regionJson, Region::class.java))
+                val region: Region = Gson().fromJson(regionJson, Region::class.java)
+                regionBundle = region
+                viewModel.setRegion(region)
             }
         }
         binding.toolbar.setNavigationOnClickListener {
@@ -75,6 +84,13 @@ class WorkplaceFragment : Fragment() {
         }
 
         binding.selectButton.setOnClickListener {
+            setFragmentResult(
+                "filter_key",
+                androidx.core.os.bundleOf(
+                    "country" to countryBundle,
+                    "region" to regionBundle
+                )
+            )
             findNavController().navigateUp()
         }
     }
