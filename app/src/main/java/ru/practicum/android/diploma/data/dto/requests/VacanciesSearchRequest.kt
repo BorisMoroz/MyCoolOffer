@@ -1,3 +1,5 @@
 package ru.practicum.android.diploma.data.dto.requests
 
-data class VacanciesSearchRequest(val text: String, val page: Int, val perPage: Int)
+import ru.practicum.android.diploma.domain.models.SearchFilters
+
+data class VacanciesSearchRequest(val params: SearchFilters)

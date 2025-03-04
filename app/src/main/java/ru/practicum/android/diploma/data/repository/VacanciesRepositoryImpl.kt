@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.domain.models.Industries
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.SearchFilters
 import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
@@ -20,8 +21,9 @@ import ru.practicum.android.diploma.domain.repository.VacanciesRepository
 import ru.practicum.android.diploma.util.NETWORK_OK
 
 class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : VacanciesRepository {
-    override fun searchVacancies(text: String, page: Int, perPage: Int): Flow<Resource<Vacancies>> = flow {
-        val response = networkClient.doRequest(VacanciesSearchRequest(text, page, perPage))
+    override fun searchVacancies(params: SearchFilters): Flow<Resource<Vacancies>> = flow {
+        val response =
+            networkClient.doRequest(VacanciesSearchRequest(params))
 
         if (response.resultCode == NETWORK_OK) {
             val items = (response as VacanciesSearchResponse).items.map {

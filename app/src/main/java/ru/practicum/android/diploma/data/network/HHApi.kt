@@ -22,6 +22,9 @@ interface HHApi {
         @Query("text") text: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
+        @Query("area") area: Int?,
+        @Query("industries") industries: Int?,
+        @Query("only_with_salary") onlyWithSalary: Boolean,
         @Query("search_field") searchField: String = "name"
     ): VacanciesSearchResponse
 

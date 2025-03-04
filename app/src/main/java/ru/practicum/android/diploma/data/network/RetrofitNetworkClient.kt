@@ -47,7 +47,14 @@ class RetrofitNetworkClient(
         when (dto) {
             is VacanciesSearchRequest -> {
                 withContext(Dispatchers.IO) {
-                    response = hhApi.searchVacancies(dto.text, dto.page, dto.perPage)
+                    response = hhApi.searchVacancies(
+                        dto.params.text,
+                        dto.params.page,
+                        dto.params.perPage,
+                        dto.params.area,
+                        dto.params.industries,
+                        dto.params.onlyWithSalary
+                    )
                     response.apply { resultCode = NETWORK_OK }
                 }
             }
