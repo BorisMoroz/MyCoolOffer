@@ -23,7 +23,9 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
+import ru.practicum.android.diploma.domain.models.Country
 import ru.practicum.android.diploma.domain.models.FilterParameters
+import ru.practicum.android.diploma.domain.models.Region
 
 class FilterFragment : Fragment() {
     private var _binding: FragmentFilterBinding? = null
@@ -385,28 +387,67 @@ class FilterFragment : Fragment() {
     private fun getResultFilter() {
         setFragmentResultListener(FILTER_KEY) { _, bundle ->
             bundle.keySet().forEach { key ->
-                val value = bundle.getString(key)
-                if (value != null) {
-                    when (key) {
-                        INDUSTRY_ID -> {
+                when (key) {
+                    INDUSTRY_ID -> {
+                        val industryId = bundle.getString(INDUSTRY_ID)
+                        if (industryId != null) {
                             _currentFilterParameters = currentFilterParameters.copy(
-                                industryId = value
+                                industryId = industryId
                             )
-                            viewModel.saveFilterSettings(mapOf(INDUSTRY_ID to value))
+                            viewModel.saveFilterSettings(mapOf(INDUSTRY_ID to industryId))
                             binding.buttonApply.isVisible = true
                         }
-
-                        INDUSTRY_NAME -> {
-                            binding.industryName.text = currentFilterParameters.industryName
-                            _currentFilterParameters = currentFilterParameters.copy(
-                                industryName = value
-                            )
-                            viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to value))
-                            binding.buttonApply.isVisible = true
-                        }
-
-                        else -> {}
                     }
+
+                    INDUSTRY_NAME -> {
+                        val industryName = bundle.getString(INDUSTRY_NAME)
+                        if (industryName != null) {
+                            _currentFilterParameters = currentFilterParameters.copy(
+                                industryName = industryName
+                            )
+                            viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to industryName))
+                            binding.industryName.text = currentFilterParameters.industryName
+                            binding.buttonApply.isVisible = true
+                        }
+                    }
+
+                    COUNTRY -> {
+                        val country = bundle.getParcelable<Country>(COUNTRY)
+                        if (country != null) {
+                            _currentFilterParameters = currentFilterParameters.copy(
+                                countryId = country.countryId,
+                                countryName = country.countryName
+                            )
+                            viewModel.saveFilterSettings(
+                                mapOf(
+                                    COUNTRY_ID to country.countryId,
+                                    COUNTRY_NAME to country.countryName
+                                )
+                            )
+                            binding.buttonApply.isVisible = true
+                        }
+                    }
+
+                    REGION -> {
+                        val region = bundle.getParcelable<Region>(REGION)
+                        if (region != null) {
+                            _currentFilterParameters = currentFilterParameters.copy(
+                                areaId = region.regionId,
+                                areaName = region.regionName
+                            )
+                            viewModel.saveFilterSettings(
+                                mapOf(
+                                    AREA_ID to region.regionId,
+                                    AREA_NAME to region.regionName
+                                )
+                            )
+                            binding.workplaceName.text =
+                                "${_currentFilterParameters?.countryName}, ${_currentFilterParameters?.areaName}"
+                            binding.buttonApply.isVisible = true
+                        }
+                    }
+
+                    else -> {}
                 }
             }
         }
@@ -430,5 +471,7 @@ class FilterFragment : Fragment() {
         const val ONLY_WITH_SALARY = "onlyWithSalary"
         const val EMPTY_STRING = ""
         const val FILTER_KEY = "filter_key"
+        const val COUNTRY = "country"
+        const val REGION = "region"
     }
 }
