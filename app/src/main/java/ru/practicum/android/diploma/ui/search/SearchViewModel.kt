@@ -124,10 +124,6 @@ class SearchViewModel(
         viewModelScope.cancel()
     }
 
-    init {
-        filterSettingsInteractor.clearSettings()
-    }
-
     companion object {
         private var found = -1
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
