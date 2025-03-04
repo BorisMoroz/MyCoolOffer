@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.ui.search
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,7 +22,7 @@ class SearchViewModel(
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
-
+    private lateinit var filterSettings: Map<String, String>
     private var currentPage = 1
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
@@ -43,15 +44,16 @@ class SearchViewModel(
             isNextPageLoading = true
 
             viewModelScope.launch {
+                Log.d("log", "${filterSettings["industryId"]}")
                 vacanciesInteractor
                     .searchVacancies(
                         SearchFilters(
                             text = query,
                             page = currentPage,
                             perPage = ITEMS_PER_PAGE,
-                            area = null,
-                            industries = null,
-                            onlyWithSalary = false
+                            area = filterSettings["areaId"]?.toIntOrNull(),
+                            industries = filterSettings["industryId"],
+                            onlyWithSalary = filterSettings["onlyWithSalary"].toBoolean()
                         )
                     )
                     .collect { result ->
@@ -115,8 +117,8 @@ class SearchViewModel(
     }
 
     fun getFilterSettings() {
-        val settings = filterSettingsInteractor.getSettings()
-        searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(settings))
+        filterSettings = filterSettingsInteractor.getSettings()
+        searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(filterSettings))
     }
 
     override fun onCleared() {

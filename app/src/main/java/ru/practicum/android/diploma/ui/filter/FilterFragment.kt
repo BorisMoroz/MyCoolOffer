@@ -369,7 +369,9 @@ class FilterFragment : Fragment() {
                             viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to value))
                         }
 
-                        else -> {}
+                        else -> {
+                            viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to "null"))
+                        }
                     }
                 }
             }
