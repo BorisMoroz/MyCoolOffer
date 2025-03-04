@@ -307,18 +307,22 @@ class FilterFragment : Fragment() {
     }
 
     private fun saveCurrentFilterParameters() {
-        viewModel.saveFilterSettings(
-            mapOf(
-                COUNTRY_ID to currentFilterParameters.countryId,
-                COUNTRY_NAME to currentFilterParameters.countryName,
-                AREA_ID to currentFilterParameters.areaId,
-                AREA_NAME to currentFilterParameters.areaName,
-                INDUSTRY_ID to currentFilterParameters.industryId,
-                INDUSTRY_NAME to currentFilterParameters.industryName,
-                SALARY to currentFilterParameters.salary,
-                ONLY_WITH_SALARY to currentFilterParameters.onlyWithSalary.toString(),
+        if (isFilterParametersNotEmpty(currentFilterParameters)) {
+            viewModel.saveFilterSettings(
+                mapOf(
+                    COUNTRY_ID to currentFilterParameters.countryId,
+                    COUNTRY_NAME to currentFilterParameters.countryName,
+                    AREA_ID to currentFilterParameters.areaId,
+                    AREA_NAME to currentFilterParameters.areaName,
+                    INDUSTRY_ID to currentFilterParameters.industryId,
+                    INDUSTRY_NAME to currentFilterParameters.industryName,
+                    SALARY to currentFilterParameters.salary,
+                    ONLY_WITH_SALARY to currentFilterParameters.onlyWithSalary.toString(),
+                )
             )
-        )
+        } else {
+            viewModel.clearFilterSettings()
+        }
     }
 
     private fun clearCurrentFilterParameters() {
