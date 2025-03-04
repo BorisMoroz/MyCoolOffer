@@ -2,12 +2,18 @@ package ru.practicum.android.diploma.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.dto.IndustriesGetRequest
+import ru.practicum.android.diploma.data.dto.IndustriesGetResponse
+import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.requests.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.requests.VacancyDetailsRequest
 import ru.practicum.android.diploma.data.dto.responses.VacanciesSearchResponse
 import ru.practicum.android.diploma.data.dto.responses.VacancyDetailsResponse
 import ru.practicum.android.diploma.data.network.NetworkClient
+import ru.practicum.android.diploma.domain.models.Industries
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.SearchFilters
 import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.VacancyDetails
@@ -15,8 +21,9 @@ import ru.practicum.android.diploma.domain.repository.VacanciesRepository
 import ru.practicum.android.diploma.util.NETWORK_OK
 
 class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : VacanciesRepository {
-    override fun searchVacancies(text: String, page: Int, perPage: Int): Flow<Resource<Vacancies>> = flow {
-        val response = networkClient.doRequest(VacanciesSearchRequest(text, page, perPage))
+    override fun searchVacancies(params: SearchFilters): Flow<Resource<Vacancies>> = flow {
+        val response =
+            networkClient.doRequest(VacanciesSearchRequest(params))
 
         if (response.resultCode == NETWORK_OK) {
             val items = (response as VacanciesSearchResponse).items.map {
@@ -66,5 +73,34 @@ class VacanciesRepositoryImpl(private val networkClient: NetworkClient) : Vacanc
         } else {
             emit(Resource.Error(response.resultCode))
         }
+    }
+
+    override fun getIndustries(): Flow<Resource<Industries>> = flow {
+        val response = networkClient.doRequest(IndustriesGetRequest())
+
+        if (response.resultCode == NETWORK_OK) {
+            val industriesDto = (response as IndustriesGetResponse).industries
+
+            val industries = createIndustries(industriesDto)
+            emit(Resource.Success(Industries(industries)))
+        } else {
+            emit(Resource.Error(response.resultCode))
+        }
+    }
+
+    fun createIndustries(industriesDto: List<IndustryDto>): MutableList<Industry> {
+        val industries = mutableListOf<Industry>()
+
+        for (industryDto in industriesDto) {
+            industries.add(Industry(industryId = industryDto.id, industryName = industryDto.name))
+            if (industryDto.industries != null) {
+                for (subIndustryDto in industryDto.industries) {
+                    industries.add(Industry(industryId = subIndustryDto.id, industryName = subIndustryDto.name))
+                }
+            }
+        }
+        industries.sortBy { it.industryName }
+
+        return industries
     }
 }

@@ -7,6 +7,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import ru.practicum.android.diploma.data.dto.IndustriesGetRequest
+import ru.practicum.android.diploma.data.dto.IndustriesGetResponse
 import ru.practicum.android.diploma.data.dto.requests.AreasRequest
 import ru.practicum.android.diploma.data.dto.requests.VacanciesSearchRequest
 import ru.practicum.android.diploma.data.dto.requests.VacancyDetailsRequest
@@ -45,7 +47,14 @@ class RetrofitNetworkClient(
         when (dto) {
             is VacanciesSearchRequest -> {
                 withContext(Dispatchers.IO) {
-                    response = hhApi.searchVacancies(dto.text, dto.page, dto.perPage)
+                    response = hhApi.searchVacancies(
+                        dto.params.text,
+                        dto.params.page,
+                        dto.params.perPage,
+                        dto.params.area,
+                        dto.params.industries,
+                        dto.params.onlyWithSalary
+                    )
                     response.apply { resultCode = NETWORK_OK }
                 }
             }
@@ -53,6 +62,13 @@ class RetrofitNetworkClient(
             is VacancyDetailsRequest -> {
                 withContext(Dispatchers.IO) {
                     response = hhApi.getVacancyDetails(dto.vacancyId)
+                    response.apply { resultCode = NETWORK_OK }
+                }
+            }
+
+            is IndustriesGetRequest -> {
+                withContext(Dispatchers.IO) {
+                    response = IndustriesGetResponse(hhApi.searchIndustries())
                     response.apply { resultCode = NETWORK_OK }
                 }
             }

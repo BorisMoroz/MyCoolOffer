@@ -61,5 +61,25 @@
     <string name="input_search">Введите запрос</string>
     <string name="noSalary">Зарплата не указана</string>
     <string name="noSuchVacancies">Таких вакансий нет</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="type_region">Введите регион</string>
+    <string name="no_such_region">Такого региона нет</string>
 
+    <!--    Фильтрация-->
+    <string name="work_place_title">Место работы</string>
+    <string name="work_place_test">Россия, Москва</string>
+    <string name="industry_title">Отрасль</string>
+    <string name="industry_test">IT</string>
+    <string name="salary_title">Ожидаемая зарплата</string>
+    <string name="hint_text">Введите сумму</string>
+    <string name="checkbox_title">Не показывать без зарплаты</string>
+    <string name="applybutton_text">Применить</string>
+    <string name="resetbutton_text">Сбросить</string>
+
+    <!--    Отрасли-->
+    <string name="industry_hint_text">Введите отрасль</string>
+    <string name="no_industry_placeholder_text">Такой отрасли нет</string>
+    <string name="industry_list_error_placeholder_text">Не удалось получить\nсписок</string>
+    <string name="industries_item_test_text">Электронно-вычислительная, оптическая, контрольно-измерительная техника, радиоэлектроника, автоматика (продвижение, оптовая торговля)</string>
 </resources>

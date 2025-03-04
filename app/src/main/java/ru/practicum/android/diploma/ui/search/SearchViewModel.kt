@@ -8,13 +8,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.interactor.FilterSettingsInteractor
 import ru.practicum.android.diploma.domain.interactor.VacanciesInteractor
 import ru.practicum.android.diploma.domain.models.Resource
+import ru.practicum.android.diploma.domain.models.SearchFilters
 import ru.practicum.android.diploma.domain.models.Vacancies
 import ru.practicum.android.diploma.domain.models.Vacancy
 
 class SearchViewModel(
-    private val vacanciesInteractor: VacanciesInteractor
+    private val vacanciesInteractor: VacanciesInteractor,
+    private val filterSettingsInteractor: FilterSettingsInteractor
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
@@ -41,7 +44,16 @@ class SearchViewModel(
 
             viewModelScope.launch {
                 vacanciesInteractor
-                    .searchVacancies(text = query, page = currentPage, perPage = ITEMS_PER_PAGE)
+                    .searchVacancies(
+                        SearchFilters(
+                            text = query,
+                            page = currentPage,
+                            perPage = ITEMS_PER_PAGE,
+                            area = null,
+                            industries = null,
+                            onlyWithSalary = false
+                        )
+                    )
                     .collect { result ->
                         when (result) {
                             is Resource.Error -> {
@@ -100,6 +112,11 @@ class SearchViewModel(
 
     fun resetState() {
         searchVacanciesState.value = SearchVacanciesState.Default
+    }
+
+    fun getFilterSettings() {
+        val settings = filterSettingsInteractor.getSettings()
+        searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(settings))
     }
 
     override fun onCleared() {

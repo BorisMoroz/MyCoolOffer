@@ -47,6 +47,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.icon.setImageResource(R.drawable.ic_search)
         binding.icon.isVisible = true
 
+        viewModel.getFilterSettings()
+
         adapter = VacancyAdapter(this, viewLifecycleOwner.lifecycleScope)
         binding.listVacancies.adapter = adapter
 
@@ -64,7 +66,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                 }
             }
         })
-
         binding.icon.setOnClickListener {
             binding.inputSearchVacancy.text.clear()
             viewModel.stopSearch()
@@ -159,7 +160,17 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                     showFoundVacancies(state.data)
                 }
             }
+
+            is SearchVacanciesState.GetFilterSettings -> {
+                filterSettings(state.settings)
+            }
         }
+    }
+
+    private fun filterSettings(settings: Map<String, String>) {
+        binding.toolbar.menu.findItem(R.id.action_filter).setIcon(
+            if (settings.isNotEmpty()) R.drawable.ic_filter_on else R.drawable.ic_filter_off
+        )
     }
 
     private fun showProgressBar() {
