@@ -60,7 +60,7 @@ class WorkplaceFragment : Fragment() {
         }
 
         binding.regionEditText.setOnClickListener {
-            var country = Country("","")
+            var country = Country("", "")
             viewModel.country.observe(viewLifecycleOwner) { _country ->
                 country = _country
             }

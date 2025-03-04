@@ -22,6 +22,10 @@ class RegionAdapter(
         return regions.size
     }
 
+    fun getRegions(): List<Region> {
+        return regions
+    }
+
     override fun onBindViewHolder(holder: RegionViewHolder, position: Int) {
         holder.bind(regions[position])
         holder.itemView.setOnClickListener {
