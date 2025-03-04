@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,6 +34,8 @@ class IndustryFragment : Fragment() {
     var industries = mutableListOf<Industry>()
     var selectedIndustry: Industry? = null
 
+    var firstTimeShowIndustries = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +47,9 @@ class IndustryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        getIndustryFilter()
+
         inputMethod = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         industryAdapter = IndustryAdapter(industries, onChoosedIndustry)
@@ -103,6 +109,11 @@ class IndustryFragment : Fragment() {
         }
     }
 
+    private fun hideKeyBoard() {
+        val inputMethod = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethod.hideSoftInputFromWindow(binding.industryEdittext.windowToken, 0)
+    }
+
     val onChoosedIndustry: (selectedIndustry: Industry?) -> Unit = { selected ->
         binding.buttonApply.isVisible = true
 
@@ -124,6 +135,8 @@ class IndustryFragment : Fragment() {
 
         binding.buttonApply.isVisible = false
         binding.getIndustriesErrorLayout.isVisible = true
+
+        hideKeyBoard()
     }
 
     private fun showIndustries(data: Industries) {
@@ -133,6 +146,8 @@ class IndustryFragment : Fragment() {
         if (industries.isEmpty()) {
             binding.noIndustryFoundLayout.isVisible = true
             binding.buttonApply.isVisible = false
+
+            hideKeyBoard()
         } else {
             binding.noIndustryFoundLayout.isVisible = false
             if (selectedIndustry == null) {
@@ -142,11 +157,63 @@ class IndustryFragment : Fragment() {
             }
         }
 
+        if (firstTimeShowIndustries && selectedIndustry != null) {
+            var position = -1
+            for (ind in industries.indices) {
+                if (industries[ind].industryId == selectedIndustry!!.industryId) {
+                    position = ind
+                    break
+                }
+            }
+
+            if (position > 0) {
+                position--
+            }
+
+            industryAdapter?.setSelectedIndutsry(selectedIndustry)
+
+            if (position != -1) {
+                binding.industriesList.layoutManager?.scrollToPosition(position)
+            }
+
+            firstTimeShowIndustries = false
+        }
         industryAdapter?.notifyDataSetChanged()
+    }
+
+    private fun getIndustryFilter() {
+        var industryId: String? = null
+        var industryName: String? = null
+
+        setFragmentResultListener(INDUSTRY_KEY) { _, bundle ->
+            bundle.keySet().forEach { key ->
+                val value = bundle.getString(key)
+                if (value != null) {
+                    when (key) {
+                        INDUSTRY_ID -> {
+                            industryId = value
+                        }
+
+                        INDUSTRY_NAME -> {
+                            industryName = value
+                        }
+
+                        else -> {}
+                    }
+                }
+            }
+            selectedIndustry = Industry(industryId.orEmpty(), industryName.orEmpty())
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private companion object {
+        const val INDUSTRY_ID = "industryId"
+        const val INDUSTRY_NAME = "industryName"
+        const val INDUSTRY_KEY = "industry_key"
     }
 }
