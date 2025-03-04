@@ -15,6 +15,7 @@ class AreaConverter {
     fun mapToRegion(area: Area): Region {
         return Region(
             area.id,
+            area.parentId,
             area.name
         )
     }

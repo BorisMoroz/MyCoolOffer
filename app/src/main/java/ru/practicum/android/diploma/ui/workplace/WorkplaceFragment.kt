@@ -37,6 +37,7 @@ class WorkplaceFragment : Fragment() {
 
         viewModel.region.observe(viewLifecycleOwner) { region ->
             binding.regionEditText.setText(region.regionName)
+            viewModel.getCountryById(region.parentId.toString())
         }
 
         parentFragmentManager.setFragmentResultListener(
