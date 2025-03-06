@@ -153,6 +153,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                     showEmptyResult()
                 } else {
                     showFoundVacancies(state.data)
+                    viewModel.stopSearch()
                 }
             }
 
