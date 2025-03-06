@@ -47,6 +47,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         binding.icon.setImageResource(R.drawable.ic_search)
         binding.icon.isVisible = true
 
+        viewModel.getFilterSettings()
+
         adapter = VacancyAdapter(this, viewLifecycleOwner.lifecycleScope)
         binding.listVacancies.adapter = adapter
 
@@ -64,7 +66,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                 }
             }
         })
-
         binding.icon.setOnClickListener {
             binding.inputSearchVacancy.text.clear()
             viewModel.stopSearch()
@@ -125,11 +126,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.stopSearch()
-    }
-
     private fun render(state: SearchVacanciesState) {
         when (state) {
             is SearchVacanciesState.Default -> {
@@ -159,7 +155,19 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                     showFoundVacancies(state.data)
                 }
             }
+
+            is SearchVacanciesState.GetFilterSettings -> {
+                filterSettings(state.settings)
+            }
         }
+    }
+
+    private fun filterSettings(settings: Map<String, String>) {
+        binding.toolbar.menu.findItem(R.id.action_filter).setIcon(
+            if (settings.isNotEmpty()) R.drawable.ic_filter_on else R.drawable.ic_filter_off
+        )
+        adapter?.clearVacancies()
+        viewModel.searchVacancies(binding.inputSearchVacancy.text.toString(), true)
     }
 
     private fun showProgressBar() {
@@ -277,7 +285,6 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     }
 
     private companion object {
-
         const val SEARCH_FRAGMENT = "SearchFragment"
         private const val SINGULAR_DIGIT = 1
         private const val SINGULAR_EXCEPTION = 11

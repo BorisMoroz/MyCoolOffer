@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/regionOrCountryName"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_56"
+        android:drawableEnd="@drawable/ic_forward"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/padding_16"
+        android:paddingEnd="@dimen/padding_16"
+        tools:text="Россия"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="@dimen/ys_display_regular_16" />
+
+</LinearLayout>

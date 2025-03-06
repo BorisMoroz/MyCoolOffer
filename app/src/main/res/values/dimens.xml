@@ -10,12 +10,20 @@
 
     <!--    Основные отступы-->
     <dimen name="margin_4">4dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_11">11dp</dimen>
+    <dimen name="margin_12.5">12.5dp</dimen>
     <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_17">17dp</dimen>
+    <dimen name="margin_22">22dp</dimen>
     <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_28">28dp</dimen>
     <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_44">44dp</dimen>
     <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_16">16dp</dimen>
+    <dimen name="padding_0">0dp</dimen>
 
     <!--    Размеры View элементов-->
     <dimen name="height_56">64dp</dimen>
@@ -30,5 +38,9 @@
     <dimen name="elevation_0">0dp</dimen>
 
     <dimen name="radius_12">12dp</dimen>
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
+    <dimen name="select_button_width_326dp">326dp</dimen>
+    <dimen name="select_button_height_60dp">60dp</dimen>
 
 </resources>
