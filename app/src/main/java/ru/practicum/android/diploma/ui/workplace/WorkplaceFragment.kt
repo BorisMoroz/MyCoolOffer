@@ -54,15 +54,18 @@ class WorkplaceFragment : Fragment() {
                 binding.inputCountry.endIconDrawable = ContextCompat.getDrawable(requireContext(), iconRes)
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Метод не используется, но нужен для интерфейса TextWatcher
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Метод не используется, но нужен для интерфейса TextWatcher
+            }
         })
 
         binding.inputCountry.setEndIconOnClickListener {
             if (!binding.countryEditText.text.isNullOrEmpty()) {
                 binding.countryEditText.text?.clear()
                 viewModel.setCountry(Country("", ""))
-            } else {
             }
         }
 
@@ -84,7 +87,6 @@ class WorkplaceFragment : Fragment() {
             if (!binding.regionEditText.text.isNullOrEmpty()) {
                 binding.regionEditText.text?.clear()
                 viewModel.setRegion(Region("", "", ""))
-            } else {
             }
         }
 
