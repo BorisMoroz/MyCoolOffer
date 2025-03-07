@@ -26,6 +26,7 @@
         app:boxStrokeWidthFocused="@dimen/_0dp"
         app:endIconDrawable="@drawable/ic_forward"
         app:endIconMode="custom"
+        app:endIconTint="@color/icon_color"
         app:hintTextColor="@color/icon_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,9 +36,9 @@
             android:id="@+id/countryEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
+            android:background="@android:color/transparent"
             android:clickable="true"
-            android:background="@android:color/transparent" />
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -51,6 +52,7 @@
         app:boxStrokeWidthFocused="@dimen/_0dp"
         app:endIconDrawable="@drawable/ic_forward"
         app:endIconMode="custom"
+        app:endIconTint="@color/icon_color"
         app:hintTextColor="@color/icon_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,9 +62,9 @@
             android:id="@+id/regionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="false"
+            android:background="@android:color/transparent"
             android:clickable="true"
-            android:background="@android:color/transparent" />
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
