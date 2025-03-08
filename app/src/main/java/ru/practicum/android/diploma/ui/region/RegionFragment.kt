@@ -92,7 +92,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                 val editText = v as EditText
                 if (event.rawX >= (editText.right - editText.compoundPaddingEnd)) {
                     editText.text.clear()
-                    return@setOnTouchListener true
+                    true
                 }
             }
             false
