@@ -90,7 +90,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
         binding.inputSearchRegion.setOnTouchListener { v, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val editText = v as EditText
-                if (event.rawX >= (editText.right - editText.compoundPaddingEnd)) {
+                if (event.rawX >= editText.right - editText.compoundPaddingEnd) {
                     editText.text.clear()
                     true
                 }
