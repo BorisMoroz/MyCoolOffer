@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.country
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,11 +16,10 @@ class CountryViewModel(private val filtersInteractor: FiltersInteractor) : ViewM
     fun getCountries() {
         countryState.value = CountryState.Loading
         viewModelScope.launch {
-            filtersInteractor.getAreas("0").collect { result ->
+            filtersInteractor.getAreas(ZERO_INDEX).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         countryState.value = CountryState.Content(result.data)
-                        Log.d("Test", result.data.toString())
                     }
                     is Resource.Error -> {
                         countryState.value = CountryState.Error(result.errorCode)
@@ -34,5 +32,9 @@ class CountryViewModel(private val filtersInteractor: FiltersInteractor) : ViewM
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
+    }
+
+    private companion object {
+        const val ZERO_INDEX = "0"
     }
 }

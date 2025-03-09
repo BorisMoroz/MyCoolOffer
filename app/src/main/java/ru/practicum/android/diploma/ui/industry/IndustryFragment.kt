@@ -58,7 +58,7 @@ class IndustryFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.industriesList.adapter = industryAdapter
 
-        viewModel.searchIndustries("")
+        viewModel.searchIndustries(EMPTY_STRING)
 
         viewModel.getGetIndustriesState().observe(viewLifecycleOwner) { state ->
             renderState(state)
@@ -95,14 +95,14 @@ class IndustryFragment : Fragment() {
             false
         }
 
-        binding.clearOrSearchButton.setOnClickListener { binding.industryEdittext.setText("") }
+        binding.clearOrSearchButton.setOnClickListener { binding.industryEdittext.setText(EMPTY_STRING) }
 
         binding.buttonApply.setOnClickListener {
             setFragmentResult(
-                "filter_key",
+                FILTER_KEY,
                 bundleOf(
-                    "industryName" to selectedIndustry?.industryName,
-                    "industryId" to selectedIndustry?.industryId
+                    INDUSTRY_NAME to selectedIndustry?.industryName,
+                    INDUSTRY_ID to selectedIndustry?.industryId
                 )
             )
             findNavController().navigateUp()
@@ -232,6 +232,8 @@ class IndustryFragment : Fragment() {
     private companion object {
         const val INDUSTRY_ID = "industryId"
         const val INDUSTRY_NAME = "industryName"
+        const val FILTER_KEY = "filter_key"
         const val INDUSTRY_KEY = "industry_key"
+        const val EMPTY_STRING = ""
     }
 }
