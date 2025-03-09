@@ -38,6 +38,8 @@ class WorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkSelectButtonVisibility()
+
         viewModel.country.observe(viewLifecycleOwner) { country ->
             countryBundle = country
             binding.countryEditText.setText(country.countryName)
@@ -52,11 +54,13 @@ class WorkplaceFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 val iconRes = if (s.isNullOrEmpty()) R.drawable.ic_forward else R.drawable.ic_close
                 binding.inputCountry.endIconDrawable = ContextCompat.getDrawable(requireContext(), iconRes)
+                checkSelectButtonVisibility()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Метод не используется, но нужен для интерфейса TextWatcher
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // Метод не используется, но нужен для интерфейса TextWatcher
             }
@@ -65,7 +69,8 @@ class WorkplaceFragment : Fragment() {
         binding.inputCountry.setEndIconOnClickListener {
             if (!binding.countryEditText.text.isNullOrEmpty()) {
                 binding.countryEditText.text?.clear()
-                viewModel.setCountry(Country("", ""))
+                viewModel.setCountry(Country(EMPTY_STRING, EMPTY_STRING))
+                checkSelectButtonVisibility()
             }
         }
 
@@ -73,11 +78,13 @@ class WorkplaceFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 val iconRes = if (s.isNullOrEmpty()) R.drawable.ic_forward else R.drawable.ic_close
                 binding.inputRegion.endIconDrawable = ContextCompat.getDrawable(requireContext(), iconRes)
+                checkSelectButtonVisibility()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Метод не используется, но нужен для интерфейса TextWatcher
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // Метод не используется, но нужен для интерфейса TextWatcher
             }
@@ -86,7 +93,8 @@ class WorkplaceFragment : Fragment() {
         binding.inputRegion.setEndIconOnClickListener {
             if (!binding.regionEditText.text.isNullOrEmpty()) {
                 binding.regionEditText.text?.clear()
-                viewModel.setRegion(Region("", "", ""))
+                viewModel.setRegion(Region(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING))
+                checkSelectButtonVisibility()
             }
         }
 
@@ -115,7 +123,7 @@ class WorkplaceFragment : Fragment() {
         }
 
         binding.regionEditText.setOnClickListener {
-            var country = Country("", "")
+            var country = Country(EMPTY_STRING, EMPTY_STRING)
             viewModel.country.observe(viewLifecycleOwner) { _country ->
                 country = _country
             }
@@ -130,13 +138,21 @@ class WorkplaceFragment : Fragment() {
 
         binding.selectButton.setOnClickListener {
             setFragmentResult(
-                "filter_key",
+                FILTER_KEY,
                 androidx.core.os.bundleOf(
-                    "country" to countryBundle,
-                    "region" to regionBundle
+                    COUNTRY to countryBundle,
+                    REGION to regionBundle
                 )
             )
             findNavController().navigateUp()
+        }
+    }
+
+    private fun checkSelectButtonVisibility() {
+        if (binding.countryEditText.text.isNullOrEmpty() && binding.regionEditText.text.isNullOrEmpty()) {
+            binding.selectButton.visibility = View.GONE
+        } else {
+            binding.selectButton.visibility = View.VISIBLE
         }
     }
 
@@ -145,9 +161,11 @@ class WorkplaceFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        private const val SENDING_DATA_KEY = "sendingDataKey"
-        private const val COUNTRY = "country"
-        private const val REGION = "region"
+    private companion object {
+        const val SENDING_DATA_KEY = "sendingDataKey"
+        const val COUNTRY = "country"
+        const val REGION = "region"
+        const val FILTER_KEY = "filter_key"
+        const val EMPTY_STRING = ""
     }
 }
