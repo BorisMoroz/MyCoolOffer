@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.data.repository
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.AreaDto
@@ -49,13 +48,6 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
         val areas = mutableListOf<Area>()
 
         for (areaDto in allAreasDto) {
-//            areas.add(
-//                Area(
-//                    id = areaDto.id,
-//                    parentId = areaDto.parentId,
-//                    name = areaDto.name
-//                )
-//            )
             if (areaDto.areas != null) {
                 for (subAreaDto in areaDto.areas) {
                     areas.add(
