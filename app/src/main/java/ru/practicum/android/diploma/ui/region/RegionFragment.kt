@@ -32,7 +32,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     private var _binding: FragmentRegionBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<RegionViewModel>()
-    private var country = Country("", "")
+    private var country = Country(EMPTY_STRING, EMPTY_STRING)
     private var searchJob: Job? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -211,10 +211,11 @@ class RegionFragment : Fragment(), OnRegionClickListener {
         findNavController().navigateUp()
     }
 
-    companion object {
-        private const val SENDING_DATA_KEY = "sendingDataKey"
-        private const val REGION = "region"
-        private const val COUNTRY = "country"
-        private const val DEBOUNCE_DELAY = 2000L
+    private companion object {
+        const val SENDING_DATA_KEY = "sendingDataKey"
+        const val REGION = "region"
+        const val COUNTRY = "country"
+        const val DEBOUNCE_DELAY = 2000L
+        const val EMPTY_STRING = ""
     }
 }
