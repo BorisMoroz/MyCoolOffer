@@ -57,6 +57,17 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
                             name = subAreaDto.name
                         )
                     )
+                    if (subAreaDto.areas != null) {
+                        for (lowLevelAreaDto in subAreaDto.areas) {
+                            areas.add(
+                                Area(
+                                    id = lowLevelAreaDto.id,
+                                    parentId = lowLevelAreaDto.parentId,
+                                    name = lowLevelAreaDto.name
+                                )
+                            )
+                        }
+                    }
                 }
             }
         }
