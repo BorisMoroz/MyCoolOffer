@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.AreaDto
@@ -18,13 +19,8 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
     override fun getAreas(id: String): Flow<Resource<ArrayList<Area>>> = flow {
         val response = networkClient.doRequest(AreasRequest(id))
         if (response.resultCode == NETWORK_OK) {
-            val areas = (response as AreasResponse).areas.map {
-                Area(
-                    it.id,
-                    it.parentId,
-                    it.name
-                )
-            }
+            val areasDto = (response as AreasResponse).areas
+            val areas = if (id == ZERO_INDEX) createCountries(areasDto) else createAreas(areasDto)
             emit(Resource.Success(ArrayList(areas)))
         } else {
             emit(Resource.Error(response.resultCode))
@@ -33,10 +29,8 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
 
     override fun getAllAreas(): Flow<Resource<AllAreas>> = flow {
         val response = networkClient.doRequest(AllAreasRequest())
-
         if (response.resultCode == NETWORK_OK) {
             val allAreasDto = (response as AllAreasResponse).allAreas
-
             val areas = createAllAreas(allAreasDto)
             emit(Resource.Success(AllAreas(areas)))
         } else {
@@ -44,9 +38,47 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
         }
     }
 
+    private fun createAreas(areaDto: List<AreaDto>): List<Area> {
+        val areas = mutableListOf<Area>()
+        for (area in areaDto) {
+            areas.add(
+                Area(
+                    id = area.id,
+                    parentId = area.parentId,
+                    name = area.name
+                )
+            )
+            if (area.areas != null) {
+                for (subArea in area.areas) {
+                    areas.add(
+                        Area(
+                            id = subArea.id,
+                            parentId = area.id,
+                            name = subArea.name
+                        )
+                    )
+                }
+            }
+        }
+        return areas
+    }
+
+    private fun createCountries(areaDto: List<AreaDto>): List<Area> {
+        val areas = mutableListOf<Area>()
+        for (area in areaDto) {
+            areas.add(
+                Area(
+                    id = area.id,
+                    parentId = area.parentId,
+                    name = area.name
+                )
+            )
+        }
+        return areas
+    }
+
     private fun createAllAreas(allAreasDto: List<AreaDto>): MutableList<Area> {
         val areas = mutableListOf<Area>()
-
         for (areaDto in allAreasDto) {
             if (areaDto.areas != null) {
                 for (subAreaDto in areaDto.areas) {
@@ -62,7 +94,7 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
                             areas.add(
                                 Area(
                                     id = lowLevelAreaDto.id,
-                                    parentId = lowLevelAreaDto.parentId,
+                                    parentId = areaDto.id,
                                     name = lowLevelAreaDto.name
                                 )
                             )
@@ -71,7 +103,10 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
                 }
             }
         }
-
         return areas
+    }
+
+    private companion object {
+        const val ZERO_INDEX = "0"
     }
 }

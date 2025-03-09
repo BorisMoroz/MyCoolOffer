@@ -27,7 +27,7 @@ class WorkplaceViewModel(private val filtersInteractor: FiltersInteractor) : Vie
 
     fun getCountryById(id: String) {
         viewModelScope.launch {
-            filtersInteractor.getAreas("0").collect { result ->
+            filtersInteractor.getAreas(ZERO_INDEX).collect { result ->
                 when (result) {
                     is Resource.Success -> {
                         for (item in result.data) {
@@ -43,5 +43,9 @@ class WorkplaceViewModel(private val filtersInteractor: FiltersInteractor) : Vie
                 }
             }
         }
+    }
+
+    private companion object {
+        const val ZERO_INDEX = "0"
     }
 }
