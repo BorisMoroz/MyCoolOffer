@@ -1,10 +1,13 @@
 package ru.practicum.android.diploma.ui.workplace
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.bundle.bundleOf
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
@@ -43,6 +46,48 @@ class WorkplaceFragment : Fragment() {
         viewModel.region.observe(viewLifecycleOwner) { region ->
             binding.regionEditText.setText(region.regionName)
             viewModel.getCountryById(region.parentId.toString())
+        }
+
+        binding.countryEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val iconRes = if (s.isNullOrEmpty()) R.drawable.ic_forward else R.drawable.ic_close
+                binding.inputCountry.endIconDrawable = ContextCompat.getDrawable(requireContext(), iconRes)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Метод не используется, но нужен для интерфейса TextWatcher
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Метод не используется, но нужен для интерфейса TextWatcher
+            }
+        })
+
+        binding.inputCountry.setEndIconOnClickListener {
+            if (!binding.countryEditText.text.isNullOrEmpty()) {
+                binding.countryEditText.text?.clear()
+                viewModel.setCountry(Country("", ""))
+            }
+        }
+
+        binding.regionEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val iconRes = if (s.isNullOrEmpty()) R.drawable.ic_forward else R.drawable.ic_close
+                binding.inputRegion.endIconDrawable = ContextCompat.getDrawable(requireContext(), iconRes)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Метод не используется, но нужен для интерфейса TextWatcher
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Метод не используется, но нужен для интерфейса TextWatcher
+            }
+        })
+
+        binding.inputRegion.setEndIconOnClickListener {
+            if (!binding.regionEditText.text.isNullOrEmpty()) {
+                binding.regionEditText.text?.clear()
+                viewModel.setRegion(Region("", "", ""))
+            }
         }
 
         parentFragmentManager.setFragmentResultListener(
