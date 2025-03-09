@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.region
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,7 +20,6 @@ class RegionViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
                 when (result) {
                     is Resource.Success -> {
                         regionState.value = RegionState.Content(result.data)
-                        Log.d("Test", result.data.toString())
                     }
                     is Resource.Error -> {
                         regionState.value = RegionState.Error(result.errorCode)
@@ -32,10 +30,18 @@ class RegionViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
     }
 
     fun getAllRegions() {
+        regionState.value = RegionState.Loading
         viewModelScope.launch {
             filtersInteractor.getAllAreas()
                 .collect { result ->
-                    Log.d("Test", "Result: $result")
+                    when (result) {
+                        is Resource.Success -> {
+                            regionState.value = RegionState.Content(ArrayList(result.data.items))
+                        }
+                        is Resource.Error -> {
+                            regionState.value = RegionState.Error(result.errorCode)
+                        }
+                    }
                 }
         }
     }
