@@ -105,6 +105,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
                 } else {
                     binding.icon.setImageResource(R.drawable.ic_search)
                     binding.icon.isVisible = true
+                    viewModel.resetState()
+                    adapter?.clearVacancies()
                 }
 
             }
