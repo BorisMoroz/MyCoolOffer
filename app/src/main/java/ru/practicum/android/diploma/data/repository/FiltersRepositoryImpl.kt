@@ -1,10 +1,15 @@
 package ru.practicum.android.diploma.data.repository
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.practicum.android.diploma.data.dto.AreaDto
+import ru.practicum.android.diploma.data.dto.requests.AllAreasRequest
 import ru.practicum.android.diploma.data.dto.requests.AreasRequest
+import ru.practicum.android.diploma.data.dto.responses.AllAreasResponse
 import ru.practicum.android.diploma.data.dto.responses.AreasResponse
 import ru.practicum.android.diploma.data.network.NetworkClient
+import ru.practicum.android.diploma.domain.models.AllAreas
 import ru.practicum.android.diploma.domain.models.Area
 import ru.practicum.android.diploma.domain.models.Resource
 import ru.practicum.android.diploma.domain.repository.FiltersRepository
@@ -25,5 +30,32 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
         } else {
             emit(Resource.Error(response.resultCode))
         }
+    }
+
+    override fun getAllAreas(): Flow<Resource<AllAreas>> = flow {
+        val response = networkClient.doRequest(AllAreasRequest())
+
+        if (response.resultCode == NETWORK_OK) {
+            val allAreasDto = (response as AllAreasResponse).allAreas
+
+            val areas = createAllAreas(allAreasDto)
+            emit(Resource.Success(AllAreas(areas)))
+        } else {
+            emit(Resource.Error(response.resultCode))
+        }
+    }
+
+    private fun createAllAreas(allAreasDto: List<AreaDto>): MutableList<Area> {
+        val areas = mutableListOf<Area>()
+
+        for (areaDto in allAreasDto) {
+            areas.add(Area(
+                id = areaDto.id,
+                parentId = areaDto.parentId,
+                name = areaDto.name
+            ))
+        }
+
+        return areas
     }
 }

@@ -46,6 +46,8 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getAllRegions()
+
         val countryJson = arguments?.getString(COUNTRY)
         country = Gson().fromJson(countryJson, Country::class.java)
 

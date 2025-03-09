@@ -31,6 +31,15 @@ class RegionViewModel(private val filtersInteractor: FiltersInteractor) : ViewMo
         }
     }
 
+    fun getAllRegions() {
+        viewModelScope.launch {
+            filtersInteractor.getAllAreas()
+                .collect { result ->
+                    Log.d("Test", "Result: $result")
+                }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelScope.cancel()
