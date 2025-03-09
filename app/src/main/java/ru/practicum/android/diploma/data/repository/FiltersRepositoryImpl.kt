@@ -49,13 +49,13 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
         val areas = mutableListOf<Area>()
 
         for (areaDto in allAreasDto) {
-            areas.add(
-                Area(
-                    id = areaDto.id,
-                    parentId = areaDto.parentId,
-                    name = areaDto.name
-                )
-            )
+//            areas.add(
+//                Area(
+//                    id = areaDto.id,
+//                    parentId = areaDto.parentId,
+//                    name = areaDto.name
+//                )
+//            )
             if (areaDto.areas != null) {
                 for (subAreaDto in areaDto.areas) {
                     areas.add(
