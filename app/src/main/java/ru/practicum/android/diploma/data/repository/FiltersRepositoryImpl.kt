@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.data.repository
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.dto.AreaDto
@@ -89,21 +88,25 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
                             name = subAreaDto.name
                         )
                     )
-                    if (subAreaDto.areas != null) {
-                        for (lowLevelAreaDto in subAreaDto.areas) {
-                            areas.add(
-                                Area(
-                                    id = lowLevelAreaDto.id,
-                                    parentId = areaDto.id,
-                                    name = lowLevelAreaDto.name
-                                )
-                            )
-                        }
-                    }
+                    checkSubAreaDtoAreas(subAreaDto.areas, areas, areaDto.id)
                 }
             }
         }
         return areas
+    }
+
+    private fun checkSubAreaDtoAreas(subAreaDtoAreas: List<AreaDto>?, resultArea: MutableList<Area>, parentId: String) {
+        if (subAreaDtoAreas != null) {
+            for (lowLevelAreaDto in subAreaDtoAreas) {
+                resultArea.add(
+                    Area(
+                        id = lowLevelAreaDto.id,
+                        parentId = parentId,
+                        name = lowLevelAreaDto.name
+                    )
+                )
+            }
+        }
     }
 
     private companion object {
