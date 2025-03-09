@@ -288,6 +288,7 @@
                 android:imeOptions="actionNext"
 
                 android:inputType="number"
+                android:maxLength="9"
 
                 android:maxLines="1"
                 android:paddingLeft="@dimen/padding_0"
