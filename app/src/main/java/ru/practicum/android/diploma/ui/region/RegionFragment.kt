@@ -6,10 +6,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.core.bundle.bundleOf
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -85,6 +87,16 @@ class RegionFragment : Fragment(), OnRegionClickListener {
             }
             false
         }
+        binding.inputSearchRegion.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val editText = v as EditText
+                if (event.rawX >= editText.right - editText.compoundPaddingEnd) {
+                    editText.text.clear()
+                    true
+                }
+            }
+            false
+        }
         binding.inputSearchRegion.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Метод не используется, но нужен для интерфейса TextWatcher
@@ -93,6 +105,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.isNotBlank() == true) {
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)
+                    drawable?.setTint(ContextCompat.getColor(requireContext(), R.color.yp_black))
                     binding.inputSearchRegion.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
                 } else {
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
@@ -183,8 +196,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     }
 
     private fun hideKeyboard() {
-        val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
