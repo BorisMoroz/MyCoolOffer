@@ -135,21 +135,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/bottom_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/top_border"
-        tools:ignore="UseCompoundDrawables"
-        tools:visibility="visible">
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/img_placeholder_connection_error" />
+            android:src="@drawable/img_placeholder_main"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/text_placeholder"
