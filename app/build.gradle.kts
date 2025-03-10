@@ -73,11 +73,5 @@ dependencies {
     androidTestImplementation(libs.uiTests.espressoCore)
     // endregion
 
-
-
-    
     implementation(libs.keyboardvisibilityevent)
-
-
-
 }
