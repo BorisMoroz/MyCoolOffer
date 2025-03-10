@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -37,6 +36,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     private val viewModel by viewModel<RegionViewModel>()
     private var country = Country(EMPTY_STRING, EMPTY_STRING)
     private var searchJob: Job? = null
+    private lateinit var defaultRegionList: List<Region>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,8 +67,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
             val isEnterPressed = event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
 
             if (isDoneOrNext || isEnterPressed) {
-                val adapter = binding.listRegions.adapter as? RegionAdapter
-                val allItems = adapter?.getRegions()
+                val allItems = defaultRegionList
                 if (allItems != null) {
                     val filterResult = getAllRegionsWithNamesContain(
                         binding.inputSearchRegion.text.toString(),
@@ -77,7 +76,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                     if (filterResult.isNullOrEmpty()) {
                         showNoSuchRegion()
                     } else {
-                        binding.listRegions.adapter = RegionAdapter(filterResult, this@RegionFragment)
+                        showResult(filterResult.map { region -> Area(region.regionId, region.parentId, region.regionName) })
                     }
                 }
                 hideKeyboard()
@@ -116,14 +115,13 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
                     delay(DEBOUNCE_DELAY)
-                    val adapter = binding.listRegions.adapter as? RegionAdapter
-                    val allItems = adapter?.getRegions()
+                    val allItems = defaultRegionList
                     if (allItems != null) {
                         val filterResult = getAllRegionsWithNamesContain(s.toString(), allItems)
                         if (filterResult.isNullOrEmpty()) {
                             showNoSuchRegion()
                         } else {
-                            binding.listRegions.adapter = RegionAdapter(filterResult, this@RegionFragment)
+                            showResult(filterResult.map { region -> Area(region.regionId, region.parentId, region.regionName) })
                         }
                     }
                     if (!binding.inputSearchRegion.text.isNullOrEmpty()) {
@@ -150,6 +148,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
 
             is RegionState.Content -> {
                 showResult(state.areas)
+                defaultRegionList = state.areas.map { area -> Region(area.id, area.parentId, area.name) }
             }
         }
     }
