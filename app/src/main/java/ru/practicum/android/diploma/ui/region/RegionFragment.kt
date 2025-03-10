@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -51,11 +52,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
         val countryJson = arguments?.getString(COUNTRY)
         country = Gson().fromJson(countryJson, Country::class.java)
 
-        if (country.countryId.isNullOrEmpty()) {
-            viewModel.getAllRegions()
-        } else {
-            viewModel.getRegions(country.countryId)
-        }
+        getRegions(country.countryId)
 
         viewModel.getRegionState().observe(viewLifecycleOwner) { state ->
             render(state)
@@ -110,6 +107,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                 } else {
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
                     binding.inputSearchRegion.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+                    getRegions(country.countryId)
                 }
 
             }
@@ -128,7 +126,9 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                             binding.listRegions.adapter = RegionAdapter(filterResult, this@RegionFragment)
                         }
                     }
-                    hideKeyboard()
+                    if (!binding.inputSearchRegion.text.isNullOrEmpty()) {
+                        hideKeyboard()
+                    }
                 }
             }
         })
@@ -221,6 +221,14 @@ class RegionFragment : Fragment(), OnRegionClickListener {
             bundleOf(REGION to regionJson)
         )
         findNavController().navigateUp()
+    }
+
+    private fun getRegions(countryId: String?) {
+        if (countryId.isNullOrEmpty()) {
+            viewModel.getAllRegions()
+        } else {
+            viewModel.getRegions(countryId)
+        }
     }
 
     private companion object {
