@@ -21,6 +21,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
@@ -39,6 +41,16 @@ class FilterFragment : Fragment() {
 
     private var _currentFilterParameters: FilterParameters? = null
     private val currentFilterParameters get() = _currentFilterParameters!!
+
+    override fun onStart() {
+        super.onStart()
+
+        setEventListener(requireActivity(), viewLifecycleOwner, KeyboardVisibilityEventListener { isOpen ->
+            if (!isOpen) {
+                updateSalary()
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,7 +108,8 @@ class FilterFragment : Fragment() {
             binding.workplaceName.text = currentFilterParameters.countryName
 
             if (currentFilterParameters.countryId != currentFilterParameters.areaId
-                && currentFilterParameters.areaId != EMPTY_STRING) {
+                && currentFilterParameters.areaId != EMPTY_STRING
+            ) {
                 val text = currentFilterParameters.countryName + ", " + currentFilterParameters.areaName
                 binding.workplaceName.text = text
             }
@@ -199,7 +212,7 @@ class FilterFragment : Fragment() {
         binding.salaryEdittext.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 hideKeyBoard()
-                updateSalary()
+                //updateSalary()
             }
             false
         }

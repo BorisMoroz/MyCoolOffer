@@ -19,6 +19,7 @@ import ru.practicum.android.diploma.util.NETWORK_CONNECTION_ERROR
 import ru.practicum.android.diploma.util.NETWORK_ERROR
 import ru.practicum.android.diploma.util.NETWORK_OK
 import ru.practicum.android.diploma.util.UNKNOWN_REQUEST_ERROR
+
 import java.io.IOException
 
 class RetrofitNetworkClient(
