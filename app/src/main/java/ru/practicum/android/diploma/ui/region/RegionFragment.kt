@@ -36,7 +36,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     private val viewModel by viewModel<RegionViewModel>()
     private var country = Country(EMPTY_STRING, EMPTY_STRING)
     private var searchJob: Job? = null
-    private lateinit var defaultRegionList: List<Region>
+    private var defaultRegionList: List<Region> = emptyList()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
