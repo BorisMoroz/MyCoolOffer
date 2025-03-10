@@ -17,7 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancies
@@ -28,7 +28,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModel<SearchViewModel>()
+    private val viewModel by activityViewModel<SearchViewModel>()
 
     private var adapter: VacancyAdapter? = null
 
@@ -43,6 +43,10 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.toolbar.menu.findItem(R.id.action_filter).setIcon(
+            if (viewModel.filterSettings.isNotEmpty()) R.drawable.ic_filter_on else R.drawable.ic_filter_off
+        )
 
         binding.icon.setImageResource(R.drawable.ic_search)
         binding.icon.isVisible = true
@@ -186,7 +190,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private fun showInternetConnectionError() {
         binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
-        if (adapter?.itemCount?.equals(0) == true) {
+        if (viewModel.getVacanciesList().isEmpty()) {
             binding.resultSearch.visibility = View.GONE
             binding.listVacancies.visibility = View.GONE
             binding.placeholder.setImageResource(R.drawable.img_placeholder_connection_error)
@@ -194,6 +198,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             binding.textPlaceholder.visibility = View.VISIBLE
             binding.containerPlaceholder.visibility = View.VISIBLE
         } else {
+            binding.resultSearch.text = getString(R.string.connection_error)
+            adapter?.updateVacancies(viewModel.getVacanciesList())
             binding.containerPlaceholder.visibility = View.GONE
             binding.resultSearch.visibility = View.VISIBLE
             binding.listVacancies.visibility = View.VISIBLE
@@ -205,7 +211,7 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
     private fun showServerError() {
         binding.appendProgress.visibility = View.GONE
         binding.progress.visibility = View.GONE
-        if (adapter?.itemCount?.equals(0) == true) {
+        if (viewModel.getVacanciesList().isEmpty()) {
             binding.resultSearch.visibility = View.GONE
             binding.listVacancies.visibility = View.GONE
             binding.placeholder.setImageResource(R.drawable.img_placeholder_search_server_error)
@@ -213,6 +219,8 @@ class SearchFragment : Fragment(), OnVacancyClickListener {
             binding.textPlaceholder.visibility = View.VISIBLE
             binding.containerPlaceholder.visibility = View.VISIBLE
         } else {
+            binding.resultSearch.text = getString(R.string.server_error)
+            adapter?.updateVacancies(viewModel.getVacanciesList())
             binding.containerPlaceholder.visibility = View.GONE
             binding.resultSearch.visibility = View.VISIBLE
             binding.listVacancies.visibility = View.VISIBLE
