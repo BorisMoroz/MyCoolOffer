@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.workplace
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ class WorkplaceFragment : Fragment() {
 
     private var countryBundle: Country? = null
     private var regionBundle: Region? = null
+    private var isGetCountry = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,8 +46,12 @@ class WorkplaceFragment : Fragment() {
         }
 
         viewModel.region.observe(viewLifecycleOwner) { region ->
+            regionBundle = region
             binding.regionEditText.setText(region.regionName)
-            viewModel.getCountryById(region.parentId.toString())
+            if (isGetCountry) {
+                Log.d("logk", "region.parentId: ${region.parentId}")
+                viewModel.getCountryById(region.parentId.toString())
+            }
         }
 
         binding.countryEditText.addTextChangedListener(object : TextWatcher {
@@ -64,8 +70,13 @@ class WorkplaceFragment : Fragment() {
 
         binding.inputCountry.setEndIconOnClickListener {
             if (!binding.countryEditText.text.isNullOrEmpty()) {
+                isGetCountry = false
                 binding.countryEditText.text?.clear()
+                binding.regionEditText.text?.clear()
                 viewModel.setCountry(Country("", ""))
+                viewModel.setRegion(Region("", "", ""))
+            } else {
+                goToCountryFragment()
             }
         }
 
@@ -87,6 +98,8 @@ class WorkplaceFragment : Fragment() {
             if (!binding.regionEditText.text.isNullOrEmpty()) {
                 binding.regionEditText.text?.clear()
                 viewModel.setRegion(Region("", "", ""))
+            } else {
+                goToRegionFragment()
             }
         }
 
@@ -98,6 +111,7 @@ class WorkplaceFragment : Fragment() {
                 val country: Country = Gson().fromJson(countryJson, Country::class.java)
                 countryBundle = country
                 viewModel.setCountry(country)
+                viewModel.setRegion(Region("", "", ""))
             }
 
             bundle.getString(REGION)?.takeIf { it.isNotEmpty() }?.let { regionJson ->
@@ -111,21 +125,11 @@ class WorkplaceFragment : Fragment() {
         }
 
         binding.countryEditText.setOnClickListener {
-            findNavController().navigate(WorkplaceFragmentDirections.actionWorkplaceFragmentToCountryFragment())
+            goToCountryFragment()
         }
 
         binding.regionEditText.setOnClickListener {
-            var country = Country("", "")
-            viewModel.country.observe(viewLifecycleOwner) { _country ->
-                country = _country
-            }
-            val countryJson = Gson().toJson(country)
-            val bundle = bundleOf(COUNTRY to countryJson)
-
-            findNavController().navigate(
-                R.id.action_workplaceFragment_to_regionFragment,
-                bundle
-            )
+            goToRegionFragment()
         }
 
         binding.selectButton.setOnClickListener {
@@ -143,6 +147,23 @@ class WorkplaceFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun goToCountryFragment() {
+        isGetCountry = false
+        findNavController().navigate(WorkplaceFragmentDirections.actionWorkplaceFragmentToCountryFragment())
+    }
+
+    private fun goToRegionFragment() {
+        isGetCountry = true
+        val country = countryBundle?: Country("", "")
+        val countryJson = Gson().toJson(country)
+        val bundle = bundleOf(COUNTRY to countryJson)
+
+        findNavController().navigate(
+            R.id.action_workplaceFragment_to_regionFragment,
+            bundle
+        )
     }
 
     companion object {
