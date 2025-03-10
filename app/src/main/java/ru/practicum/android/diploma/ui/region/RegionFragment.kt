@@ -76,7 +76,13 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                     if (filterResult.isNullOrEmpty()) {
                         showNoSuchRegion()
                     } else {
-                        showResult(filterResult.map { region -> Area(region.regionId, region.parentId, region.regionName) })
+                        showResult(filterResult.map { region ->
+                            Area(
+                                region.regionId,
+                                region.parentId,
+                                region.regionName
+                            )
+                        })
                     }
                 }
                 hideKeyboard()
@@ -121,7 +127,13 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                         if (filterResult.isNullOrEmpty()) {
                             showNoSuchRegion()
                         } else {
-                            showResult(filterResult.map { region -> Area(region.regionId, region.parentId, region.regionName) })
+                            showResult(filterResult.map { region ->
+                                Area(
+                                    region.regionId,
+                                    region.parentId,
+                                    region.regionName
+                                )
+                            })
                         }
                     }
                     if (!binding.inputSearchRegion.text.isNullOrEmpty()) {
