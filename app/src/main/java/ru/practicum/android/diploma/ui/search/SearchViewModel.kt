@@ -44,16 +44,20 @@ class SearchViewModel(
             isNextPageLoading = true
 
             viewModelScope.launch {
-                val areaValue = if (filterSettings[AREA_ID] == EMPTY_STRING) null else filterSettings[AREA_ID]
-                val industryValue =
-                    if (filterSettings[INDUSTRY_ID] == EMPTY_STRING) null else filterSettings[INDUSTRY_ID]
-                val salaryValue = if (filterSettings[SALARY] == EMPTY_STRING) null else filterSettings[SALARY]
-                val onlyWithSalaryValue = filterSettings[ONLY_WITH_SALARY].toBoolean()
+                val areaValue = if (filterSettings[AREA_ID].isNullOrEmpty()) {
+                    if (filterSettings[COUNTRY_ID].isNullOrEmpty()) {
+                        null
+                    } else {
+                        filterSettings[COUNTRY_ID]
+                    }
+                } else {
+                    filterSettings[AREA_ID]
+                }
 
-                Log.d("log", "areaValue: $areaValue")
-                Log.d("log", "industryValue: $industryValue")
-                Log.d("log", "salaryValue: $salaryValue")
-                Log.d("log", "onlyWithSalaryValue: $onlyWithSalaryValue")
+                val industryValue =
+                    if (filterSettings[INDUSTRY_ID].isNullOrEmpty()) null else filterSettings[INDUSTRY_ID]
+                val salaryValue = if (filterSettings[SALARY].isNullOrEmpty()) null else filterSettings[SALARY]
+                val onlyWithSalaryValue = filterSettings[ONLY_WITH_SALARY].toBoolean()
 
                 vacanciesInteractor
                     .searchVacancies(
@@ -137,14 +141,14 @@ class SearchViewModel(
         viewModelScope.cancel()
     }
 
-    companion object {
-        private var found = -1
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val ITEMS_PER_PAGE = 20
+    private companion object {
+        var found = -1
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val ITEMS_PER_PAGE = 20
         const val AREA_ID = "areaId"
+        const val COUNTRY_ID = "countryId"
         const val INDUSTRY_ID = "industryId"
         const val SALARY = "salary"
         const val ONLY_WITH_SALARY = "onlyWithSalary"
-        const val EMPTY_STRING = ""
     }
 }
