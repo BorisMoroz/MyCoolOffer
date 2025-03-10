@@ -23,7 +23,7 @@ class SearchViewModel(
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
     private var filterSettings: Map<String, String> = emptyMap()
-    private var currentPage = 1
+    private var currentPage = 0
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
     private var isNextPageLoading = false
@@ -112,7 +112,7 @@ class SearchViewModel(
 
     private fun isRefresh(refresh: Boolean) {
         if (refresh) {
-            currentPage = 1
+            currentPage = 0
             maxPages = 1
             found = -1
             vacanciesList.clear()
