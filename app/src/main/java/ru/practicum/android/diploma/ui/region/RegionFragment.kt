@@ -192,7 +192,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     }
 
     private fun getAllRegionsWithNamesContain(query: String, list: List<Region>): List<Region> {
-        return list.filter { it.regionName.contains(query, ignoreCase = true) }
+        return list.filter { it.regionName.contains(query.trim(), ignoreCase = true) }
     }
 
     private fun hideKeyboard() {
