@@ -9,6 +9,7 @@ converterGson = "2.11.0"
 java = "VERSION_1_8"
 room = "2.5.1"
 ksp = "1.9.24-1.0.20"
+keyboardvisibilityevent = "3.0.0-RC3"
 
 # Build constants
 minSdk = "26"
@@ -31,6 +32,7 @@ converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+keyboardvisibilityevent = { module = "net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent", version.ref = "keyboardvisibilityevent"}
 staticAnalysis-detektPlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 staticAnalysis-detektCli = { module = "io.gitlab.arturbosch.detekt:detekt-cli", version.ref = "detekt" }
 staticAnalysis-detektApi = { module = "io.gitlab.arturbosch.detekt:detekt-api", version.ref = "detekt" }
