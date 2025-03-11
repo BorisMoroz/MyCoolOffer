@@ -182,7 +182,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     private fun showError() {
         binding.progress.visibility = View.GONE
         binding.listRegions.visibility = View.GONE
-        binding.placeholder.setImageResource(R.drawable.img_placeholder_search_error)
+        binding.placeholder.setImageResource(R.drawable.img_placeholder_region_error)
         binding.textPlaceholder.text = getString(R.string.failed_to_get_regions)
         binding.containerPlaceholder.visibility = View.VISIBLE
     }
