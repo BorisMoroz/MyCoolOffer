@@ -37,6 +37,8 @@ class WorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkSelectButtonVisibility()
+
         viewModel.country.observe(viewLifecycleOwner) { country ->
             bindCountry(country)
         }
@@ -57,7 +59,7 @@ class WorkplaceFragment : Fragment() {
             bundle.getString(COUNTRY)?.takeIf { it.isNotEmpty() }?.let { countryJson ->
                 val country: Country = Gson().fromJson(countryJson, Country::class.java)
                 viewModel.setCountry(country)
-                viewModel.setRegion(Region("", "", ""))
+                viewModel.setRegion(Region(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING))
             }
             bundle.getString(REGION)?.takeIf { it.isNotEmpty() }?.let { regionJson ->
                 val region: Region = Gson().fromJson(regionJson, Region::class.java)
@@ -94,7 +96,7 @@ class WorkplaceFragment : Fragment() {
 
     private fun goToRegionFragment() {
         isGetCountry = true
-        val country = countryBundle ?: Country("", "")
+        val country = countryBundle ?: Country(EMPTY_STRING, EMPTY_STRING)
         val countryJson = Gson().toJson(country)
         val bundle = bundleOf(COUNTRY to countryJson)
 
@@ -119,8 +121,9 @@ class WorkplaceFragment : Fragment() {
             isGetCountry = false
             binding.countryEditText.text?.clear()
             binding.regionEditText.text?.clear()
-            viewModel.setCountry(Country("", ""))
-            viewModel.setRegion(Region("", "", ""))
+            viewModel.setCountry(Country(EMPTY_STRING, EMPTY_STRING))
+            viewModel.setRegion(Region(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING))
+            checkSelectButtonVisibility()
         } else {
             goToCountryFragment()
         }
@@ -129,7 +132,8 @@ class WorkplaceFragment : Fragment() {
     private fun onRegionIconClick() {
         if (!binding.regionEditText.text.isNullOrEmpty()) {
             binding.regionEditText.text?.clear()
-            viewModel.setRegion(Region("", "", ""))
+            viewModel.setRegion(Region(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING))
+            checkSelectButtonVisibility()
         } else {
             goToRegionFragment()
         }
@@ -137,10 +141,10 @@ class WorkplaceFragment : Fragment() {
 
     private fun onSelectButtonClick() {
         setFragmentResult(
-            "filter_key",
+            FILTER_KEY,
             androidx.core.os.bundleOf(
-                "country" to countryBundle,
-                "region" to regionBundle
+                COUNTRY to countryBundle,
+                REGION to regionBundle
             )
         )
         findNavController().navigateUp()
@@ -150,6 +154,7 @@ class WorkplaceFragment : Fragment() {
         countryBundle = country
         binding.countryEditText.setText(country.countryName)
         setCountryIcon()
+        checkSelectButtonVisibility()
     }
 
     private fun bindRegion(region: Region) {
@@ -159,11 +164,22 @@ class WorkplaceFragment : Fragment() {
             viewModel.getCountryById(region.parentId.toString())
         }
         setRegionIcon()
+        checkSelectButtonVisibility()
     }
 
-    companion object {
-        private const val SENDING_DATA_KEY = "sendingDataKey"
-        private const val COUNTRY = "country"
-        private const val REGION = "region"
+    private fun checkSelectButtonVisibility() {
+        if (binding.countryEditText.text.isNullOrEmpty() && binding.regionEditText.text.isNullOrEmpty()) {
+            binding.selectButton.visibility = View.GONE
+        } else {
+            binding.selectButton.visibility = View.VISIBLE
+        }
+    }
+
+    private companion object {
+        const val FILTER_KEY = "filter_key"
+        const val SENDING_DATA_KEY = "sendingDataKey"
+        const val COUNTRY = "country"
+        const val REGION = "region"
+        const val EMPTY_STRING = ""
     }
 }
