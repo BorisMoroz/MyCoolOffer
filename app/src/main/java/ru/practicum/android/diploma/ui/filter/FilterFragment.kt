@@ -200,7 +200,7 @@ class FilterFragment : Fragment() {
                     val color = ContextCompat.getColor(requireContext(), R.color.yp_black)
                     binding.salaryTitle.setTextColor(color)
                 } else {
-                    val color = ContextCompat.getColor(requireContext(), R.color.yp_gray)
+                    val color = ContextCompat.getColor(requireContext(), R.color.yp_gray_dup)
                     binding.salaryTitle.setTextColor(color)
                 }
                 updateSalary()
@@ -290,6 +290,9 @@ class FilterFragment : Fragment() {
             binding.salaryCheckBox.isChecked = false
 
             binding.buttonReset.visibility = View.INVISIBLE
+
+            val color = ContextCompat.getColor(requireContext(), R.color.yp_gray_dup)
+            binding.salaryTitle.setTextColor(color)
 
             clearCurrentFilterParameters()
             updateButtons()
