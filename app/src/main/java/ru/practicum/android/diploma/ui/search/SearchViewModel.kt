@@ -22,7 +22,7 @@ class SearchViewModel(
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
-    private var filterSettings: Map<String, String> = emptyMap()
+    var filterSettings: Map<String, String> = emptyMap()
     private var currentPage = 0
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
