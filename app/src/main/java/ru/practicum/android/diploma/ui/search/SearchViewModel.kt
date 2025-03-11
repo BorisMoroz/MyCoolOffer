@@ -22,11 +22,14 @@ class SearchViewModel(
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
-    private var filterSettings: Map<String, String> = emptyMap()
+    var filterSettings: Map<String, String> = emptyMap()
     private var currentPage = 0
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
     private var isNextPageLoading = false
+    private var latestSearchText: String = ""
+
+    fun getVacanciesList() = vacanciesList
 
     fun getSearchVacanciesState(): LiveData<SearchVacanciesState> = searchVacanciesState
 
@@ -105,7 +108,10 @@ class SearchViewModel(
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 delay(SEARCH_DEBOUNCE_DELAY)
-                searchVacancies(query, true)
+                if (latestSearchText != query) {
+                    searchVacancies(query, true)
+                    latestSearchText = query
+                }
             }
         }
     }
@@ -128,8 +134,10 @@ class SearchViewModel(
     }
 
     fun getFilterSettings() {
-        filterSettings = filterSettingsInteractor.getSettings()
-        searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(filterSettings))
+        if (filterSettings != filterSettingsInteractor.getSettings()) {
+            filterSettings = filterSettingsInteractor.getSettings()
+            searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(filterSettings))
+        }
     }
 
     override fun onCleared() {
