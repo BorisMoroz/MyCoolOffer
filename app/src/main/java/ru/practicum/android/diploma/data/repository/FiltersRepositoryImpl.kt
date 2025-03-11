@@ -15,6 +15,9 @@ import ru.practicum.android.diploma.domain.repository.FiltersRepository
 import ru.practicum.android.diploma.util.NETWORK_OK
 
 class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersRepository {
+
+    private val otherRegions = Area(OTHER_REGIONS_ID, null, OTHER_REGIONS)
+
     override fun getAreas(id: String): Flow<Resource<ArrayList<Area>>> = flow {
         val response = networkClient.doRequest(AreasRequest(id))
         if (response.resultCode == NETWORK_OK) {
@@ -59,6 +62,7 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
                 }
             }
         }
+        areas.sortBy { it.name }
         return areas
     }
 
@@ -73,6 +77,8 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
                 )
             )
         }
+        areas.remove(otherRegions)
+        areas.add(otherRegions)
         return areas
     }
 
@@ -92,6 +98,7 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
                 }
             }
         }
+        areas.sortBy { it.name }
         return areas
     }
 
@@ -111,5 +118,7 @@ class FiltersRepositoryImpl(private val networkClient: NetworkClient) : FiltersR
 
     private companion object {
         const val ZERO_INDEX = "0"
+        const val OTHER_REGIONS = "Другие регионы"
+        const val OTHER_REGIONS_ID = "1001"
     }
 }
