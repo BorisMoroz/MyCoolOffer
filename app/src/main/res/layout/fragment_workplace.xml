@@ -69,7 +69,12 @@
             android:clickable="true"
             android:focusable="false"
             android:fontFamily="@font/ys_display_regular"
-            android:textSize="@dimen/ys_display_regular_16" />
+            android:textSize="@dimen/ys_display_regular_16"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:editable="false"
+            android:paddingEnd="48dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton

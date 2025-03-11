@@ -272,6 +272,7 @@
                 android:layout_marginLeft="@dimen/margin_16"
                 android:layout_marginTop="@dimen/margin_8"
 
+                android:textColor="@color/yp_gray_dup"
                 android:fontFamily="@font/ys_display_regular"
                 android:maxLines="1"
 
@@ -303,6 +304,7 @@
                 android:paddingBottom="@dimen/padding_0"
                 android:singleLine="true"
 
+                android:textColorHint="@color/yp_gray_dup"
                 android:textColor="@color/yp_black"
                 android:textCursorDrawable="@drawable/ic_cursor"
                 android:textSize="@dimen/ys_display_regular_16" />
@@ -319,6 +321,9 @@
             android:layout_marginRight="@dimen/margin_16"
 
             android:src="@drawable/ic_close"
+
+            app:tint="@color/black"
+
             android:visibility="gone"
             tools:visibility="visible"
             />
