@@ -37,6 +37,8 @@ class WorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        checkSelectButtonVisibility()
+
         viewModel.country.observe(viewLifecycleOwner) { country ->
             bindCountry(country)
         }
@@ -121,6 +123,7 @@ class WorkplaceFragment : Fragment() {
             binding.regionEditText.text?.clear()
             viewModel.setCountry(Country(EMPTY_STRING, EMPTY_STRING))
             viewModel.setRegion(Region(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING))
+            checkSelectButtonVisibility()
         } else {
             goToCountryFragment()
         }
@@ -130,6 +133,7 @@ class WorkplaceFragment : Fragment() {
         if (!binding.regionEditText.text.isNullOrEmpty()) {
             binding.regionEditText.text?.clear()
             viewModel.setRegion(Region(EMPTY_STRING, EMPTY_STRING, EMPTY_STRING))
+            checkSelectButtonVisibility()
         } else {
             goToRegionFragment()
         }
@@ -150,6 +154,7 @@ class WorkplaceFragment : Fragment() {
         countryBundle = country
         binding.countryEditText.setText(country.countryName)
         setCountryIcon()
+        checkSelectButtonVisibility()
     }
 
     private fun bindRegion(region: Region) {
@@ -159,6 +164,15 @@ class WorkplaceFragment : Fragment() {
             viewModel.getCountryById(region.parentId.toString())
         }
         setRegionIcon()
+        checkSelectButtonVisibility()
+    }
+
+    private fun checkSelectButtonVisibility() {
+        if (binding.countryEditText.text.isNullOrEmpty() && binding.regionEditText.text.isNullOrEmpty()) {
+            binding.selectButton.visibility = View.GONE
+        } else {
+            binding.selectButton.visibility = View.VISIBLE
+        }
     }
 
     private companion object {
