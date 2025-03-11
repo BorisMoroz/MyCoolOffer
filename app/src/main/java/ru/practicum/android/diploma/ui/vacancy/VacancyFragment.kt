@@ -120,6 +120,7 @@ class VacancyFragment : Fragment() {
     private fun renderError(errorCode: Int) {
         binding.progress.isVisible = false
         binding.vacancyContent.isVisible = false
+        binding.toolbar.menu.clear()
         when (errorCode) {
             NETWORK_CONNECTION_ERROR -> {
                 Glide.with(this)
