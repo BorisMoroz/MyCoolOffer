@@ -34,7 +34,7 @@ class SearchViewModel(
     fun getSearchVacanciesState(): LiveData<SearchVacanciesState> = searchVacanciesState
 
     fun searchVacancies(query: String, refresh: Boolean = false) {
-        if (!isNextPageLoading && query.isNotEmpty()) {
+        if (!isNextPageLoading && query.isNotEmpty() && query.isNotBlank()) {
             isRefresh(refresh)
 
             checkCurrentPageAndSearchVacancies(query)
