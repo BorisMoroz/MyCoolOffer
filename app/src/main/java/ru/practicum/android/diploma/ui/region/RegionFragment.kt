@@ -36,6 +36,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     private val viewModel by viewModel<RegionViewModel>()
     private var country = Country(EMPTY_STRING, EMPTY_STRING)
     private var searchJob: Job? = null
+    private var defaultRegionList: List<Region> = emptyList()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,11 +52,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
         val countryJson = arguments?.getString(COUNTRY)
         country = Gson().fromJson(countryJson, Country::class.java)
 
-        if (country.countryId.isNullOrEmpty()) {
-            viewModel.getAllRegions()
-        } else {
-            viewModel.getRegions(country.countryId)
-        }
+        getRegions(country.countryId)
 
         viewModel.getRegionState().observe(viewLifecycleOwner) { state ->
             render(state)
@@ -70,8 +67,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
             val isEnterPressed = event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
 
             if (isDoneOrNext || isEnterPressed) {
-                val adapter = binding.listRegions.adapter as? RegionAdapter
-                val allItems = adapter?.getRegions()
+                val allItems = defaultRegionList
                 if (allItems != null) {
                     val filterResult = getAllRegionsWithNamesContain(
                         binding.inputSearchRegion.text.toString(),
@@ -80,7 +76,13 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                     if (filterResult.isNullOrEmpty()) {
                         showNoSuchRegion()
                     } else {
-                        binding.listRegions.adapter = RegionAdapter(filterResult, this@RegionFragment)
+                        showResult(filterResult.map { region ->
+                            Area(
+                                region.regionId,
+                                region.parentId,
+                                region.regionName
+                            )
+                        })
                     }
                 }
                 hideKeyboard()
@@ -110,6 +112,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                 } else {
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
                     binding.inputSearchRegion.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+                    getRegions(country.countryId)
                 }
 
             }
@@ -118,17 +121,24 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
                     delay(DEBOUNCE_DELAY)
-                    val adapter = binding.listRegions.adapter as? RegionAdapter
-                    val allItems = adapter?.getRegions()
+                    val allItems = defaultRegionList
                     if (allItems != null) {
                         val filterResult = getAllRegionsWithNamesContain(s.toString(), allItems)
                         if (filterResult.isNullOrEmpty()) {
                             showNoSuchRegion()
                         } else {
-                            binding.listRegions.adapter = RegionAdapter(filterResult, this@RegionFragment)
+                            showResult(filterResult.map { region ->
+                                Area(
+                                    region.regionId,
+                                    region.parentId,
+                                    region.regionName
+                                )
+                            })
                         }
                     }
-                    hideKeyboard()
+                    if (!binding.inputSearchRegion.text.isNullOrEmpty()) {
+                        hideKeyboard()
+                    }
                 }
             }
         })
@@ -150,6 +160,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
 
             is RegionState.Content -> {
                 showResult(state.areas)
+                defaultRegionList = state.areas.map { area -> Region(area.id, area.parentId, area.name) }
             }
         }
     }
@@ -192,7 +203,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     }
 
     private fun getAllRegionsWithNamesContain(query: String, list: List<Region>): List<Region> {
-        return list.filter { it.regionName.contains(query, ignoreCase = true) }
+        return list.filter { it.regionName.contains(query.trim(), ignoreCase = true) }
     }
 
     private fun hideKeyboard() {
@@ -221,6 +232,14 @@ class RegionFragment : Fragment(), OnRegionClickListener {
             bundleOf(REGION to regionJson)
         )
         findNavController().navigateUp()
+    }
+
+    private fun getRegions(countryId: String?) {
+        if (countryId.isNullOrEmpty()) {
+            viewModel.getAllRegions()
+        } else {
+            viewModel.getRegions(countryId)
+        }
     }
 
     private companion object {
