@@ -6,10 +6,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.core.bundle.bundleOf
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -32,8 +34,9 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     private var _binding: FragmentRegionBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModel<RegionViewModel>()
-    private var country = Country("", "")
+    private var country = Country(EMPTY_STRING, EMPTY_STRING)
     private var searchJob: Job? = null
+    private var defaultRegionList: List<Region> = emptyList()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,11 +52,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
         val countryJson = arguments?.getString(COUNTRY)
         country = Gson().fromJson(countryJson, Country::class.java)
 
-        if (country.countryId.isNullOrEmpty()) {
-            viewModel.getRegions("113")
-        } else {
-            viewModel.getRegions(country.countryId)
-        }
+        getRegions(country.countryId)
 
         viewModel.getRegionState().observe(viewLifecycleOwner) { state ->
             render(state)
@@ -68,8 +67,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
             val isEnterPressed = event?.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN
 
             if (isDoneOrNext || isEnterPressed) {
-                val adapter = binding.listRegions.adapter as? RegionAdapter
-                val allItems = adapter?.getRegions()
+                val allItems = defaultRegionList
                 if (allItems != null) {
                     val filterResult = getAllRegionsWithNamesContain(
                         binding.inputSearchRegion.text.toString(),
@@ -78,10 +76,26 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                     if (filterResult.isNullOrEmpty()) {
                         showNoSuchRegion()
                     } else {
-                        binding.listRegions.adapter = RegionAdapter(filterResult, this@RegionFragment)
+                        showResult(filterResult.map { region ->
+                            Area(
+                                region.regionId,
+                                region.parentId,
+                                region.regionName
+                            )
+                        })
                     }
                 }
                 hideKeyboard()
+            }
+            false
+        }
+        binding.inputSearchRegion.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val editText = v as EditText
+                if (event.rawX >= editText.right - editText.compoundPaddingEnd) {
+                    editText.text.clear()
+                    true
+                }
             }
             false
         }
@@ -93,10 +107,12 @@ class RegionFragment : Fragment(), OnRegionClickListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s?.isNotBlank() == true) {
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)
+                    drawable?.setTint(ContextCompat.getColor(requireContext(), R.color.yp_black))
                     binding.inputSearchRegion.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
                 } else {
                     val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_search)
                     binding.inputSearchRegion.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null)
+                    getRegions(country.countryId)
                 }
 
             }
@@ -105,17 +121,24 @@ class RegionFragment : Fragment(), OnRegionClickListener {
                 searchJob?.cancel()
                 searchJob = lifecycleScope.launch {
                     delay(DEBOUNCE_DELAY)
-                    val adapter = binding.listRegions.adapter as? RegionAdapter
-                    val allItems = adapter?.getRegions()
+                    val allItems = defaultRegionList
                     if (allItems != null) {
                         val filterResult = getAllRegionsWithNamesContain(s.toString(), allItems)
                         if (filterResult.isNullOrEmpty()) {
                             showNoSuchRegion()
                         } else {
-                            binding.listRegions.adapter = RegionAdapter(filterResult, this@RegionFragment)
+                            showResult(filterResult.map { region ->
+                                Area(
+                                    region.regionId,
+                                    region.parentId,
+                                    region.regionName
+                                )
+                            })
                         }
                     }
-                    hideKeyboard()
+                    if (!binding.inputSearchRegion.text.isNullOrEmpty()) {
+                        hideKeyboard()
+                    }
                 }
             }
         })
@@ -137,6 +160,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
 
             is RegionState.Content -> {
                 showResult(state.areas)
+                defaultRegionList = state.areas.map { area -> Region(area.id, area.parentId, area.name) }
             }
         }
     }
@@ -158,7 +182,7 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     private fun showError() {
         binding.progress.visibility = View.GONE
         binding.listRegions.visibility = View.GONE
-        binding.placeholder.setImageResource(R.drawable.img_placeholder_search_error)
+        binding.placeholder.setImageResource(R.drawable.img_placeholder_region_error)
         binding.textPlaceholder.text = getString(R.string.failed_to_get_regions)
         binding.containerPlaceholder.visibility = View.VISIBLE
     }
@@ -179,12 +203,11 @@ class RegionFragment : Fragment(), OnRegionClickListener {
     }
 
     private fun getAllRegionsWithNamesContain(query: String, list: List<Region>): List<Region> {
-        return list.filter { it.regionName.contains(query, ignoreCase = true) }
+        return list.filter { it.regionName.contains(query.trim(), ignoreCase = true) }
     }
 
     private fun hideKeyboard() {
-        val imm =
-            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
@@ -211,10 +234,19 @@ class RegionFragment : Fragment(), OnRegionClickListener {
         findNavController().navigateUp()
     }
 
-    companion object {
-        private const val SENDING_DATA_KEY = "sendingDataKey"
-        private const val REGION = "region"
-        private const val COUNTRY = "country"
-        private const val DEBOUNCE_DELAY = 2000L
+    private fun getRegions(countryId: String?) {
+        if (countryId.isNullOrEmpty()) {
+            viewModel.getAllRegions()
+        } else {
+            viewModel.getRegions(countryId)
+        }
+    }
+
+    private companion object {
+        const val SENDING_DATA_KEY = "sendingDataKey"
+        const val REGION = "region"
+        const val COUNTRY = "country"
+        const val DEBOUNCE_DELAY = 2000L
+        const val EMPTY_STRING = ""
     }
 }

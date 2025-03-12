@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.ui.search
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,16 +21,19 @@ class SearchViewModel(
 ) : ViewModel() {
     private var searchJob: Job? = null
     private var searchVacanciesState = MutableLiveData<SearchVacanciesState>(SearchVacanciesState.Default)
-    private var filterSettings: Map<String, String> = emptyMap()
-    private var currentPage = 1
+    var filterSettings: Map<String, String> = emptyMap()
+    private var currentPage = 0
     private var maxPages = 1
     private var vacanciesList = mutableListOf<Vacancy>()
     private var isNextPageLoading = false
+    private var latestSearchText: String = ""
+
+    fun getVacanciesList() = vacanciesList
 
     fun getSearchVacanciesState(): LiveData<SearchVacanciesState> = searchVacanciesState
 
     fun searchVacancies(query: String, refresh: Boolean = false) {
-        if (!isNextPageLoading && query.isNotEmpty()) {
+        if (!isNextPageLoading && query.isNotEmpty() && query.isNotBlank()) {
             isRefresh(refresh)
 
             checkCurrentPageAndSearchVacancies(query)
@@ -44,16 +46,20 @@ class SearchViewModel(
             isNextPageLoading = true
 
             viewModelScope.launch {
-                val areaValue = if (filterSettings[AREA_ID] == EMPTY_STRING) null else filterSettings[AREA_ID]
-                val industryValue =
-                    if (filterSettings[INDUSTRY_ID] == EMPTY_STRING) null else filterSettings[INDUSTRY_ID]
-                val salaryValue = if (filterSettings[SALARY] == EMPTY_STRING) null else filterSettings[SALARY]
-                val onlyWithSalaryValue = filterSettings[ONLY_WITH_SALARY].toBoolean()
+                val areaValue = if (filterSettings[AREA_ID].isNullOrEmpty()) {
+                    if (filterSettings[COUNTRY_ID].isNullOrEmpty()) {
+                        null
+                    } else {
+                        filterSettings[COUNTRY_ID]
+                    }
+                } else {
+                    filterSettings[AREA_ID]
+                }
 
-                Log.d("log", "areaValue: $areaValue")
-                Log.d("log", "industryValue: $industryValue")
-                Log.d("log", "salaryValue: $salaryValue")
-                Log.d("log", "onlyWithSalaryValue: $onlyWithSalaryValue")
+                val industryValue =
+                    if (filterSettings[INDUSTRY_ID].isNullOrEmpty()) null else filterSettings[INDUSTRY_ID]
+                val salaryValue = if (filterSettings[SALARY].isNullOrEmpty()) null else filterSettings[SALARY]
+                val onlyWithSalaryValue = filterSettings[ONLY_WITH_SALARY].toBoolean()
 
                 vacanciesInteractor
                     .searchVacancies(
@@ -105,14 +111,17 @@ class SearchViewModel(
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
                 delay(SEARCH_DEBOUNCE_DELAY)
-                searchVacancies(query, true)
+                if (latestSearchText != query) {
+                    searchVacancies(query, true)
+                    latestSearchText = query
+                }
             }
         }
     }
 
     private fun isRefresh(refresh: Boolean) {
         if (refresh) {
-            currentPage = 1
+            currentPage = 0
             maxPages = 1
             found = -1
             vacanciesList.clear()
@@ -128,8 +137,10 @@ class SearchViewModel(
     }
 
     fun getFilterSettings() {
-        filterSettings = filterSettingsInteractor.getSettings()
-        searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(filterSettings))
+        if (filterSettings != filterSettingsInteractor.getSettings()) {
+            filterSettings = filterSettingsInteractor.getSettings()
+            searchVacanciesState.postValue(SearchVacanciesState.GetFilterSettings(filterSettings))
+        }
     }
 
     override fun onCleared() {
@@ -137,14 +148,14 @@ class SearchViewModel(
         viewModelScope.cancel()
     }
 
-    companion object {
-        private var found = -1
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        private const val ITEMS_PER_PAGE = 20
+    private companion object {
+        var found = -1
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val ITEMS_PER_PAGE = 20
         const val AREA_ID = "areaId"
+        const val COUNTRY_ID = "countryId"
         const val INDUSTRY_ID = "industryId"
         const val SALARY = "salary"
         const val ONLY_WITH_SALARY = "onlyWithSalary"
-        const val EMPTY_STRING = ""
     }
 }

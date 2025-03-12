@@ -83,6 +83,19 @@
 
         tools:listitem="@layout/industry_item" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/yp_blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
     <LinearLayout
         android:id="@+id/no_industry_found_layout"
         android:layout_width="wrap_content"
@@ -159,6 +172,46 @@
 
             android:singleLine="false"
             android:text="@string/industry_list_error_placeholder_text"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="@dimen/ys_display_medium_22"
+            android:visibility="visible"
+            tools:visibility="visible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/no_internet_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_layout"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:src="@drawable/img_placeholder_connection_error"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_16"
+
+            android:fontFamily="@font/ys_display_medium"
+            android:maxLines="1"
+
+            android:singleLine="true"
+            android:text="@string/connection_error"
             android:textColor="?attr/colorOnSurface"
             android:textSize="@dimen/ys_display_medium_22"
             android:visibility="visible"

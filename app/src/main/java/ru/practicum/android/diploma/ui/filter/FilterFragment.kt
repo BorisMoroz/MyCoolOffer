@@ -21,6 +21,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilterBinding
@@ -34,10 +36,21 @@ class FilterFragment : Fragment() {
 
     private val viewModel by viewModel<FilterViewModel>()
 
+    private var _originalFilterParameters: FilterParameters? = null
+    private val originalFilterParameters get() = _originalFilterParameters!!
+
     private var _currentFilterParameters: FilterParameters? = null
     private val currentFilterParameters get() = _currentFilterParameters!!
 
-    var salaryChanged = false
+    override fun onStart() {
+        super.onStart()
+
+        setEventListener(requireActivity(), viewLifecycleOwner, KeyboardVisibilityEventListener { isOpen ->
+            if (!isOpen) {
+                updateSalary()
+            }
+        })
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +67,16 @@ class FilterFragment : Fragment() {
         currentFilterParameters()
         getResultFilter()
 
+        _originalFilterParameters = viewModel.restoreOriginalFilterParameters()
+
+        if (_originalFilterParameters == null) {
+            _originalFilterParameters = currentFilterParameters.copy()
+            viewModel.saveOriginalFilterParameters(originalFilterParameters)
+        }
+
         binding.toolbar.setNavigationOnClickListener {
+            viewModel.clearOriginalFilterParameters()
+
             findNavController().navigateUp()
         }
 
@@ -66,6 +88,7 @@ class FilterFragment : Fragment() {
             setupSalaryCheckBox()
             setupWorkplaceAndIndustryResetButtons()
             setupButtons()
+            updateButtons()
         }
     }
 
@@ -75,7 +98,7 @@ class FilterFragment : Fragment() {
     }
 
     private fun setupWorkplaceLayout() {
-        if (currentFilterParameters.areaId.isEmpty()) {
+        if (currentFilterParameters.areaId.isEmpty() && currentFilterParameters.countryId.isEmpty()) {
             binding.workplaceLayout1.visibility = View.VISIBLE
             binding.workplaceLayout2.visibility = View.INVISIBLE
         } else {
@@ -84,7 +107,9 @@ class FilterFragment : Fragment() {
 
             binding.workplaceName.text = currentFilterParameters.countryName
 
-            if (currentFilterParameters.countryId != currentFilterParameters.areaId) {
+            if (currentFilterParameters.countryId != currentFilterParameters.areaId
+                && currentFilterParameters.areaId != EMPTY_STRING
+            ) {
                 val text = currentFilterParameters.countryName + ", " + currentFilterParameters.areaName
                 binding.workplaceName.text = text
             }
@@ -92,6 +117,7 @@ class FilterFragment : Fragment() {
         binding.workplaceLayout1.setOnClickListener {
             hideKeyBoard()
             binding.salaryEdittext.clearFocus()
+
             findNavController().navigate(R.id.action_filterFragment_to_workplaceFragment)
         }
         binding.workplaceTitle.setOnClickListener {
@@ -155,8 +181,7 @@ class FilterFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                salaryChanged = true
-                binding.buttonApply.isVisible = true
+                // здесь можно не реализовывать
             }
         }
         binding.salaryEdittext.addTextChangedListener(inputTextWatcher)
@@ -175,10 +200,10 @@ class FilterFragment : Fragment() {
                     val color = ContextCompat.getColor(requireContext(), R.color.yp_black)
                     binding.salaryTitle.setTextColor(color)
                 } else {
-                    val color = ContextCompat.getColor(requireContext(), R.color.yp_gray)
+                    val color = ContextCompat.getColor(requireContext(), R.color.yp_gray_dup)
                     binding.salaryTitle.setTextColor(color)
                 }
-                updatesSalary()
+                updateSalary()
             }
         }
         binding.salaryLayout.setOnClickListener {
@@ -187,12 +212,14 @@ class FilterFragment : Fragment() {
         binding.salaryEdittext.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_NEXT) {
                 hideKeyBoard()
-                updatesSalary()
+                // updateSalary()
             }
             false
         }
         binding.clearButton.setOnClickListener {
             binding.salaryEdittext.setText(EMPTY_STRING)
+
+            updateSalary()
         }
     }
 
@@ -264,31 +291,30 @@ class FilterFragment : Fragment() {
 
             binding.buttonReset.visibility = View.INVISIBLE
 
+            val color = ContextCompat.getColor(requireContext(), R.color.yp_gray_dup)
+            binding.salaryTitle.setTextColor(color)
+
             clearCurrentFilterParameters()
+            updateButtons()
         }
 
         binding.buttonApply.setOnClickListener {
             findNavController().navigateUp()
         }
-
     }
 
-    private fun updatesSalary() {
-        if (salaryChanged) {
-            _currentFilterParameters = if (binding.salaryEdittext.text.isNotEmpty()) {
-                currentFilterParameters.copy(
-                    salary = binding.salaryEdittext.text.toString()
-                )
-            } else {
-                currentFilterParameters.copy(
-                    salary = EMPTY_STRING
-                )
-            }
-
-            saveCurrentFilterParameters()
-            updateButtons()
-            salaryChanged = false
+    private fun updateSalary() {
+        _currentFilterParameters = if (binding.salaryEdittext.text.isNotEmpty()) {
+            currentFilterParameters.copy(
+                salary = binding.salaryEdittext.text.toString()
+            )
+        } else {
+            currentFilterParameters.copy(
+                salary = EMPTY_STRING
+            )
         }
+        saveCurrentFilterParameters()
+        updateButtons()
     }
 
     private fun updateButtons() {
@@ -297,7 +323,12 @@ class FilterFragment : Fragment() {
         } else {
             binding.buttonReset.visibility = View.INVISIBLE
         }
-        binding.buttonApply.visibility = View.VISIBLE
+
+        if (currentFilterParameters != originalFilterParameters) {
+            binding.buttonApply.visibility = View.VISIBLE
+        } else {
+            binding.buttonApply.visibility = View.INVISIBLE
+        }
     }
 
     private fun currentFilterParameters() {
@@ -399,21 +430,26 @@ class FilterFragment : Fragment() {
                         val industryId = bundle.getString(INDUSTRY_ID)
                         setIndustryId(industryId)
                     }
+
                     INDUSTRY_NAME -> {
                         val industryName = bundle.getString(INDUSTRY_NAME)
                         setIndustryName(industryName)
                     }
+
                     COUNTRY -> {
                         val country = bundle.getParcelable<Country>(COUNTRY)
                         setCountry(country)
                     }
+
                     REGION -> {
                         val region = bundle.getParcelable<Region>(REGION)
                         setRegion(region)
                     }
+
                     else -> {}
                 }
             }
+            updateButtons()
         }
     }
 
@@ -423,7 +459,6 @@ class FilterFragment : Fragment() {
                 industryId = industryId
             )
             viewModel.saveFilterSettings(mapOf(INDUSTRY_ID to industryId))
-            binding.buttonApply.isVisible = true
         }
     }
 
@@ -434,7 +469,6 @@ class FilterFragment : Fragment() {
             )
             viewModel.saveFilterSettings(mapOf(INDUSTRY_NAME to industryName))
             binding.industryName.text = currentFilterParameters.industryName
-            binding.buttonApply.isVisible = true
         }
     }
 
@@ -450,7 +484,7 @@ class FilterFragment : Fragment() {
                     COUNTRY_NAME to country.countryName
                 )
             )
-            binding.buttonApply.isVisible = true
+            binding.workplaceName.text = _currentFilterParameters?.countryName
         }
     }
 
@@ -468,7 +502,6 @@ class FilterFragment : Fragment() {
             )
             binding.workplaceName.text =
                 "${_currentFilterParameters?.countryName}, ${_currentFilterParameters?.areaName}"
-            binding.buttonApply.isVisible = true
         }
     }
 

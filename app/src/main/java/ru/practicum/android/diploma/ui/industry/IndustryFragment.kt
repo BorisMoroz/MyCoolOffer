@@ -58,7 +58,7 @@ class IndustryFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.industriesList.adapter = industryAdapter
 
-        viewModel.searchIndustries("")
+        viewModel.searchIndustries(EMPTY_STRING)
 
         viewModel.getGetIndustriesState().observe(viewLifecycleOwner) { state ->
             renderState(state)
@@ -78,6 +78,10 @@ class IndustryFragment : Fragment() {
             }
 
             override fun afterTextChanged(s: Editable?) {
+                binding.getIndustriesErrorLayout.isVisible = false
+                binding.noIndustryFoundLayout.isVisible = false
+                binding.noInternetLayout.isVisible = false
+
                 viewModel.searchIndustries(s.toString())
             }
         }
@@ -91,14 +95,14 @@ class IndustryFragment : Fragment() {
             false
         }
 
-        binding.clearOrSearchButton.setOnClickListener { binding.industryEdittext.setText("") }
+        binding.clearOrSearchButton.setOnClickListener { binding.industryEdittext.setText(EMPTY_STRING) }
 
         binding.buttonApply.setOnClickListener {
             setFragmentResult(
-                "filter_key",
+                FILTER_KEY,
                 bundleOf(
-                    "industryName" to selectedIndustry?.industryName,
-                    "industryId" to selectedIndustry?.industryId
+                    INDUSTRY_NAME to selectedIndustry?.industryName,
+                    INDUSTRY_ID to selectedIndustry?.industryId
                 )
             )
             findNavController().navigateUp()
@@ -122,6 +126,7 @@ class IndustryFragment : Fragment() {
 
     fun renderState(state: GetIndustriesState?) {
         when (state) {
+            is GetIndustriesState.Loading -> showProgress()
             is GetIndustriesState.Error -> showError(state.errorCode)
             is GetIndustriesState.Content -> showIndustries(state.data)
             else -> {
@@ -129,19 +134,34 @@ class IndustryFragment : Fragment() {
         }
     }
 
+    private fun showProgress() {
+        binding.progress.isVisible = true
+    }
+
+    private fun hideProgress() {
+        binding.progress.isVisible = false
+    }
+
     private fun showError(errorCode: Int) {
         industries.clear()
         industryAdapter?.notifyDataSetChanged()
 
         binding.buttonApply.isVisible = false
-        binding.getIndustriesErrorLayout.isVisible = true
 
+        hideProgress()
+
+        when (errorCode) {
+            -1 -> binding.noInternetLayout.isVisible = true
+            else -> binding.getIndustriesErrorLayout
+        }
         hideKeyBoard()
     }
 
     private fun showIndustries(data: Industries) {
         industries.clear()
         industries.addAll(data.items)
+
+        hideProgress()
 
         if (industries.isEmpty()) {
             binding.noIndustryFoundLayout.isVisible = true
@@ -170,7 +190,6 @@ class IndustryFragment : Fragment() {
             if (position != -1) {
                 binding.industriesList.layoutManager?.scrollToPosition(position)
             }
-
             firstTimeShowIndustries = false
         }
         industryAdapter?.notifyDataSetChanged()
@@ -213,6 +232,8 @@ class IndustryFragment : Fragment() {
     private companion object {
         const val INDUSTRY_ID = "industryId"
         const val INDUSTRY_NAME = "industryName"
+        const val FILTER_KEY = "filter_key"
         const val INDUSTRY_KEY = "industry_key"
+        const val EMPTY_STRING = ""
     }
 }

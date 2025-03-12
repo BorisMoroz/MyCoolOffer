@@ -20,6 +20,8 @@ class IndustryViewModel(val vacanciesInteractor: VacanciesInteractor) : ViewMode
     fun getGetIndustriesState(): LiveData<GetIndustriesState?> = getIndustriesState
 
     fun searchIndustries(text: String) {
+        getIndustriesState.postValue(GetIndustriesState.Loading)
+
         if (!industriesLoaded) {
             viewModelScope.launch {
                 vacanciesInteractor

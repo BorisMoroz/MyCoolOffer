@@ -5,6 +5,7 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.practicum.android.diploma.BuildConfig.HH_ACCESS_TOKEN
+import ru.practicum.android.diploma.data.dto.AreaDto
 import ru.practicum.android.diploma.data.dto.IndustryDto
 import ru.practicum.android.diploma.data.dto.responses.AreasResponse
 import ru.practicum.android.diploma.data.dto.responses.VacanciesSearchResponse
@@ -40,5 +41,9 @@ interface HHApi {
     @Headers("Authorization: Bearer ${HH_ACCESS_TOKEN}", "HH-User-Agent: $APP_NAME $EMAIL")
     @GET("/areas/{areaId}")
     suspend fun getAreas(@Path("areaId") areaId: String): AreasResponse
+
+    @Headers("Authorization: Bearer ${HH_ACCESS_TOKEN}", "HH-User-Agent: $APP_NAME $EMAIL")
+    @GET("/areas")
+    suspend fun getAllAreas(): List<AreaDto>
 
 }

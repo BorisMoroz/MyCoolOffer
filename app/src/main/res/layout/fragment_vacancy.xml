@@ -100,7 +100,7 @@
                 android:layout_marginTop="@dimen/margin_24"
                 android:padding="@dimen/padding_16"
                 android:orientation="horizontal"
-                android:background="@drawable/rounded_item"
+                android:background="@drawable/rounded_item_vacancy"
                 app:layout_constraintTop_toBottomOf="@id/salary_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">

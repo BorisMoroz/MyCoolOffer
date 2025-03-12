@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
+import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -126,6 +127,7 @@ class VacancyFragment : Fragment() {
                     .load(R.drawable.img_placeholder_connection_error)
                     .into(binding.placeholderErrorImage)
                 binding.placeholderErrorText.setText(R.string.connection_error)
+                binding.toolbar.menu.clear()
             }
 
             NOT_FOUND_ERROR -> {
@@ -133,6 +135,7 @@ class VacancyFragment : Fragment() {
                     .load(R.drawable.img_placeholder_job_error)
                     .into(binding.placeholderErrorImage)
                 binding.placeholderErrorText.setText(R.string.vacancy_error)
+                binding.toolbar.menu.forEach { it.isEnabled = false }
             }
 
             else -> {
@@ -140,6 +143,7 @@ class VacancyFragment : Fragment() {
                     .load(R.drawable.img_placeholder_job_server_error)
                     .into(binding.placeholderErrorImage)
                 binding.placeholderErrorText.setText(R.string.server_error)
+                binding.toolbar.menu.clear()
             }
         }
         binding.placeholderError.isVisible = true
