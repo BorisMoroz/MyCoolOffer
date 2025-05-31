@@ -54,6 +54,10 @@ MyCoolOffer представляет собой приложение для по
 
 На экране отображается статический список людей, участвовавших в разработке приложения. 
 
+# Стек технологий
+
+Kotlin, Git, Android SDK, XML, MVVM, Koin, Retrofit, Coroutines, Room, Fragments, Android Jetpack, RecyclerView, SharedPreferencies, CodeReview
+
 # Предварительная настройка проекта
 
 ## Добавление секретного токена для API HeadHunter
